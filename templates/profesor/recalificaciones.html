@@ -1,0 +1,132 @@
+{% extends 'base.html' %}
+
+{% block title %}Solicitudes de Recalificación{% endblock %}
+
+{% block content %}
+<div class="page-header">
+    <h2>Solicitudes de Recalificación</h2>
+</div>
+
+<div class="data-table-wrapper">
+    <table class="data-table">
+        <thead>
+            <tr>
+                <th>Estudiante</th>
+                <th>Materia</th>
+                <th>Nota Actual</th>
+                <th>Motivo</th>
+                <th>Fecha Solicitud</th>
+                <th>Estado</th>
+                <th>Acciones</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for r in recalificaciones %}
+            <tr>
+                <td>{{ r.NombreEstudiante }}</td>
+                <td>{{ r.NombreMateria }}</td>
+                <td class="nota-value">{{ r.NotaActual }}</td>
+                <td class="text-secondary" style="font-size: 0.85rem; max-width: 250px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;" title="{{ r.Motivo }}">{{ r.Motivo }}</td>
+                <td>{{ r.FechaSolicitud }}</td>
+                <td>
+                    <span class="badge badge-{% if r.Estado == 'Pendiente' %}warning{% elif r.Estado == 'Aprobada' %}success{% else %}danger{% endif %}">
+                        {{ r.Estado }}
+                    </span>
+                </td>
+                <td class="actions">
+                    {% if r.Estado == 'Pendiente' %}
+                        <button class="btn btn-sm btn-success" onclick='openAprobarModal({{ r|tojson }})'>✓ Aprobar</button>
+                        <button class="btn btn-sm btn-danger" onclick='openRechazarModal({{ r|tojson }})'>✗ Rechazar</button>
+                    {% else %}
+                        <span class="text-secondary" style="font-size: 0.8rem;">Resuelta</span>
+                    {% endif %}
+                </td>
+            </tr>
+            {% else %}
+            <tr>
+                <td colspan="7" class="text-center text-secondary">No hay solicitudes de recalificación.</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+<!-- Aprobar Modal -->
+<div class="modal-overlay" id="aprobarModal">
+    <div class="modal-content card">
+        <div class="modal-header">
+            <h3>Aprobar Recalificación</h3>
+            <button class="modal-close" onclick="hideModal('aprobarModal')">&times;</button>
+        </div>
+        <form id="aprobarForm" onsubmit="event.preventDefault(); handleResolver('Aprobada', 'aprobarForm', 'aprobarModal');">
+            <input type="hidden" name="id" id="aprobar_id">
+            <div class="form-group">
+                <label>Nueva Nota (0-10)</label>
+                <input type="number" name="nota_nueva" class="form-control" step="0.01" min="0" max="10" required>
+            </div>
+            <div class="form-group">
+                <label>Comentario (opcional)</label>
+                <textarea name="comentario_profesor" class="form-control"></textarea>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn" style="background: var(--bg-card); color: white;" onclick="hideModal('aprobarModal')">Cancelar</button>
+                <button type="submit" class="btn btn-success">Aprobar y Actualizar Nota</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!-- Rechazar Modal -->
+<div class="modal-overlay" id="rechazarModal">
+    <div class="modal-content card">
+        <div class="modal-header">
+            <h3>Rechazar Recalificación</h3>
+            <button class="modal-close" onclick="hideModal('rechazarModal')">&times;</button>
+        </div>
+        <form id="rechazarForm" onsubmit="event.preventDefault(); handleResolver('Rechazada', 'rechazarForm', 'rechazarModal');">
+            <input type="hidden" name="id" id="rechazar_id">
+            <div class="form-group">
+                <label>Comentario / Motivo del Rechazo</label>
+                <textarea name="comentario_profesor" class="form-control" required></textarea>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn" style="background: var(--bg-card); color: white;" onclick="hideModal('rechazarModal')">Cancelar</button>
+                <button type="submit" class="btn btn-danger">Rechazar Solicitud</button>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_scripts %}
+<script>
+    function openAprobarModal(data) {
+        document.getElementById('aprobarForm').reset();
+        document.getElementById('aprobar_id').value = data.SolicitudID;
+        showModal('aprobarModal');
+    }
+
+    function openRechazarModal(data) {
+        document.getElementById('rechazarForm').reset();
+        document.getElementById('rechazar_id').value = data.SolicitudID;
+        showModal('rechazarModal');
+    }
+
+    async function handleResolver(estado, formId, modalId) {
+        const form = document.getElementById(formId);
+        const formData = new FormData(form);
+        const data = Object.fromEntries(formData.entries());
+        data.estado = estado;
+        
+        const id = data.id;
+        try {
+            const result = await fetchAPI(`/profesor/recalificaciones/${id}/resolver`, 'POST', data);
+            showAlert(result.message || 'Solicitud resuelta', 'success');
+            hideModal(modalId);
+            setTimeout(() => location.reload(), 800);
+        } catch(e) {
+            showAlert(e.message, 'error');
+        }
+    }
+</script>
+{% endblock %}

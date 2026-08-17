@@ -1,0 +1,79 @@
+{% extends 'base.html' %}
+
+{% block title %}Panel de Administración{% endblock %}
+
+{% block content %}
+<div class="page-header">
+    <h2>Panel de Administración</h2>
+</div>
+
+<div class="stats-grid">
+    <div class="stat-card">
+        <div class="stat-icon">👨‍🎓</div>
+        <div class="stat-value">{{ estudiantes_count }}</div>
+        <div class="stat-label">Estudiantes</div>
+    </div>
+    
+    <div class="stat-card">
+        <div class="stat-icon">👨‍🏫</div>
+        <div class="stat-value">{{ profesores_count }}</div>
+        <div class="stat-label">Profesores</div>
+    </div>
+    
+    <div class="stat-card">
+        <div class="stat-icon">👨‍👩‍👧</div>
+        <div class="stat-value">{{ padres_count }}</div>
+        <div class="stat-label">Padres</div>
+    </div>
+    
+    <div class="stat-card">
+        <div class="stat-icon">📝</div>
+        <div class="stat-value">{{ notas_count }}</div>
+        <div class="stat-label">Notas</div>
+    </div>
+    
+    <div class="stat-card">
+        <div class="stat-icon">⏳</div>
+        <div class="stat-value">{{ pendientes_count }}</div>
+        <div class="stat-label">Solicitudes Pendientes</div>
+    </div>
+</div>
+
+<div class="card mt-3">
+    <h3 class="section-title">Registro de Auditoría Reciente</h3>
+    <div class="data-table-wrapper">
+        <table class="data-table">
+            <thead>
+                <tr>
+                    <th>Fecha</th>
+                    <th>Tabla</th>
+                    <th>Acción</th>
+                    <th>Registro ID</th>
+                    <th>Valor Anterior</th>
+                    <th>Valor Nuevo</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for log in auditoria %}
+                <tr>
+                    <td>{{ log.FechaAccion }}</td>
+                    <td>{{ log.TablaAfectada }}</td>
+                    <td>
+                        <span class="badge badge-{% if log.Accion == 'INSERT' %}success{% elif log.Accion == 'UPDATE' %}warning{% else %}danger{% endif %}">
+                            {{ log.Accion }}
+                        </span>
+                    </td>
+                    <td>{{ log.RegistroID }}</td>
+                    <td class="text-secondary" style="font-size: 0.8rem; max-width: 200px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">{{ log.ValorAntiguo or '-' }}</td>
+                    <td class="text-secondary" style="font-size: 0.8rem; max-width: 200px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">{{ log.ValorNuevo or '-' }}</td>
+                </tr>
+                {% else %}
+                <tr>
+                    <td colspan="6" class="text-center text-secondary">No hay registros recientes.</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}

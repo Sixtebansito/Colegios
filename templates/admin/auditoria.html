@@ -1,0 +1,48 @@
+{% extends 'base.html' %}
+
+{% block title %}Auditoría{% endblock %}
+
+{% block content %}
+<div class="page-header">
+    <h2>Registro de Auditoría</h2>
+</div>
+
+<div class="data-table-wrapper">
+    <table class="data-table">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Fecha y Hora</th>
+                <th>Usuario / Rol</th>
+                <th>Tabla Afectada</th>
+                <th>Acción</th>
+                <th>ID Registro</th>
+                <th>Valor Anterior</th>
+                <th>Valor Nuevo</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for log in auditoria %}
+            <tr>
+                <td>{{ log.LogID }}</td>
+                <td style="white-space: nowrap;">{{ log.FechaAccion }}</td>
+                <td>{{ log.Usuario or 'Sistema' }}</td>
+                <td>{{ log.TablaAfectada }}</td>
+                <td>
+                    <span class="badge badge-{% if log.Accion == 'INSERT' %}success{% elif log.Accion == 'UPDATE' %}warning{% else %}danger{% endif %}">
+                        {{ log.Accion }}
+                    </span>
+                </td>
+                <td>{{ log.RegistroID }}</td>
+                <td class="text-secondary" style="font-size: 0.85rem; max-width: 250px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;" title="{{ log.ValorAntiguo }}">{{ log.ValorAntiguo or '-' }}</td>
+                <td class="text-secondary" style="font-size: 0.85rem; max-width: 250px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;" title="{{ log.ValorNuevo }}">{{ log.ValorNuevo or '-' }}</td>
+            </tr>
+            {% else %}
+            <tr>
+                <td colspan="8" class="text-center text-secondary">No hay registros de auditoría.</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}

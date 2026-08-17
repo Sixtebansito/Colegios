@@ -1,0 +1,48 @@
+{% extends 'base.html' %}
+
+{% block title %}Mis Solicitudes de Recalificación{% endblock %}
+
+{% block content %}
+<div class="page-header">
+    <h2>Mis Solicitudes de Recalificación</h2>
+</div>
+
+<div class="data-table-wrapper">
+    <table class="data-table">
+        <thead>
+            <tr>
+                <th>Estudiante</th>
+                <th>Materia</th>
+                <th>Nota Anterior</th>
+                <th>Nota Nueva</th>
+                <th>Motivo</th>
+                <th>Comentario Profesor</th>
+                <th>Fecha</th>
+                <th>Estado</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for r in recalificaciones %}
+            <tr>
+                <td>{{ r.NombreEstudiante }}</td>
+                <td>{{ r.NombreMateria }}</td>
+                <td class="nota-value">{{ r.NotaAnterior }}</td>
+                <td class="nota-value">{{ r.NotaNueva or '-' }}</td>
+                <td class="text-secondary" style="font-size: 0.85rem; max-width: 200px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;" title="{{ r.Motivo }}">{{ r.Motivo }}</td>
+                <td class="text-secondary" style="font-size: 0.85rem; max-width: 200px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;" title="{{ r.ComentarioProfesor }}">{{ r.ComentarioProfesor or '-' }}</td>
+                <td>{{ r.FechaSolicitud }}</td>
+                <td>
+                    <span class="badge badge-{% if r.Estado == 'Pendiente' %}warning{% elif r.Estado == 'Aprobada' %}success{% else %}danger{% endif %}">
+                        {{ r.Estado }}
+                    </span>
+                </td>
+            </tr>
+            {% else %}
+            <tr>
+                <td colspan="8" class="text-center text-secondary">No tiene solicitudes de recalificación registradas.</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}

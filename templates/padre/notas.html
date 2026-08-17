@@ -1,0 +1,148 @@
+{% extends 'base.html' %}
+
+{% block title %}Notas de mis Hijos{% endblock %}
+
+{% block content %}
+<div class="page-header">
+    <h2>Notas de mis Hijos</h2>
+</div>
+
+<div class="filter-bar card mb-4">
+    <div class="form-group" style="max-width: 300px;">
+        <label>Filtrar por Periodo/Quimestre</label>
+        <select id="filter_quimestre" class="form-control" onchange="filterNotas()">
+            <option value="">Todos los periodos</option>
+        </select>
+    </div>
+</div>
+
+{% for hijo in hijos %}
+<div class="card child-section mb-4">
+    <div class="child-section-header">
+        <div class="emoji" style="font-size: 1.5rem;">👦</div>
+        <h3>{{ hijo.NombreEstudiante }} - <span class="text-secondary">{{ hijo.NombreGrado }}</span></h3>
+    </div>
+    
+    <div class="data-table-wrapper">
+        <table class="data-table">
+            <thead>
+                <tr>
+                    <th>Materia</th>
+                    <th>Periodo</th>
+                    <th>Profesor</th>
+                    <th>Nota</th>
+                    <th>Fecha</th>
+                    <th>Acciones</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for n in hijo.notas %}
+                <tr class="nota-row">
+                    <td>{{ n.NombreMateria }}</td>
+                    <td class="periodo-cell">{{ n.NombrePeriodo }}</td>
+                    <td>{{ n.NombreProfesor }}</td>
+                    <td class="nota-value">{{ n.Nota }}</td>
+                    <td>{{ n.FechaRegistro }}</td>
+                    <td>
+                        {% if not n.TieneRecalificacionPendiente %}
+                            <button class="btn btn-sm btn-primary" onclick='openRecalificacionModal({{ n|tojson }})'>Solicitar Recalificación</button>
+                        {% else %}
+                            <span class="badge badge-warning">En revisión</span>
+                        {% endif %}
+                    </td>
+                </tr>
+                {% else %}
+                <tr>
+                    <td colspan="6" class="text-center text-secondary">No hay notas registradas para este estudiante.</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% else %}
+<div class="empty-state">
+    <div class="emoji">📚</div>
+    <p>No hay información de notas disponible.</p>
+</div>
+{% endfor %}
+
+<!-- Recalificacion Modal -->
+<div class="modal-overlay" id="recalificacionModal">
+    <div class="modal-content card">
+        <div class="modal-header">
+            <h3>Solicitar Recalificación</h3>
+            <button class="modal-close" onclick="hideModal('recalificacionModal')">&times;</button>
+        </div>
+        <div class="mb-4 text-secondary" style="font-size: 0.9rem;">
+            Está solicitando recalificación para la materia <strong id="modal_materia" class="text-primary"></strong>. La nota actual es <strong id="modal_nota" class="text-primary"></strong>.
+        </div>
+        <form id="recalificacionForm" onsubmit="event.preventDefault(); handleSolicitud();">
+            <input type="hidden" name="nota_id" id="recalificacion_nota_id">
+            <div class="form-group">
+                <label>Motivo de la solicitud</label>
+                <textarea name="motivo" class="form-control" required placeholder="Explique brevemente por qué solicita la recalificación..."></textarea>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn" style="background: var(--bg-card); color: white;" onclick="hideModal('recalificacionModal')">Cancelar</button>
+                <button type="submit" class="btn btn-primary">Enviar Solicitud</button>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_scripts %}
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        // Recolectar periodos únicos de la tabla
+        const periodos = new Set();
+        document.querySelectorAll('.periodo-cell').forEach(td => {
+            periodos.add(td.textContent.trim());
+        });
+        
+        const select = document.getElementById('filter_quimestre');
+        periodos.forEach(p => {
+            const opt = document.createElement('option');
+            opt.value = p;
+            opt.textContent = p;
+            select.appendChild(opt);
+        });
+    });
+
+    function filterNotas() {
+        const val = document.getElementById('filter_quimestre').value;
+        document.querySelectorAll('.nota-row').forEach(tr => {
+            if (!val) {
+                tr.style.display = '';
+            } else {
+                const rowPeriodo = tr.querySelector('.periodo-cell').textContent.trim();
+                tr.style.display = rowPeriodo === val ? '' : 'none';
+            }
+        });
+    }
+
+    function openRecalificacionModal(data) {
+        document.getElementById('recalificacionForm').reset();
+        document.getElementById('recalificacion_nota_id').value = data.NotaID;
+        document.getElementById('modal_materia').textContent = data.NombreMateria;
+        document.getElementById('modal_nota').textContent = data.Nota;
+        showModal('recalificacionModal');
+    }
+
+    async function handleSolicitud() {
+        const form = document.getElementById('recalificacionForm');
+        const formData = new FormData(form);
+        const data = Object.fromEntries(formData.entries());
+        
+        try {
+            const result = await fetchAPI('/padre/recalificacion', 'POST', data);
+            showAlert(result.message || 'Solicitud enviada con éxito', 'success');
+            hideModal('recalificacionModal');
+            setTimeout(() => location.reload(), 800);
+        } catch(e) {
+            showAlert(e.message, 'error');
+        }
+    }
+</script>
+{% endblock %}

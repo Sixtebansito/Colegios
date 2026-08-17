@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Matrículas - Colegio Público</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+</head>
+<body class="public-page">
+
+    <header class="public-hero">
+        <h1>🎓 Colegio de Excelencia</h1>
+        <p>Formando líderes para el futuro con educación de primer nivel, tecnología y valores.</p>
+    </header>
+
+    <section class="cupos-section">
+        <h2>Cupos Disponibles para el Año Lectivo 2025-2026</h2>
+        
+        <div class="cupos-grid">
+            {% for cupo in cupos %}
+            <div class="cupo-card">
+                <div class="d-flex justify-between align-center mb-4">
+                    <h3>{{ cupo.NombreGrado }}</h3>
+                    <span class="badge badge-info">{{ cupo.Nivel }}</span>
+                </div>
+                
+                <div class="mb-4 text-center">
+                    <div style="font-size: 2rem; font-weight: bold; color: var(--text-primary);">
+                        {{ cupo.CuposDisponibles }}
+                    </div>
+                    <div class="text-secondary">cupos disponibles de {{ cupo.CupoMaximo }}</div>
+                </div>
+                
+                <div class="progress-container">
+                    {% set porcentaje = (cupo.Matriculados / cupo.CupoMaximo * 100) if cupo.CupoMaximo > 0 else 0 %}
+                    {% set pclass = 'progress-bar-success' %}
+                    {% if porcentaje > 85 %}
+                        {% set pclass = 'progress-bar-danger' %}
+                    {% elif porcentaje > 60 %}
+                        {% set pclass = 'progress-bar-warning' %}
+                    {% endif %}
+                    <div class="progress">
+                        <div class="progress-bar {{ pclass }}" style="width: {{ porcentaje }}%"></div>
+                    </div>
+                </div>
+            </div>
+            {% else %}
+            <div class="empty-state" style="grid-column: 1 / -1;">
+                <div class="emoji">ℹ️</div>
+                <p>No hay información de cupos disponible por el momento.</p>
+            </div>
+            {% endfor %}
+        </div>
+        
+        <div class="text-center" style="margin-top: 60px;">
+            <h3>¿Ya es parte de nuestro colegio?</h3>
+            <p class="text-secondary mb-4">Acceda al portal para revisar notas y administrar su cuenta.</p>
+            <a href="{{ url_for('auth.login') }}" class="btn btn-primary">Ingresar al Sistema</a>
+        </div>
+    </section>
+
+    <footer>
+        &copy; 2025 Sistema de Gestión de Colegios. Todos los derechos reservados.
+    </footer>
+
+</body>
+</html>

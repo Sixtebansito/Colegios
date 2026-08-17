@@ -1,0 +1,15 @@
+from utils import get_db_connection
+conn = get_db_connection()
+cursor = conn.cursor()
+print("--- PADRE ---")
+cursor.execute("SELECT TOP 1 u.Cedula, p.Nombre, p.Apellido FROM Usuarios u JOIN Padres p ON u.UsuarioID = p.UsuarioID WHERE u.EstadoID = 2")
+row = cursor.fetchone()
+if row: print(f"Cédula: {row.Cedula}, Nombre: {row.Nombre} {row.Apellido}")
+else: print("No padres found.")
+
+print("--- PROFESOR ---")
+cursor.execute("SELECT TOP 1 u.Cedula, p.Nombre, p.Apellido FROM Usuarios u JOIN Profesores p ON u.UsuarioID = p.UsuarioID WHERE u.EstadoID = 2")
+row = cursor.fetchone()
+if row: print(f"Cédula: {row.Cedula}, Nombre: {row.Nombre} {row.Apellido}")
+else: print("No profesores found.")
+conn.close()

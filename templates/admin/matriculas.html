@@ -1,0 +1,188 @@
+{% extends 'base.html' %}
+
+{% block title %}Gestión de Matrículas{% endblock %}
+
+{% block content %}
+<div class="page-header">
+    <h2>Gestión de Matrículas</h2>
+    <button class="btn btn-primary" onclick="openCreateModal()">➕ Nueva Matrícula</button>
+</div>
+
+<div class="data-table-wrapper">
+    <table class="data-table">
+        <thead>
+            <tr>
+                <th>Estudiante</th>
+                <th>Grado</th>
+                <th>Año Lectivo</th>
+                <th>Estado</th>
+                <th>Fecha Matrícula</th>
+                <th>Acciones</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for m in matriculas %}
+            <tr>
+                <td>{{ m.NombreEstudiante }}</td>
+                <td>{{ m.NombreGrado }}</td>
+                <td>{{ m.AnioLectivo }}</td>
+                <td>
+                    <span class="badge badge-{% if m.Estado == 'Activa' %}success{% elif m.Estado == 'Pendiente' %}warning{% else %}danger{% endif %}">
+                        {{ m.Estado }}
+                    </span>
+                </td>
+                <td>{{ m.FechaMatricula }}</td>
+                <td class="actions">
+                    <button class="btn btn-sm btn-warning" onclick='openEditModal({{ m|tojson }})'>✏️ Editar</button>
+                    <button class="btn btn-sm btn-danger" onclick="confirmDelete({{ m.MatriculaID }})">🗑️ Eliminar</button>
+                </td>
+            </tr>
+            {% else %}
+            <tr>
+                <td colspan="6" class="text-center text-secondary">No hay matrículas registradas.</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+<!-- Create Modal -->
+<div class="modal-overlay" id="createModal">
+    <div class="modal-content card">
+        <div class="modal-header">
+            <h3>Nueva Matrícula</h3>
+            <button class="modal-close" onclick="hideModal('createModal')">&times;</button>
+        </div>
+        <form id="createForm" onsubmit="event.preventDefault(); handleCreate();">
+            <div class="form-group">
+                <label>Estudiante</label>
+                <select name="estudiante_id" id="create_estudiante_id" class="form-control" required>
+                    <option value="">Seleccionar Estudiante...</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label>Grado</label>
+                <select name="grado_id" id="create_grado_id" class="form-control" required>
+                    <option value="">Seleccionar Grado...</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label>Año Lectivo</label>
+                <input type="text" name="anio_lectivo" class="form-control" required placeholder="Ej: 2025-2026">
+            </div>
+            <div class="form-group">
+                <label>Estado</label>
+                <select name="estado" class="form-control" required>
+                    <option value="Activa">Activa</option>
+                    <option value="Pendiente">Pendiente</option>
+                    <option value="Retirada">Retirada</option>
+                </select>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn" style="background: var(--bg-card); color: white;" onclick="hideModal('createModal')">Cancelar</button>
+                <button type="submit" class="btn btn-primary">Guardar</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!-- Edit Modal -->
+<div class="modal-overlay" id="editModal">
+    <div class="modal-content card">
+        <div class="modal-header">
+            <h3>Editar Matrícula</h3>
+            <button class="modal-close" onclick="hideModal('editModal')">&times;</button>
+        </div>
+        <form id="editForm" onsubmit="event.preventDefault(); handleEdit();">
+            <input type="hidden" name="id" id="edit_id">
+            <div class="form-group">
+                <label>Estudiante</label>
+                <select name="estudiante_id" id="edit_estudiante_id" class="form-control" required>
+                    <option value="">Seleccionar Estudiante...</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label>Grado</label>
+                <select name="grado_id" id="edit_grado_id" class="form-control" required>
+                    <option value="">Seleccionar Grado...</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label>Año Lectivo</label>
+                <input type="text" name="anio_lectivo" id="edit_anio_lectivo" class="form-control" required>
+            </div>
+            <div class="form-group">
+                <label>Estado</label>
+                <select name="estado" id="edit_estado" class="form-control" required>
+                    <option value="Activa">Activa</option>
+                    <option value="Pendiente">Pendiente</option>
+                    <option value="Retirada">Retirada</option>
+                </select>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn" style="background: var(--bg-card); color: white;" onclick="hideModal('editModal')">Cancelar</button>
+                <button type="submit" class="btn btn-primary">Actualizar</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!-- Delete Modal -->
+<div class="modal-overlay" id="deleteModal">
+    <div class="modal-content card" style="text-align: center; max-width: 400px;">
+        <h3 class="mb-4">¿Está seguro?</h3>
+        <p class="text-secondary mb-4">Esta acción eliminará la matrícula del sistema.</p>
+        <div class="d-flex justify-center gap-12" style="justify-content: center;">
+            <button class="btn" style="background: var(--bg-card); color: white;" onclick="hideModal('deleteModal')">Cancelar</button>
+            <button class="btn btn-danger" id="confirmDeleteBtn">Eliminar</button>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_scripts %}
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        loadDropdown('create_estudiante_id', '/admin/api/estudiantes');
+        loadDropdown('create_grado_id', '/admin/api/grados');
+        loadDropdown('edit_estudiante_id', '/admin/api/estudiantes');
+        loadDropdown('edit_grado_id', '/admin/api/grados');
+    });
+
+    function openCreateModal() {
+        document.getElementById('createForm').reset();
+        showModal('createModal');
+    }
+
+    function openEditModal(data) {
+        document.getElementById('editForm').reset();
+        document.getElementById('edit_id').value = data.MatriculaID;
+        document.getElementById('edit_estudiante_id').value = data.EstudianteID;
+        document.getElementById('edit_grado_id').value = data.GradoID;
+        document.getElementById('edit_anio_lectivo').value = data.AnioLectivo;
+        document.getElementById('edit_estado').value = data.Estado;
+        showModal('editModal');
+    }
+
+    let itemToDelete = null;
+    function confirmDelete(id) {
+        itemToDelete = id;
+        showModal('deleteModal');
+    }
+
+    document.getElementById('confirmDeleteBtn').addEventListener('click', () => {
+        if (itemToDelete) {
+            handleDelete(`/admin/matriculas/${itemToDelete}`);
+        }
+    });
+
+    async function handleCreate() {
+        await handleCRUD('/admin/matriculas', 'POST', 'createForm', 'createModal');
+    }
+
+    async function handleEdit() {
+        const id = document.getElementById('edit_id').value;
+        await handleCRUD(`/admin/matriculas/${id}`, 'PUT', 'editForm', 'editModal');
+    }
+</script>
+{% endblock %}

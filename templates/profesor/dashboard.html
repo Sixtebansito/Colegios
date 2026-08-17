@@ -1,0 +1,48 @@
+{% extends 'base.html' %}
+
+{% block title %}Dashboard Profesor{% endblock %}
+
+{% block content %}
+<div class="page-header">
+    <h2>Panel de Profesor</h2>
+</div>
+
+<div class="card mb-4" style="background: linear-gradient(135deg, rgba(99,102,241,0.1), rgba(139,92,246,0.1)); border: 1px solid var(--accent-primary);">
+    <h3>Bienvenido, Prof. {{ session.get('nombre', 'Usuario') }}</h3>
+    <p class="text-secondary mt-3">Gestione las notas de sus materias y atienda las solicitudes de recalificación de sus estudiantes.</p>
+</div>
+
+<div class="stats-grid">
+    <div class="stat-card">
+        <div class="stat-icon">📚</div>
+        <div class="stat-value">{{ materias_count|default(0) }}</div>
+        <div class="stat-label">Mis Materias</div>
+    </div>
+    
+    <div class="stat-card">
+        <div class="stat-icon">📝</div>
+        <div class="stat-value">{{ notas_count|default(0) }}</div>
+        <div class="stat-label">Notas Registradas</div>
+    </div>
+    
+    <div class="stat-card">
+        <div class="stat-icon">⏳</div>
+        <div class="stat-value">{{ pendientes_count|default(0) }}</div>
+        <div class="stat-label">Solicitudes Pendientes</div>
+    </div>
+</div>
+
+<div class="quick-links">
+    <a href="{{ url_for('profesor.notas') }}" class="card quick-link-card">
+        <div class="emoji">📝</div>
+        <h4 class="mt-3">Gestión de Notas</h4>
+        <p class="text-secondary" style="font-size: 0.85rem; margin-top: 8px;">Ingresar y editar calificaciones</p>
+    </a>
+    
+    <a href="{{ url_for('profesor.recalificaciones') }}" class="card quick-link-card">
+        <div class="emoji">⚖️</div>
+        <h4 class="mt-3">Recalificaciones</h4>
+        <p class="text-secondary" style="font-size: 0.85rem; margin-top: 8px;">Atender solicitudes de revisión</p>
+    </a>
+</div>
+{% endblock %}

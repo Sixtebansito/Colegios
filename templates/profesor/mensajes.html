@@ -1,0 +1,209 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="header-section">
+    <h1>💬 Mensajes a Padres</h1>
+</div>
+
+<div class="chat-container">
+    <div class="chat-sidebar" id="contactos-list">
+        <!-- JS cargara contactos aqui -->
+    </div>
+    
+    <div class="chat-main" id="chat-main" style="display: none;">
+        <div class="chat-header">
+            <h3 id="chat-title">Seleccione un chat</h3>
+        </div>
+        <div class="chat-messages" id="chat-messages">
+            <!-- Mensajes aqui -->
+        </div>
+        <div class="chat-input-area">
+            <input type="text" id="mensaje-input" placeholder="Escriba su mensaje..." class="form-control" autocomplete="off" />
+            <button class="btn btn-primary" onclick="enviarMensaje()">Enviar 📤</button>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_scripts %}
+<style>
+.chat-container {
+    display: flex;
+    height: 70vh;
+    background: var(--bg-card);
+    border-radius: var(--radius);
+    border: 1px solid var(--border);
+    overflow: hidden;
+}
+.chat-sidebar {
+    width: 300px;
+    border-right: 1px solid var(--border);
+    overflow-y: auto;
+    background: rgba(0,0,0,0.1);
+}
+.chat-main {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+}
+.chat-header {
+    padding: 1rem;
+    border-bottom: 1px solid var(--border);
+    background: rgba(255,255,255,0.02);
+}
+.chat-messages {
+    flex: 1;
+    overflow-y: auto;
+    padding: 1rem;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+.chat-input-area {
+    padding: 1rem;
+    border-top: 1px solid var(--border);
+    display: flex;
+    gap: 10px;
+    background: rgba(0,0,0,0.2);
+}
+.chat-input-area input {
+    flex: 1;
+}
+.contacto-item {
+    padding: 1rem;
+    cursor: pointer;
+    border-bottom: 1px solid var(--border);
+    transition: background 0.2s;
+}
+.contacto-item:hover {
+    background: var(--bg-card-hover);
+}
+.contacto-item.active {
+    background: rgba(99, 102, 241, 0.2);
+    border-left: 3px solid var(--accent-primary);
+}
+.msg {
+    padding: 10px 15px;
+    border-radius: 15px;
+    max-width: 70%;
+    word-wrap: break-word;
+}
+.msg.profesor {
+    background: var(--accent-primary);
+    align-self: flex-end;
+    border-bottom-right-radius: 0;
+}
+.msg.padre {
+    background: var(--bg-secondary);
+    align-self: flex-start;
+    border-bottom-left-radius: 0;
+    border: 1px solid var(--border);
+}
+.msg-date {
+    font-size: 0.7rem;
+    opacity: 0.7;
+    margin-top: 5px;
+    text-align: right;
+}
+</style>
+<script>
+let currentPadreId = null;
+
+async function cargarContactos() {
+    try {
+        const response = await fetch('/profesor/api/mensajes/contactos');
+        const contactos = await response.json();
+        
+        const list = document.getElementById('contactos-list');
+        list.innerHTML = '';
+        
+        if(contactos.length === 0) {
+            list.innerHTML = '<div style="padding:1rem;text-align:center;color:var(--text-secondary);">No hay padres asignados</div>';
+            return;
+        }
+        
+        contactos.forEach(c => {
+            const div = document.createElement('div');
+            div.className = 'contacto-item';
+            div.innerHTML = `<strong>${c.Nombre} ${c.Apellido}</strong>`;
+            div.onclick = () => {
+                document.querySelectorAll('.contacto-item').forEach(i => i.classList.remove('active'));
+                div.classList.add('active');
+                abrirChat(c.PadreID, c.Nombre + ' ' + c.Apellido);
+            };
+            list.appendChild(div);
+        });
+    } catch(e) {
+        console.error(e);
+    }
+}
+
+async function abrirChat(padreId, nombre) {
+    currentPadreId = padreId;
+    document.getElementById('chat-main').style.display = 'flex';
+    document.getElementById('chat-title').innerText = 'Chat con Padre: ' + nombre;
+    cargarMensajes();
+    
+    // Auto refresh
+    if(window.chatInterval) clearInterval(window.chatInterval);
+    window.chatInterval = setInterval(cargarMensajes, 5000);
+}
+
+async function cargarMensajes() {
+    if(!currentPadreId) return;
+    try {
+        const response = await fetch(`/profesor/api/mensajes/${currentPadreId}`);
+        const mensajes = await response.json();
+        
+        const div = document.getElementById('chat-messages');
+        const scrollBottom = div.scrollHeight - div.scrollTop === div.clientHeight;
+        
+        div.innerHTML = '';
+        
+        mensajes.forEach(m => {
+            const msgDiv = document.createElement('div');
+            msgDiv.className = 'msg ' + (m.Remitente === 'Profesor' ? 'profesor' : 'padre');
+            
+            const date = new Date(m.FechaEnvio).toLocaleString();
+            msgDiv.innerHTML = `${m.Contenido}<div class="msg-date">${date}</div>`;
+            div.appendChild(msgDiv);
+        });
+        
+        // Mantener scroll abajo si ya lo estaba, o si es primera carga
+        div.scrollTop = div.scrollHeight;
+    } catch(e) {
+        console.error(e);
+    }
+}
+
+async function enviarMensaje() {
+    const input = document.getElementById('mensaje-input');
+    const contenido = input.value.trim();
+    if(!contenido || !currentPadreId) return;
+    
+    try {
+        const response = await fetch('/profesor/api/mensajes', {
+            method: 'POST',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify({padre_id: currentPadreId, contenido: contenido})
+        });
+        const res = await response.json();
+        if(res.success) {
+            input.value = '';
+            cargarMensajes();
+        } else {
+            alert('Error: ' + res.message);
+        }
+    } catch(e) {
+        console.error(e);
+    }
+}
+
+document.getElementById('mensaje-input').addEventListener('keypress', function(e) {
+    if(e.key === 'Enter') enviarMensaje();
+});
+
+// Init
+cargarContactos();
+</script>
+{% endblock %}

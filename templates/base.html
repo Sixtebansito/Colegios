@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Sistema de Gestión Escolar{% endblock %}</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+    {% block extra_head %}{% endblock %}
+</head>
+<body>
+
+    <!-- Sidebar -->
+    <aside class="sidebar">
+        <div class="sidebar-header">
+            <h2>🎓 Colegio</h2>
+        </div>
+        <nav class="sidebar-nav">
+            {% if session.get('role_id') == 1 %}
+                <!-- Admin Links -->
+                <a href="{{ url_for('admin.dashboard') }}">📊 Dashboard</a>
+                <a href="{{ url_for('admin.profesores_view') }}">👨‍🏫 Profesores</a>
+                <a href="{{ url_for('admin.padres_view') }}">👨‍👩‍👧 Padres</a>
+                <a href="{{ url_for('admin.estudiantes_view') }}">👨‍🎓 Estudiantes</a>
+                <a href="{{ url_for('admin.materias_view') }}">📚 Materias</a>
+                <a href="{{ url_for('admin.matriculas_view') }}">📝 Matrículas</a>
+                <a href="{{ url_for('admin.auditoria_view') }}">🕵️‍♂️ Auditoría</a>
+            {% elif session.get('role_id') == 2 %}
+                <!-- Profesor Links -->
+                <a href="{{ url_for('profesor.dashboard') }}">📊 Dashboard</a>
+                <a href="{{ url_for('profesor.notas') }}">📝 Gestión de Notas</a>
+                <a href="{{ url_for('profesor.recalificaciones') }}">⚖️ Recalificaciones</a>
+                <a href="{{ url_for('profesor.mensajes_view') }}">💬 Mensajes</a>
+            {% elif session.get('role_id') == 3 %}
+                <!-- Padre Links -->
+                <a href="{{ url_for('padre.dashboard') }}">📊 Dashboard</a>
+                <a href="{{ url_for('padre.notas') }}">📝 Notas de mis Hijos</a>
+                <a href="{{ url_for('padre.recalificaciones') }}">⚖️ Mis Recalificaciones</a>
+                <a href="{{ url_for('padre.mensajes_view') }}">💬 Mensajes</a>
+            {% endif %}
+        </nav>
+    </aside>
+
+    <!-- Topbar -->
+    <header class="topbar">
+        <button class="hamburger" onclick="toggleSidebar()">☰</button>
+        <div class="topbar-right" style="margin-left: auto; display: flex; align-items: center; gap: 16px;">
+            <span class="text-secondary">Hola, <strong>{{ session.get('nombre', 'Usuario') }}</strong></span>
+            <a href="{{ url_for('auth.logout') }}" class="btn btn-sm btn-primary">Salir</a>
+        </div>
+    </header>
+
+    <!-- Flash Messages Area -->
+    <div class="flash-messages">
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                {% for category, message in messages %}
+                    <div class="alert alert-{{ category }}">{{ message }}</div>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+    </div>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <div class="content">
+            {% block content %}{% endblock %}
+        </div>
+        <footer>
+            &copy; 2025 Sistema de Gestión de Colegios. Todos los derechos reservados.
+        </footer>
+    </main>
+
+    <script src="{{ url_for('static', filename='js/app.js') }}"></script>
+    {% block extra_scripts %}{% endblock %}
+</body>
+</html>

@@ -1,0 +1,328 @@
+{% extends 'base.html' %}
+
+{% block title %}Gestión de Notas{% endblock %}
+
+{% block content %}
+<div class="page-header">
+    <h2>Gestión de Calificaciones por Actividades</h2>
+</div>
+
+<!-- Selector de Materia y Periodo -->
+<div class="filter-bar card">
+    <div class="form-group">
+        <label>Materia</label>
+        <select id="filter_materia" class="form-control" onchange="loadMateria()">
+            <option value="">Seleccionar materia...</option>
+        </select>
+    </div>
+    <div class="form-group">
+        <label>Periodo</label>
+        <select id="filter_periodo" class="form-control" onchange="loadMateria()">
+            <option value="">Seleccionar periodo...</option>
+        </select>
+    </div>
+</div>
+
+<div id="gestion_panel" style="display: none;">
+    <!-- Actividades Config -->
+    <div class="card mb-4">
+        <div class="d-flex" style="justify-content: space-between; align-items: center; margin-bottom: 1rem;">
+            <h3>Actividades de Calificación</h3>
+            <button class="btn btn-primary btn-sm" onclick="openActividadModal()">➕ Nueva Actividad</button>
+        </div>
+        <div class="text-secondary mb-3">La suma de los porcentajes debe ser idealmente 100%. Total actual: <strong id="total_porcentaje" class="text-primary">0%</strong></div>
+        
+        <table class="data-table mb-2">
+            <thead>
+                <tr>
+                    <th>Nombre de Actividad</th>
+                    <th>Porcentaje (%)</th>
+                    <th>Acciones</th>
+                </tr>
+            </thead>
+            <tbody id="actividades_body">
+                <!-- Se llena con JS -->
+            </tbody>
+        </table>
+    </div>
+    
+    <!-- Matriz de Notas -->
+    <div class="card">
+        <h3>Matriz de Calificaciones</h3>
+        <p class="text-secondary mb-3">Ingrese las calificaciones (0-10) en cada celda. Se guardan automáticamente al perder el foco.</p>
+        <div class="data-table-wrapper" style="overflow-x: auto;">
+            <table class="data-table" id="notas_matrix">
+                <thead>
+                    <tr id="matrix_header">
+                        <th>Estudiante</th>
+                        <!-- Actividades header -->
+                        <th>Promedio Final</th>
+                    </tr>
+                </thead>
+                <tbody id="matrix_body">
+                    <!-- Se llena con JS -->
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<!-- Modal de Actividad -->
+<div class="modal-overlay" id="actividadModal">
+    <div class="modal-content card" style="max-width: 400px;">
+        <div class="modal-header">
+            <h3 id="actividadModalTitle">Nueva Actividad</h3>
+            <button class="modal-close" onclick="hideModal('actividadModal')">&times;</button>
+        </div>
+        <form id="actividadForm" onsubmit="event.preventDefault(); saveActividad();">
+            <input type="hidden" id="actividad_id">
+            <div class="form-group">
+                <label>Nombre</label>
+                <input type="text" id="actividad_nombre" class="form-control" required placeholder="Ej: Examen, Lección, Tareas">
+            </div>
+            <div class="form-group">
+                <label>Porcentaje (%)</label>
+                <input type="number" id="actividad_porcentaje" class="form-control" step="0.01" min="1" max="100" required>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn" style="background: var(--bg-card); color: white;" onclick="hideModal('actividadModal')">Cancelar</button>
+                <button type="submit" class="btn btn-primary">Guardar</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+{% endblock %}
+
+{% block extra_scripts %}
+<style>
+.nota-input {
+    width: 60px;
+    text-align: center;
+    background: var(--bg-secondary);
+    border: 1px solid var(--border);
+    color: var(--text-primary);
+    border-radius: 4px;
+    padding: 4px;
+}
+.nota-input:focus {
+    outline: none;
+    border-color: var(--accent-primary);
+}
+</style>
+<script>
+    let actividades = [];
+    let estudiantes = [];
+    
+    document.addEventListener('DOMContentLoaded', () => {
+        loadDropdown('filter_materia', '/profesor/api/materias');
+        loadDropdown('filter_periodo', '/profesor/api/periodos');
+    });
+
+    async function loadDropdown(selectId, url) {
+        try {
+            const select = document.getElementById(selectId);
+            const res = await fetch(url);
+            const data = await res.json();
+            data.forEach(item => {
+                const opt = document.createElement('option');
+                opt.value = item.id;
+                opt.textContent = item.nombre;
+                select.appendChild(opt);
+            });
+        } catch (e) {
+            console.error(e);
+        }
+    }
+
+    async function loadMateria() {
+        const materiaId = document.getElementById('filter_materia').value;
+        const periodoId = document.getElementById('filter_periodo').value;
+        
+        if (!materiaId || !periodoId) {
+            document.getElementById('gestion_panel').style.display = 'none';
+            return;
+        }
+        
+        document.getElementById('gestion_panel').style.display = 'block';
+        await loadActividades(materiaId, periodoId);
+        await loadMatriz(materiaId, periodoId);
+    }
+    
+    async function loadActividades(materiaId, periodoId) {
+        try {
+            const res = await fetch(`/profesor/api/actividades?materia_id=${materiaId}&periodo_id=${periodoId}`);
+            actividades = await res.json();
+            renderActividades();
+        } catch (e) {
+            console.error(e);
+        }
+    }
+    
+    function renderActividades() {
+        const tbody = document.getElementById('actividades_body');
+        tbody.innerHTML = '';
+        let total = 0;
+        
+        actividades.forEach(act => {
+            total += parseFloat(act.Porcentaje);
+            const tr = document.createElement('tr');
+            tr.innerHTML = `
+                <td>${act.Nombre}</td>
+                <td>${act.Porcentaje}%</td>
+                <td>
+                    <button class="btn btn-sm" style="background: var(--bg-card); color: white;" onclick='editActividad(${JSON.stringify(act)})'>✏️</button>
+                    <button class="btn btn-sm btn-danger" onclick="deleteActividad(${act.ActividadID})">🗑️</button>
+                </td>
+            `;
+            tbody.appendChild(tr);
+        });
+        
+        if (actividades.length === 0) {
+            tbody.innerHTML = '<tr><td colspan="3" class="text-center text-secondary">No hay actividades definidas.</td></tr>';
+        }
+        
+        const totEl = document.getElementById('total_porcentaje');
+        totEl.textContent = total.toFixed(2) + '%';
+        if (total !== 100) {
+            totEl.className = 'text-warning';
+        } else {
+            totEl.className = 'text-success';
+        }
+    }
+    
+    async function loadMatriz(materiaId, periodoId) {
+        try {
+            const res = await fetch(`/profesor/api/estudiantes_notas?materia_id=${materiaId}&periodo_id=${periodoId}`);
+            estudiantes = await res.json();
+            renderMatriz();
+        } catch(e) {
+            console.error(e);
+        }
+    }
+    
+    function renderMatriz() {
+        // Headers
+        const tr = document.getElementById('matrix_header');
+        tr.innerHTML = '<th>Estudiante</th>';
+        actividades.forEach(act => {
+            tr.innerHTML += `<th>${act.Nombre} <br><small class="text-secondary">${act.Porcentaje}%</small></th>`;
+        });
+        tr.innerHTML += '<th>Promedio Final</th>';
+        
+        // Body
+        const tbody = document.getElementById('matrix_body');
+        tbody.innerHTML = '';
+        
+        estudiantes.forEach(est => {
+            const estRow = document.createElement('tr');
+            let cols = `<td>${est.Apellido} ${est.Nombre}</td>`;
+            
+            actividades.forEach(act => {
+                const nota = est.notas && est.notas[act.ActividadID] !== undefined ? est.notas[act.ActividadID] : '';
+                cols += `<td>
+                    <input type="number" class="nota-input" min="0" max="10" step="0.01" 
+                           value="${nota}" 
+                           onchange="saveNota(${act.ActividadID}, ${est.EstudianteID}, this.value)"
+                           onblur="saveNota(${act.ActividadID}, ${est.EstudianteID}, this.value)">
+                </td>`;
+            });
+            
+            cols += `<td id="promedio_${est.EstudianteID}" style="font-weight: bold; color: var(--accent-primary)">${est.promedio.toFixed(2)}</td>`;
+            estRow.innerHTML = cols;
+            tbody.appendChild(estRow);
+        });
+        
+        if(estudiantes.length === 0) {
+            tbody.innerHTML = `<tr><td colspan="${actividades.length + 2}" class="text-center text-secondary">No hay estudiantes activos matriculados.</td></tr>`;
+        }
+    }
+    
+    async function saveNota(actividadId, estudianteId, valor) {
+        if (valor === '') return; // don't save empty
+        const valNum = parseFloat(valor);
+        if (valNum < 0 || valNum > 10) {
+            showAlert('La nota debe estar entre 0 y 10', 'error');
+            return;
+        }
+        
+        try {
+            const res = await fetchAPI('/profesor/api/notas_actividades', 'POST', {
+                actividad_id: actividadId,
+                estudiante_id: estudianteId,
+                nota: valNum
+            });
+            if (res.success) {
+                document.getElementById(`promedio_${estudianteId}`).textContent = res.promedio.toFixed(2);
+                showAlert('Nota guardada');
+            } else {
+                showAlert(res.message, 'error');
+            }
+        } catch(e) {
+            showAlert(e.message, 'error');
+        }
+    }
+    
+    // Actividades CRUD
+    function openActividadModal() {
+        document.getElementById('actividadForm').reset();
+        document.getElementById('actividad_id').value = '';
+        document.getElementById('actividadModalTitle').textContent = 'Nueva Actividad';
+        showModal('actividadModal');
+    }
+    
+    function editActividad(act) {
+        document.getElementById('actividad_id').value = act.ActividadID;
+        document.getElementById('actividad_nombre').value = act.Nombre;
+        document.getElementById('actividad_porcentaje').value = act.Porcentaje;
+        document.getElementById('actividadModalTitle').textContent = 'Editar Actividad';
+        showModal('actividadModal');
+    }
+    
+    async function saveActividad() {
+        const id = document.getElementById('actividad_id').value;
+        const nombre = document.getElementById('actividad_nombre').value;
+        const porcentaje = parseFloat(document.getElementById('actividad_porcentaje').value);
+        
+        const materiaId = document.getElementById('filter_materia').value;
+        const periodoId = document.getElementById('filter_periodo').value;
+        
+        const data = { nombre, porcentaje, materia_id: materiaId, periodo_id: periodoId };
+        
+        try {
+            let res;
+            if (id) {
+                res = await fetchAPI(`/profesor/api/actividades/${id}`, 'PUT', data);
+            } else {
+                res = await fetchAPI('/profesor/api/actividades', 'POST', data);
+            }
+            
+            if (res.success) {
+                hideModal('actividadModal');
+                showAlert(res.message);
+                loadMateria(); // reload activities and matrix
+            } else {
+                showAlert(res.message, 'error');
+            }
+        } catch(e) {
+            showAlert(e.message, 'error');
+        }
+    }
+    
+    async function deleteActividad(id) {
+        if (!confirm('¿Está seguro de eliminar esta actividad? Se borrarán las notas asociadas.')) return;
+        
+        try {
+            const res = await fetchAPI(`/profesor/api/actividades/${id}`, 'DELETE');
+            if (res.success) {
+                showAlert(res.message);
+                loadMateria();
+            } else {
+                showAlert(res.message, 'error');
+            }
+        } catch(e) {
+            showAlert(e.message, 'error');
+        }
+    }
+</script>
+{% endblock %}
