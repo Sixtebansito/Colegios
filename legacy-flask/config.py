@@ -3,11 +3,11 @@ from dotenv import load_dotenv
 load_dotenv()
 
 class Config:
-    SECRET_KEY = os.getenv('FLASK_SECRET_KEY', 'dev-secret')
-    DB_SERVER = os.getenv('DB_SERVER', 'localhost')
+    SECRET_KEY = os.getenv('FLASK_SECRET_KEY')
+    DB_SERVER = os.getenv('DB_SERVER', 'sqlserver') # Defaulting to docker service name
     DB_PORT = os.getenv('DB_PORT', '1433')
-    DB_USER = os.getenv('DB_USER', 'sa')
-    DB_PASSWORD = os.getenv('DB_PASSWORD', 'Milooreo06!')
+    DB_USER = os.getenv('DB_USER')
+    DB_PASSWORD = os.getenv('DB_PASSWORD')
     DB_NAME = os.getenv('DB_NAME', 'ColegiosDB')
     DB_DRIVER = os.getenv('DB_DRIVER', 'ODBC Driver 18 for SQL Server')
     

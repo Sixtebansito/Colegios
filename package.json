@@ -1,0 +1,33 @@
+{
+  "name": "next-temp",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "eslint",
+    "postinstall": "prisma skills sync || exit 0"
+  },
+  "dependencies": {
+    "@prisma/client": "^7.10.0",
+    "bcryptjs": "^3.0.3",
+    "jose": "^6.2.12",
+    "next": "16.3.4",
+    "react": "19.2.8",
+    "react-dom": "19.2.8"
+  },
+  "devDependencies": {
+    "@types/bcryptjs": "^2.4.6",
+    "@types/node": "^20",
+    "@types/react": "^19",
+    "@types/react-dom": "^19",
+    "autoprefixer": "^10.5.5",
+    "eslint": "^9",
+    "eslint-config-next": "16.3.4",
+    "postcss": "^8.5.28",
+    "prisma": "^8.0.0-rc.13",
+    "tailwindcss": "^4.3.3",
+    "typescript": "^5"
+  }
+}
