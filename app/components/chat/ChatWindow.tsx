@@ -28,30 +28,47 @@ export default function ChatWindow({ roomId, currentUserId }: ChatWindowProps) {
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
+    const fetchMessages = () => {
+      fetch(`/api/chat/messages?roomId=${roomId}`)
+        .then(res => res.json())
+        .then(data => {
+          if (Array.isArray(data)) {
+            setMessages(prev => {
+              if (prev.length === data.length) return prev; // Avoid unnecessary re-renders and auto-scrolls
+              return data;
+            });
+          }
+        })
+        .catch(err => console.error(err));
+    };
+
     // Fetch initial messages
-    fetch(`/api/chat/messages?roomId=${roomId}`)
-      .then(res => res.json())
-      .then(data => {
-        if (Array.isArray(data)) setMessages(data);
-        else console.error('Expected array of messages, got:', data);
-      })
-      .catch(err => console.error(err));
+    fetchMessages();
 
-    // Subscribe to pusher channel
+    // Polling fallback (every 3 seconds) since dummy Pusher keys won't work locally
+    const pollInterval = setInterval(fetchMessages, 3000);
+
+    // Subscribe to pusher channel (if configured)
+    let channel: any;
     try {
-      const channel = pusherClient.subscribe(`room-${roomId}`);
-      
+      channel = pusherClient.subscribe(`room-${roomId}`);
       channel.bind('new-message', (data: ChatMessage) => {
-        setMessages(prev => [...prev, data]);
+        // Only append if it's not already in the list
+        setMessages(prev => {
+          if (prev.some(m => m.MessageID === data.MessageID)) return prev;
+          return [...prev, data];
+        });
       });
-
-      return () => {
-        pusherClient.unsubscribe(`room-${roomId}`);
-      };
     } catch (e) {
-      console.error("Pusher error:", e);
-      return () => {};
+      console.warn("Pusher subscribe error:", e);
     }
+
+    return () => {
+      clearInterval(pollInterval);
+      if (channel) {
+        pusherClient.unsubscribe(`room-${roomId}`);
+      }
+    };
   }, [roomId]);
 
   useEffect(() => {

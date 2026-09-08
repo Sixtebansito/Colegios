@@ -27,6 +27,7 @@ export default async function ProfesorNotasPage({
 
   const selectedMateriaId = materiaIdStr ? parseInt(materiaIdStr) : profesor.materias[0]?.MateriaID
   const selectedPeriodoId = periodoIdStr ? parseInt(periodoIdStr) : periodos[0]?.PeriodoID
+  const { edit: editStr } = await searchParams
 
   let estudiantesConNotas: any[] = []
 
@@ -124,31 +125,53 @@ export default async function ProfesorNotasPage({
               </tr>
             </thead>
             <tbody className="divide-y divide-gray-200 bg-white">
-              {estudiantesConNotas.map((estudiante) => (
-                <tr key={estudiante.EstudianteID}>
-                  <td className="whitespace-nowrap py-4 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-6">
-                    {estudiante.Nombre} {estudiante.Apellido}
-                  </td>
-                  <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
-                    {estudiante.notaObj ? (
-                      <span className={`inline-flex items-center rounded-md px-2 py-1 text-xs font-medium ring-1 ring-inset ${
-                        Number(estudiante.notaObj.Nota) >= 7 ? 'bg-green-50 text-green-700 ring-green-600/20' : 'bg-red-50 text-red-700 ring-red-600/10'
-                      }`}>
-                        {estudiante.notaObj.Nota.toString()}
-                      </span>
-                    ) : (
-                      <span className="text-gray-400 italic">Sin calificar</span>
-                    )}
-                  </td>
-                  <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
-                    <button
-                      className="text-indigo-600 hover:text-indigo-900 font-medium"
-                    >
-                      {estudiante.notaObj ? 'Editar' : 'Calificar'}
-                    </button>
-                  </td>
-                </tr>
-              ))}
+              {estudiantesConNotas.map((estudiante) => {
+                const isEditing = editStr === estudiante.EstudianteID.toString();
+                return (
+                  <tr key={estudiante.EstudianteID}>
+                    <td className="whitespace-nowrap py-4 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-6">
+                      {estudiante.Nombre} {estudiante.Apellido}
+                    </td>
+                    <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
+                      {isEditing ? (
+                        <form action="/api/calificaciones/override" method="POST" className="flex items-center gap-2">
+                          <input type="hidden" name="estudianteId" value={estudiante.EstudianteID} />
+                          <input type="hidden" name="materiaId" value={selectedMateriaId} />
+                          <input type="hidden" name="periodoId" value={selectedPeriodoId} />
+                          <input 
+                            type="number" step="0.01" min="0" max="10" name="nota" 
+                            defaultValue={estudiante.notaObj?.Nota || ''} 
+                            required
+                            className="w-20 rounded-md border-0 py-1.5 text-gray-900 ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-indigo-600 sm:text-sm"
+                          />
+                          <button type="submit" className="text-xs bg-indigo-50 text-indigo-600 font-semibold px-2 py-1 rounded hover:bg-indigo-100">Guardar</button>
+                          <Link href={`/profesor/calificaciones?materia=${selectedMateriaId}&periodo=${selectedPeriodoId}`} className="text-xs text-gray-500 hover:text-gray-700 ml-1">Cancelar</Link>
+                        </form>
+                      ) : (
+                        estudiante.notaObj ? (
+                          <span className={`inline-flex items-center rounded-md px-2 py-1 text-xs font-medium ring-1 ring-inset ${
+                            Number(estudiante.notaObj.Nota) >= 7 ? 'bg-green-50 text-green-700 ring-green-600/20' : 'bg-red-50 text-red-700 ring-red-600/10'
+                          }`}>
+                            {estudiante.notaObj.Nota.toString()}
+                          </span>
+                        ) : (
+                          <span className="text-gray-400 italic">Sin calificar</span>
+                        )
+                      )}
+                    </td>
+                    <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
+                      {!isEditing && (
+                        <Link
+                          href={`/profesor/calificaciones?materia=${selectedMateriaId}&periodo=${selectedPeriodoId}&edit=${estudiante.EstudianteID}`}
+                          className="text-indigo-600 hover:text-indigo-900 font-medium"
+                        >
+                          {estudiante.notaObj ? 'Editar' : 'Calificar'}
+                        </Link>
+                      )}
+                    </td>
+                  </tr>
+                )
+              })}
               {estudiantesConNotas.length === 0 && (
                 <tr>
                   <td colSpan={3} className="py-8 text-center text-sm text-gray-500">

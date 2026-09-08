@@ -2,6 +2,7 @@ import { getSession } from '@/lib/auth'
 import prisma from '@/lib/db'
 import { redirect } from 'next/navigation'
 import Link from 'next/link'
+import { Plus } from 'lucide-react'
 
 export default async function TareasPage({
   searchParams,
@@ -48,9 +49,13 @@ export default async function TareasPage({
           </h2>
         </div>
         <div className="mt-4 flex md:ml-4 md:mt-0">
-          <button type="button" className="inline-flex items-center rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-700">
+          <Link
+            href="/profesor/tareas/nueva"
+            className="inline-flex items-center gap-2 rounded-md bg-indigo-600 px-4 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 transition-colors"
+          >
+            <Plus className="h-4 w-4" />
             Nueva Tarea
-          </button>
+          </Link>
         </div>
       </div>
 
@@ -100,7 +105,7 @@ export default async function TareasPage({
             </div>
             <div className="border-t border-gray-100 bg-gray-50 px-6 py-4 flex justify-between items-center">
               <span className="text-sm text-gray-500">{tarea.entregas.length} entregas</span>
-              <button className="text-sm font-semibold text-indigo-600 hover:text-indigo-900">Ver Entregas &rarr;</button>
+              <Link href={`/profesor/tareas/${tarea.TareaID}`} className="text-sm font-semibold text-indigo-600 hover:text-indigo-900">Ver Entregas &rarr;</Link>
             </div>
           </div>
         ))}

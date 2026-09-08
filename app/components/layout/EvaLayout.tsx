@@ -61,9 +61,9 @@ export default function EvaLayout({
             <MessageSquare className="h-5 w-5" />
             <span className="hidden sm:inline">Mensajes</span>
           </button>
-          <div className="h-8 w-8 rounded-full bg-white text-[#004a8f] flex items-center justify-center font-bold text-sm">
+          <Link href={`/${userRole}/perfil`} className="h-8 w-8 rounded-full bg-white text-[#004a8f] flex items-center justify-center font-bold text-sm hover:ring-2 hover:ring-white transition-all cursor-pointer">
             {userName.charAt(0)}
-          </div>
+          </Link>
         </div>
       </header>
 
@@ -106,6 +106,11 @@ export default function EvaLayout({
           </div>
         </div>
       </aside>
+
+      {/* Overlay Mobile */}
+      {isMobileMenuOpen && (
+        <div className="fixed inset-0 top-16 z-30 bg-gray-900/50 md:hidden" onClick={() => setIsMobileMenuOpen(false)} />
+      )}
 
       {/* Main Content Area */}
       <div className="flex flex-1 flex-col overflow-hidden pt-16">
