@@ -1,8 +1,8 @@
-import { getSession, logout } from '@/lib/auth'
-import Link from 'next/link'
+import { getSession } from '@/lib/auth'
 import { redirect } from 'next/navigation'
+import AdminLayout from '@/app/components/layout/AdminLayout'
 
-export default async function AdminLayout({
+export default async function AdminRootLayout({
   children,
 }: {
   children: React.ReactNode
@@ -13,47 +13,10 @@ export default async function AdminLayout({
   }
 
   return (
-    <div className="min-h-screen bg-gray-50 flex flex-col">
-      <nav className="bg-white border-b border-gray-200">
-        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-          <div className="flex h-16 justify-between">
-            <div className="flex">
-              <div className="flex flex-shrink-0 items-center text-xl font-bold text-indigo-600">
-                Gesco
-              </div>
-              <div className="hidden sm:ml-6 sm:flex sm:space-x-8">
-                <Link href="/admin" className="inline-flex items-center border-b-2 border-indigo-500 px-1 pt-1 text-sm font-medium text-gray-900">
-                  Dashboard
-                </Link>
-                <Link href="/admin/usuarios" className="inline-flex items-center border-b-2 border-transparent px-1 pt-1 text-sm font-medium text-gray-500 hover:border-gray-300 hover:text-gray-700">
-                  Usuarios
-                </Link>
-                <Link href="/admin/estudiantes" className="inline-flex items-center border-b-2 border-transparent px-1 pt-1 text-sm font-medium text-gray-500 hover:border-gray-300 hover:text-gray-700">
-                  Estudiantes
-                </Link>
-              </div>
-            </div>
-            <div className="flex items-center gap-4">
-              <span className="text-sm text-gray-700 font-medium">Hola, {session.nombre}</span>
-              <form action={async () => {
-                'use server'
-                await logout()
-                redirect('/login')
-              }}>
-                <button type="submit" className="text-sm font-semibold text-gray-500 hover:text-indigo-600 transition-colors">
-                  Salir
-                </button>
-              </form>
-            </div>
-          </div>
-        </div>
-      </nav>
-
-      <main className="flex-1 py-10">
-        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-          {children}
-        </div>
-      </main>
-    </div>
+    <AdminLayout
+      userName={`${session.nombre} ${session.apellido}`}
+    >
+      {children}
+    </AdminLayout>
   )
 }

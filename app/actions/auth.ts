@@ -19,7 +19,7 @@ export async function login(formData: FormData) {
       include: {
         rol: true,
         profesor: true,
-        padre: true,
+        estudiante: true,
       }
     })
 
@@ -40,8 +40,8 @@ export async function login(formData: FormData) {
       userId: user.UsuarioID,
       roleId: user.RoleID,
       cedula: user.Cedula,
-      nombre: user.profesor?.Nombre || user.padre?.Nombre || (user.RoleID === 1 ? 'Admin' : 'Usuario'),
-      apellido: user.profesor?.Apellido || user.padre?.Apellido || '',
+      nombre: user.profesor?.Nombre || user.estudiante?.Nombre || (user.RoleID === 1 ? 'Admin' : 'Usuario'),
+      apellido: user.profesor?.Apellido || user.estudiante?.Apellido || '',
     }
 
     const session = await encrypt(sessionData)
