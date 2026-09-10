@@ -64,7 +64,3 @@ El esquema principal incluye:
 *   `Grados`, `Materias`, `Periodos`, `Matriculas` (Estructura académica)
 *   `Notas`, `SolicitudesRecalificacion` (Evaluación)
 *   `Auditoria` (Logs del sistema)
-
-## 🤝 Contribución
-
-Las contribuciones son bienvenidas. Por favor, asegúrate de seguir las convenciones de código y documentar los cambios importantes.
