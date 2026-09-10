@@ -3,11 +3,31 @@
 import React, { useEffect, useState } from 'react';
 import { Users, User, Plus, X, MessageSquare } from 'lucide-react';
 
+interface ChatMemberUsuario {
+  UsuarioID: number;
+  Cedula: string;
+  profesor: { Nombre: string; Apellido: string } | null;
+  estudiante: { Nombre: string; Apellido: string } | null;
+}
+
 interface Room {
   RoomID: number;
   Name: string | null;
   Type: string;
+  Members: { UsuarioID: number; Usuario: ChatMemberUsuario }[];
   _count: { Messages: number };
+}
+
+// En una sala DIRECT, cada usuario debe ver el nombre del OTRO participante,
+// nunca un texto genérico — "Chat Privado" no le dice nada a ninguno de los dos.
+function getRoomDisplayName(room: Room, currentUserId: number): string {
+  if (room.Type !== 'DIRECT') return room.Name || 'Grupo';
+
+  const other = room.Members.find((m) => m.UsuarioID !== currentUserId)?.Usuario;
+  if (!other) return room.Name || 'Chat Privado';
+  if (other.profesor) return `${other.profesor.Nombre} ${other.profesor.Apellido}`;
+  if (other.estudiante) return `${other.estudiante.Nombre} ${other.estudiante.Apellido}`;
+  return `Usuario ${other.Cedula}`;
 }
 
 interface ChatUser {
@@ -97,7 +117,7 @@ export default function SidebarRooms({ currentUserId, onSelectRoom, selectedRoom
             </div>
             <div className="flex-1 min-w-0">
               <p className="font-semibold text-sm text-gray-900 truncate">
-                {room.Name || 'Chat Privado'}
+                {getRoomDisplayName(room, currentUserId)}
               </p>
               <p className="text-xs text-gray-500 truncate mt-0.5">
                 {room._count?.Messages} mensajes en esta sala

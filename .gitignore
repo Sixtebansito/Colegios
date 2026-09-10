@@ -36,6 +36,15 @@ yarn-error.log*
 # vercel
 .vercel
 
+# manual interno (no se sube nunca al repo)
+/manual-interno/
+
+# base de datos descartable usada por los tests (ver vitest.global-setup.ts)
+/prisma/test.db
+/prisma/test.db-journal
+/prisma/test.db-shm
+/prisma/test.db-wal
+
 # typescript
 *.tsbuildinfo
 next-env.d.ts

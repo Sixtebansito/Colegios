@@ -1,12 +1,35 @@
 'use client';
 
-import { useState } from 'react';
+import { Suspense, useEffect, useState } from 'react';
 import Link from 'next/link';
-import { usePathname } from 'next/navigation';
+import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 import { MessageSquare, X, Menu } from 'lucide-react';
 // We'll import the Chat components dynamically or just render them here if they are client components
 import SidebarRooms from '@/app/components/chat/SidebarRooms';
 import ChatWindow from '@/app/components/chat/ChatWindow';
+
+// Lee `?chat=<roomId>` (agregado por ej. al crear una solicitud de recalificación)
+// y le avisa a EvaLayout que abra el chat en esa sala, luego limpia la URL para
+// que un refresh no la vuelva a abrir. Aislado en su propio componente + Suspense
+// porque useSearchParams lo exige como buena práctica en el App Router.
+function ChatAutoOpener({ onOpen }: { onOpen: (roomId: number) => void }) {
+  const searchParams = useSearchParams();
+  const router = useRouter();
+  const pathname = usePathname();
+  const chatParam = searchParams.get('chat');
+
+  useEffect(() => {
+    if (!chatParam) return;
+    const roomId = parseInt(chatParam, 10);
+    if (Number.isNaN(roomId)) return;
+
+    onOpen(roomId);
+    router.replace(pathname, { scroll: false });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [chatParam]);
+
+  return null;
+}
 
 export default function EvaLayout({
   children,
@@ -35,16 +58,27 @@ export default function EvaLayout({
       { name: 'Inicio', href: '/profesor' },
       { name: 'Mis Tareas', href: '/profesor/tareas' },
       { name: 'Calificaciones', href: '/profesor/calificaciones' },
+      { name: 'Recalificaciones', href: '/profesor/recalificaciones' },
     ],
     alumno: [
       { name: 'Inicio', href: '/alumno' },
       { name: 'Mis Tareas', href: '/alumno/tareas' },
       { name: 'Mis Notas', href: '/alumno/notas' },
+      { name: 'Recalificaciones', href: '/alumno/recalificaciones' },
     ],
   }[userRole] || [];
 
   return (
     <div className="flex h-screen overflow-hidden bg-[#f4f6f8]">
+      <Suspense fallback={null}>
+        <ChatAutoOpener
+          onOpen={(roomId) => {
+            setSelectedRoomId(roomId);
+            setIsChatOpen(true);
+          }}
+        />
+      </Suspense>
+
       {/* Top Navbar PUCE Style */}
       <header className="fixed top-0 inset-x-0 h-16 flex items-center justify-between bg-[#004a8f] text-white px-4 sm:px-6 z-50 shadow-md">
         <div className="flex items-center gap-4">
