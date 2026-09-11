@@ -90,7 +90,7 @@ export default async function TareasPorMateriaPage({
             </div>
             <div className="border-t border-gray-100 bg-gray-50 px-6 py-4 flex justify-between items-center">
               <span className="text-sm font-medium text-gray-600">{tarea.entregas.length} entregas</span>
-              <Link href={`/profesor/tareas/${tarea.TareaID}`} className="text-sm font-bold text-indigo-600 hover:text-indigo-800 transition-colors">Ver Detalles &rarr;</Link>
+              <Link href={`/profesor/tareas/detalle/${tarea.TareaID}`} className="text-sm font-bold text-indigo-600 hover:text-indigo-800 transition-colors">Ver Detalles &rarr;</Link>
             </div>
           </div>
         ))}

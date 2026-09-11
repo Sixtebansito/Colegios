@@ -14,7 +14,7 @@ type Estudiante = {
 type Grado = {
   GradoID: number;
   Nombre: string;
-  Paralelo: string;
+  Paralelo: string | null;
 };
 
 export default function MatriculacionManager({
