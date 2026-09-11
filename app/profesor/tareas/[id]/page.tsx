@@ -81,17 +81,22 @@ export default async function RevisarEntregasPage({
                   <form action="/api/calificar" method="POST" className="flex items-center gap-2">
                     <input type="hidden" name="entregaId" value={entrega.EntregaID} />
                     <input type="hidden" name="tareaId" value={tarea.TareaID} />
-                    <input 
-                      type="number" 
-                      step="0.01" 
-                      min="0" 
-                      max="10" 
-                      name="calificacion" 
-                      defaultValue={entrega.Calificacion || ''}
-                      required
-                      className="w-20 rounded-md border-0 py-1.5 text-gray-900 ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-indigo-600 sm:text-sm"
-                    />
-                    <button type="submit" className="text-xs bg-indigo-50 text-indigo-600 font-semibold px-2 py-1 rounded hover:bg-indigo-100">
+                    <div className="relative shadow-sm rounded-md">
+                      <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-2">
+                        <span className="text-gray-400 sm:text-xs font-semibold">/ 10</span>
+                      </div>
+                      <input 
+                        type="number" 
+                        step="0.01" 
+                        min="0" 
+                        max="10" 
+                        name="calificacion" 
+                        defaultValue={entrega.Calificacion || ''}
+                        required
+                        className="w-24 rounded-md border-0 py-1.5 pr-8 pl-3 text-gray-900 ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6 font-medium transition-all shadow-inner"
+                      />
+                    </div>
+                    <button type="submit" className="text-xs bg-indigo-600 text-white font-semibold px-3 py-1.5 rounded-md hover:bg-indigo-500 shadow-sm transition-colors">
                       Guardar
                     </button>
                   </form>

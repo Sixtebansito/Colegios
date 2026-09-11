@@ -64,3 +64,13 @@ El esquema principal incluye:
 *   `Grados`, `Materias`, `Periodos`, `Matriculas` (Estructura académica)
 *   `Notas`, `SolicitudesRecalificacion` (Evaluación)
 *   `Auditoria` (Logs del sistema)
+
+## Credenciales de Acceso (Entorno Local)
+Todas las cuentas tienen como contrasea: **123456**
+
+- **Rector (Admin):** admin
+- **Inspector (8vo EGB, 1ro BGU):** profesor1 (Tambin es profesor)
+- **Inspector (3ro BGU):** profesor2 (Tambin es profesor)
+- **Alumno 1:** alumno1
+- **Contabilidad:** conta1
+

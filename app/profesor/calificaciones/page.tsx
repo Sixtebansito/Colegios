@@ -6,10 +6,11 @@ import { redirect } from 'next/navigation'
 export default async function ProfesorNotasPage({
   searchParams,
 }: {
-  searchParams: Promise<{ materia?: string, periodo?: string }>
+  searchParams: Promise<{ materia?: string, periodo?: string, edit?: string }>
 }) {
   const session = await getSession()
-  const { materia: materiaIdStr, periodo: periodoIdStr } = await searchParams
+  const resolvedParams = await searchParams
+  const { materia: materiaIdStr, periodo: periodoIdStr, edit: editStr } = resolvedParams
   
   const profesor = await prisma.profesores.findUnique({
     where: { UsuarioID: session?.userId as number },
@@ -27,7 +28,6 @@ export default async function ProfesorNotasPage({
 
   const selectedMateriaId = materiaIdStr ? parseInt(materiaIdStr) : profesor.materias[0]?.MateriaID
   const selectedPeriodoId = periodoIdStr ? parseInt(periodoIdStr) : periodos[0]?.PeriodoID
-  const { edit: editStr } = await searchParams
 
   let estudiantesConNotas: any[] = []
 
@@ -138,14 +138,19 @@ export default async function ProfesorNotasPage({
                           <input type="hidden" name="estudianteId" value={estudiante.EstudianteID} />
                           <input type="hidden" name="materiaId" value={selectedMateriaId} />
                           <input type="hidden" name="periodoId" value={selectedPeriodoId} />
-                          <input 
-                            type="number" step="0.01" min="0" max="10" name="nota" 
-                            defaultValue={estudiante.notaObj?.Nota || ''} 
-                            required
-                            className="w-20 rounded-md border-0 py-1.5 text-gray-900 ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-indigo-600 sm:text-sm"
-                          />
-                          <button type="submit" className="text-xs bg-indigo-50 text-indigo-600 font-semibold px-2 py-1 rounded hover:bg-indigo-100">Guardar</button>
-                          <Link href={`/profesor/calificaciones?materia=${selectedMateriaId}&periodo=${selectedPeriodoId}`} className="text-xs text-gray-500 hover:text-gray-700 ml-1">Cancelar</Link>
+                          <div className="relative shadow-sm rounded-md">
+                            <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-2">
+                              <span className="text-gray-400 sm:text-xs font-semibold">/ 10</span>
+                            </div>
+                            <input 
+                              type="number" step="0.01" min="0" max="10" name="nota" 
+                              defaultValue={estudiante.notaObj?.Nota || ''} 
+                              required
+                              className="w-24 rounded-md border-0 py-1.5 pr-8 pl-3 text-gray-900 ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-indigo-600 sm:text-sm shadow-inner transition-all font-medium"
+                            />
+                          </div>
+                          <button type="submit" className="text-xs bg-indigo-600 text-white font-semibold px-3 py-1.5 rounded-md hover:bg-indigo-500 shadow-sm transition-colors">Guardar</button>
+                          <Link href={`/profesor/calificaciones?materia=${selectedMateriaId}&periodo=${selectedPeriodoId}`} className="text-xs font-medium text-gray-500 hover:text-gray-900 ml-2">Cancelar</Link>
                         </form>
                       ) : (
                         estudiante.notaObj ? (

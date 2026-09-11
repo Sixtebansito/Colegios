@@ -42,6 +42,8 @@ model Usuarios {
   
   profesor      Profesores?
   estudiante    Estudiantes?
+  inspector     Inspectores?
+  rector        Rectores?
 
   chatMembers   ChatRoomMember[]
   chatMessages  ChatMessage[]
@@ -83,6 +85,7 @@ model Grados {
   estudiantes  Estudiantes[]
   materias     Materias[]
   matriculas   Matriculas[]
+  horarios     Horarios[]
 }
 
 model Estudiantes {
@@ -102,6 +105,7 @@ model Estudiantes {
   notas           Notas[]
   matriculas      Matriculas[]
   entregas        Entregas[]
+  reportes        ReportesDisciplinarios[]
 }
 
 model Materias {
@@ -115,6 +119,7 @@ model Materias {
   grado        Grados?      @relation(fields: [GradoID], references: [GradoID], onDelete: NoAction, onUpdate: NoAction)
   notas        Notas[]
   tareas       Tareas[]
+  horarios     Horarios[]
 }
 
 model Periodos {
@@ -204,6 +209,7 @@ model ChatRoomMember {
   RoomID      Int
   UsuarioID   Int
   JoinedAt    DateTime  @default(now()) 
+  LastReadAt  DateTime?
   
   Room        ChatRoom  @relation(fields: [RoomID], references: [RoomID], onDelete: Cascade)
   Usuario     Usuarios  @relation(fields: [UsuarioID], references: [UsuarioID], onDelete: NoAction, onUpdate: NoAction)
@@ -230,8 +236,8 @@ model Tareas {
   PeriodoID        Int
   Titulo           String
   Descripcion      String?
-  Tipo             String       @default("Tarea Normal") // "Prueba", "Tarea en Clase", "Tarea Normal"
-  Porcentaje       Float        // Ponderación (ej. 33.33)
+  Tipo             String       @default("Tarea Normal")
+  Porcentaje       Float
   FechaVencimiento DateTime?
   CreatedAt        DateTime     @default(now())
 
@@ -254,4 +260,46 @@ model Entregas {
   estudiante       Estudiantes  @relation(fields: [EstudianteID], references: [EstudianteID], onDelete: Cascade)
 
   @@unique([TareaID, EstudianteID])
+}
+
+model Horarios {
+  HorarioID    Int       @id @default(autoincrement())
+  GradoID      Int
+  MateriaID    Int?
+  DiaSemana    String
+  HoraInicio   String
+  HoraFin      String
+
+  grado        Grados    @relation(fields: [GradoID], references: [GradoID], onDelete: Cascade)
+  materia      Materias? @relation(fields: [MateriaID], references: [MateriaID], onDelete: SetNull)
+}
+
+model Inspectores {
+  InspectorID  Int       @id @default(autoincrement())
+  UsuarioID    Int       @unique
+  Nivel        String
+  
+  usuario      Usuarios  @relation(fields: [UsuarioID], references: [UsuarioID], onDelete: Cascade)
+  reportes     ReportesDisciplinarios[]
+}
+
+model Rectores {
+  RectorID     Int       @id @default(autoincrement())
+  UsuarioID    Int       @unique
+  
+  usuario      Usuarios  @relation(fields: [UsuarioID], references: [UsuarioID], onDelete: Cascade)
+}
+
+model ReportesDisciplinarios {
+  ReporteID    Int          @id @default(autoincrement())
+  InspectorID  Int
+  EstudianteID Int
+  Fecha        DateTime     @default(now())
+  Motivo       String
+  Gravedad     String       @default("Leve") 
+  Estado       String       @default("Pendiente") 
+  Comentarios  String?
+
+  inspector    Inspectores  @relation(fields: [InspectorID], references: [InspectorID], onDelete: Cascade)
+  estudiante   Estudiantes  @relation(fields: [EstudianteID], references: [EstudianteID], onDelete: Cascade)
 }

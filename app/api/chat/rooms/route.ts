@@ -32,13 +32,34 @@ export async function GET(request: Request) {
             }
           }
         },
+        Messages: {
+          orderBy: { CreatedAt: 'desc' },
+          take: 1
+        },
         _count: {
           select: { Messages: true }
         }
       }
     });
 
-    return NextResponse.json(rooms);
+    const roomsWithUnread = rooms.map(room => {
+      const myMembership = room.Members.find(m => m.UsuarioID === userId);
+      const lastMessage = room.Messages[0];
+      let hasUnread = false;
+
+      if (lastMessage && lastMessage.SenderID !== userId) {
+        if (!myMembership?.LastReadAt || lastMessage.CreatedAt > myMembership.LastReadAt) {
+          hasUnread = true;
+        }
+      }
+
+      return {
+        ...room,
+        hasUnread
+      };
+    });
+
+    return NextResponse.json(roomsWithUnread);
   } catch (error) {
     console.error('Error fetching rooms:', error);
     return NextResponse.json({ error: 'Internal Server Error' }, { status: 500 });

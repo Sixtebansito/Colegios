@@ -16,6 +16,7 @@ interface Room {
   Type: string;
   Members: { UsuarioID: number; Usuario: ChatMemberUsuario }[];
   _count: { Messages: number };
+  hasUnread?: boolean;
 }
 
 // En una sala DIRECT, cada usuario debe ver el nombre del OTRO participante,
@@ -59,6 +60,8 @@ export default function SidebarRooms({ currentUserId, onSelectRoom, selectedRoom
 
   useEffect(() => {
     fetchRooms();
+    const interval = setInterval(fetchRooms, 3000);
+    return () => clearInterval(interval);
   }, [currentUserId]);
 
   const openNewChatModal = () => {
@@ -110,19 +113,23 @@ export default function SidebarRooms({ currentUserId, onSelectRoom, selectedRoom
             onClick={() => onSelectRoom(room.RoomID)}
             className={`w-full flex items-center gap-4 p-4 border-b hover:bg-gray-50 transition text-left
               ${selectedRoomId === room.RoomID ? 'bg-indigo-50/50 border-l-4 border-l-indigo-600' : 'border-l-4 border-l-transparent'}
+              ${room.hasUnread ? 'bg-blue-50/30' : ''}
             `}
           >
             <div className={`p-3 rounded-full flex-shrink-0 ${room.Type === 'DIRECT' ? 'bg-emerald-100 text-emerald-600' : 'bg-indigo-100 text-indigo-600'}`}>
               {room.Type === 'DIRECT' ? <User className="w-5 h-5" /> : <Users className="w-5 h-5" />}
             </div>
             <div className="flex-1 min-w-0">
-              <p className="font-semibold text-sm text-gray-900 truncate">
+              <p className={`text-sm truncate ${room.hasUnread ? 'font-extrabold text-gray-900' : 'font-semibold text-gray-800'}`}>
                 {getRoomDisplayName(room, currentUserId)}
               </p>
-              <p className="text-xs text-gray-500 truncate mt-0.5">
-                {room._count?.Messages} mensajes en esta sala
+              <p className={`text-xs truncate mt-0.5 ${room.hasUnread ? 'font-bold text-indigo-600' : 'text-gray-500'}`}>
+                {room.hasUnread ? '¡Nuevo mensaje!' : `${room._count?.Messages} mensajes en esta sala`}
               </p>
             </div>
+            {room.hasUnread && (
+              <div className="w-2.5 h-2.5 rounded-full bg-indigo-600 flex-shrink-0"></div>
+            )}
           </button>
         ))}
         {rooms.length === 0 && (

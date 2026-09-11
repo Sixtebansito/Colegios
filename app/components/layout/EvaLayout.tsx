@@ -45,7 +45,47 @@ export default function EvaLayout({
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isChatOpen, setIsChatOpen] = useState(false);
   const [selectedRoomId, setSelectedRoomId] = useState<number | null>(null);
+  const [unreadCount, setUnreadCount] = useState(0);
+  const [availableRoles, setAvailableRoles] = useState<{name: string, href: string}[]>([]);
   const pathname = usePathname();
+
+  useEffect(() => {
+    // Fetch user's extra roles (Inspector, Rector)
+    fetch('/api/user/roles').then(res => res.json()).then(data => {
+      if (data.roles) setAvailableRoles(data.roles);
+    });
+
+    // Fetch unread messages count initially and every 30 seconds
+    const fetchUnread = async () => {
+      try {
+        const res = await fetch('/api/chat/unread');
+        if (res.ok) {
+          const data = await res.json();
+          setUnreadCount(data.unreadCount || 0);
+        }
+      } catch (err) {}
+    };
+    
+    fetchUnread();
+    const interval = setInterval(fetchUnread, 30000);
+    return () => clearInterval(interval);
+  }, []);
+
+  // When chat is open, we can optionally re-fetch or clear if they view a room
+  useEffect(() => {
+    if (isChatOpen && selectedRoomId) {
+      // Small timeout to allow the chat window to mark as read
+      setTimeout(async () => {
+        try {
+          const res = await fetch('/api/chat/unread');
+          if (res.ok) {
+            const data = await res.json();
+            setUnreadCount(data.unreadCount || 0);
+          }
+        } catch (err) {}
+      }, 2000);
+    }
+  }, [selectedRoomId, isChatOpen]);
 
   const navLinks = {
     admin: [
@@ -53,18 +93,29 @@ export default function EvaLayout({
       { name: 'Estudiantes', href: '/admin/estudiantes' },
       { name: 'Profesores', href: '/admin/profesores' },
       { name: 'Matriculación', href: '/admin/matriculacion' },
+      { name: 'Horarios', href: '/admin/horarios' },
     ],
     profesor: [
       { name: 'Inicio', href: '/profesor' },
+      { name: 'Horario', href: '/profesor/horario' },
       { name: 'Mis Tareas', href: '/profesor/tareas' },
       { name: 'Calificaciones', href: '/profesor/calificaciones' },
       { name: 'Recalificaciones', href: '/profesor/recalificaciones' },
     ],
     alumno: [
       { name: 'Inicio', href: '/alumno' },
+      { name: 'Horario', href: '/alumno/horario' },
       { name: 'Mis Tareas', href: '/alumno/tareas' },
       { name: 'Mis Notas', href: '/alumno/notas' },
       { name: 'Recalificaciones', href: '/alumno/recalificaciones' },
+    ],
+    rector: [
+      { name: 'Inicio', href: '/rector' },
+      { name: 'Gestión de Horarios', href: '/admin/horarios' },
+      { name: 'Asignación de Cursos', href: '/admin/cursos' },
+    ],
+    inspector: [
+      { name: 'Inicio', href: '/inspector' },
     ],
   }[userRole] || [];
 
@@ -85,15 +136,20 @@ export default function EvaLayout({
           <button className="text-white hover:bg-white/10 p-2 rounded-md transition-colors" onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}>
             <Menu className="h-6 w-6" />
           </button>
-          <span className="text-lg font-bold tracking-wide">PUCE EVA</span>
+          <span className="text-lg font-bold tracking-wide">EVA COLEGIOS</span>
         </div>
         <div className="flex items-center gap-4">
           <button
             onClick={() => setIsChatOpen(!isChatOpen)}
-            className="flex items-center gap-2 rounded-full bg-white/10 hover:bg-white/20 px-4 py-2 text-sm font-medium transition-colors"
+            className="relative flex items-center gap-2 rounded-full bg-white/10 hover:bg-white/20 px-4 py-2 text-sm font-medium transition-colors"
           >
             <MessageSquare className="h-5 w-5" />
             <span className="hidden sm:inline">Mensajes</span>
+            {unreadCount > 0 && (
+              <span className="absolute -top-1 -right-1 flex h-5 w-5 items-center justify-center rounded-full bg-red-500 text-[10px] font-bold text-white ring-2 ring-[#004a8f]">
+                {unreadCount > 9 ? '9+' : unreadCount}
+              </span>
+            )}
           </button>
           <Link href={`/${userRole}/perfil`} className="h-8 w-8 rounded-full bg-white text-[#004a8f] flex items-center justify-center font-bold text-sm hover:ring-2 hover:ring-white transition-all cursor-pointer">
             {userName.charAt(0)}
@@ -106,7 +162,11 @@ export default function EvaLayout({
         <div className="flex flex-col h-full">
           <nav className="flex-1 space-y-1 px-4 py-6">
             {navLinks.map((link) => {
-              const isActive = pathname === link.href || pathname.startsWith(link.href + '/');
+              const isBaseRolePath = ['/admin', '/profesor', '/alumno', '/inspector', '/rector'].includes(link.href);
+              const isActive = isBaseRolePath 
+                ? pathname === link.href 
+                : (pathname === link.href || pathname.startsWith(link.href + '/'));
+              
               return (
                 <Link
                   key={link.name}
@@ -127,6 +187,22 @@ export default function EvaLayout({
             >
               Chat de la Plataforma
             </button>
+            
+            {/* Cambio de Rol (Si aplica) */}
+            {availableRoles.length > 1 && (
+              <div className="pt-6 mt-6 border-t border-gray-200">
+                <p className="px-3 text-xs font-semibold text-gray-500 uppercase tracking-wider mb-2">Cambiar Perfil</p>
+                {availableRoles.map(r => (
+                  <Link
+                    key={r.name}
+                    href={r.href}
+                    className="group flex items-center rounded-md px-3 py-2 text-sm font-medium text-gray-600 hover:bg-gray-100 hover:text-gray-900 transition-colors"
+                  >
+                    {r.name}
+                  </Link>
+                ))}
+              </div>
+            )}
           </nav>
 
           <div className="p-4 border-t border-gray-100 bg-gray-50">

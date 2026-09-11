@@ -5,7 +5,7 @@ import "./globals.css";
 const inter = Inter({ subsets: ["latin"], variable: "--font-inter" });
 
 export const metadata: Metadata = {
-  title: "Sistema de Gestión Escolar",
+  title: "EVA COLEGIOS",
   description: "Plataforma de gestión para instituciones educativas",
 };
 

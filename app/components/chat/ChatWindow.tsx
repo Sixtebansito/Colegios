@@ -34,13 +34,28 @@ export default function ChatWindow({ roomId, currentUserId }: ChatWindowProps) {
         .then(data => {
           if (Array.isArray(data)) {
             setMessages(prev => {
-              if (prev.length === data.length) return prev; // Avoid unnecessary re-renders and auto-scrolls
+              if (prev.length === data.length) return prev;
+              
+              // Si llegaron nuevos mensajes, marcar como leídos
+              fetch('/api/chat/read', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ roomId }),
+              }).catch(console.error);
+
               return data;
             });
           }
         })
         .catch(err => console.error(err));
     };
+
+    // Mark as read initially
+    fetch('/api/chat/read', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ roomId }),
+    }).catch(console.error);
 
     // Fetch initial messages
     fetchMessages();
