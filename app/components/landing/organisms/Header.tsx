@@ -20,12 +20,13 @@ export default function Header() {
         </nav>
 
         <div className="flex items-center gap-4">
-          <a
+          <Link
             href="/login"
+            prefetch={false}
             className="flex items-center justify-center px-6 py-2.5 text-sm font-semibold text-indigo-600 bg-indigo-50 rounded-lg hover:bg-indigo-100 transition-colors"
           >
             Portal Web
-          </a>
+          </Link>
           <Link
             href="#contacto"
             className="flex items-center justify-center px-6 py-2.5 text-sm font-semibold text-white bg-indigo-600 rounded-lg shadow-sm hover:bg-indigo-500 transition-colors"
