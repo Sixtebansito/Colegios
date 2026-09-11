@@ -77,9 +77,15 @@ export default async function AlumnoNotasPage({
                 <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{nota.materia?.profesor?.Nombre} {nota.materia?.profesor?.Apellido}</td>
                 <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900 font-bold">{nota.Nota.toString()}</td>
                 <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                  <Link href={`/alumno/recalificaciones/nueva?notaId=${nota.NotaID}`} className="text-indigo-600 hover:text-indigo-900">
-                    Solicitar Recalificación
-                  </Link>
+                  {nota.recalifs.some(r => r.Estado === 'Pendiente') ? (
+                    <span className="inline-flex items-center rounded-md bg-amber-50 px-2 py-1 text-xs font-medium text-amber-700 ring-1 ring-inset ring-amber-600/20">
+                      En revisión
+                    </span>
+                  ) : (
+                    <Link href={`/alumno/recalificaciones/nueva?notaId=${nota.NotaID}`} className="text-indigo-600 hover:text-indigo-900">
+                      Solicitar Recalificación
+                    </Link>
+                  )}
                 </td>
               </tr>
             ))}
