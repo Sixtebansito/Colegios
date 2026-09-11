@@ -1,6 +1,7 @@
 import { getSession } from '@/lib/auth'
 import prisma from '@/lib/db'
 import { redirect } from 'next/navigation'
+import Link from 'next/link'
 
 export default async function AdminProfesoresPage() {
   const session = await getSession()
@@ -20,9 +21,9 @@ export default async function AdminProfesoresPage() {
           <p className="mt-2 text-sm text-gray-700">Listado de docentes del colegio.</p>
         </div>
         <div className="mt-4 sm:ml-16 sm:mt-0 sm:flex-none">
-          <button type="button" className="block rounded-md bg-indigo-600 px-3 py-2 text-center text-sm font-semibold text-white shadow-sm hover:bg-indigo-500">
+          <Link href="/admin/profesores/nuevo" className="block rounded-md bg-indigo-600 px-3 py-2 text-center text-sm font-semibold text-white shadow-sm hover:bg-indigo-500">
             Agregar Profesor
-          </button>
+          </Link>
         </div>
       </div>
       <div className="bg-white shadow-sm ring-1 ring-gray-900/5 sm:rounded-xl overflow-hidden">

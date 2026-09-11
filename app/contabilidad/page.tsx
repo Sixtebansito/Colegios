@@ -40,7 +40,7 @@ export default async function ContabilidadDashboard() {
               <DollarSign className="w-5 h-5 text-emerald-600" />
               Últimos Pagos de Alumnos
             </h3>
-            <button className="text-sm font-semibold text-emerald-600 hover:text-emerald-800">Ver todos &rarr;</button>
+            <Link href="/contabilidad/pagos" className="text-sm font-semibold text-emerald-600 hover:text-emerald-800">Ver todos &rarr;</Link>
           </div>
           <div className="overflow-x-auto">
             <table className="min-w-full divide-y divide-gray-200">
@@ -114,9 +114,9 @@ export default async function ContabilidadDashboard() {
               <Wallet className="w-5 h-5 text-emerald-600" />
               Gastos Operativos
             </h3>
-            <button className="text-sm font-semibold bg-emerald-50 text-emerald-700 px-3 py-1 rounded-md hover:bg-emerald-100 transition-colors">
+            <Link href="/contabilidad/gastos/nuevo" className="text-sm font-semibold bg-emerald-50 text-emerald-700 px-3 py-1 rounded-md hover:bg-emerald-100 transition-colors">
               + Registrar Gasto
-            </button>
+            </Link>
           </div>
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4">
             {gastos.map(gasto => (

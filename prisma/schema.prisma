@@ -57,6 +57,7 @@ model Profesores {
   Email        String?
   Telefono     String?
   Especialidad String?
+  SueldoBase   Float?
 
   usuario  Usuarios?           @relation(fields: [UsuarioID], references: [UsuarioID], onDelete: NoAction, onUpdate: NoAction)
   materias Materias[]
