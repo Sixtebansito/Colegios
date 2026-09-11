@@ -54,10 +54,18 @@ export async function GET(request: Request) {
       const targetIsInspector = !!targetUser.inspector;
       const targetIsProfesor = !!targetUser.profesor;
       const targetIsAlumno = !!targetUser.estudiante;
+      const targetIsContabilidad = targetUser.RoleID === 4;
+
+      const isContabilidad = currentUser.RoleID === 4;
+
+      // 5. Contabilidad
+      if (isContabilidad) {
+        if (targetIsRector || targetIsProfesor || targetIsInspector || targetIsAdmin) return true;
+      }
 
       // 1. Rector and Admins
       if (isAdmin || isRector) {
-        if (targetIsAdmin || targetIsRector || targetIsInspector || targetIsProfesor) return true;
+        if (targetIsAdmin || targetIsRector || targetIsInspector || targetIsProfesor || targetIsContabilidad) return true;
         if (targetIsAlumno) {
           // Only see students if they teach a course AND the student is in that course
           if (teachesCourses) {
@@ -70,7 +78,7 @@ export async function GET(request: Request) {
 
       // 2. Inspectores
       if (isInspector) {
-        if (targetIsAdmin || targetIsRector) return true;
+        if (targetIsAdmin || targetIsRector || targetIsContabilidad) return true;
         
         // Inspectores see Profesores of their assigned level
         if (targetIsProfesor) {
@@ -85,8 +93,6 @@ export async function GET(request: Request) {
             const studentGrades = targetUser.estudiante?.matriculas.map(m => m.GradoID) || [];
             return studentGrades.some(g => gradosTaughtIds.includes(g as number));
           }
-          // Or should inspectors see all students of their level? The prompt said:
-          // "los inspectores igual si tienen un curso asignado ven a los alumnos de su curso si no no"
           return false;
         }
       }
@@ -98,8 +104,8 @@ export async function GET(request: Request) {
           const inspectorNiveles = targetUser.inspector?.Nivel.split(',').map(n => n.trim()) || [];
           if (gradosTaughtNiveles.some(n => inspectorNiveles.includes(n))) return true;
         }
-        // Profesores can see Admins/Rectors (usually helpful)
-        if (targetIsAdmin || targetIsRector) return true;
+        // Profesores can see Admins/Rectors/Contabilidad
+        if (targetIsAdmin || targetIsRector || targetIsContabilidad) return true;
         
         // Profesores can see Students in their courses
         if (targetIsAlumno) {
@@ -140,6 +146,7 @@ export async function GET(request: Request) {
       if (u.profesor) name = `${u.profesor.Nombre} ${u.profesor.Apellido}`;
       else if (u.estudiante) name = `${u.estudiante.Nombre} ${u.estudiante.Apellido} (Estudiante)`;
       else if (u.RoleID === 1) name = `Admin (${u.Cedula})`;
+      else if (u.RoleID === 4) name = `Contabilidad (${u.Cedula})`;
 
       return {
         id: u.UsuarioID,
