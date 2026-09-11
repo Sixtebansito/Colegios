@@ -136,7 +136,9 @@ export default function EvaLayout({
           <button className="text-white hover:bg-white/10 p-2 rounded-md transition-colors" onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}>
             <Menu className="h-6 w-6" />
           </button>
-          <span className="text-lg font-bold tracking-wide">EVA COLEGIOS</span>
+          <Link href={`/${userRole}`} className="text-lg font-bold tracking-wide hover:text-gray-200 transition-colors">
+            EVA COLEGIOS
+          </Link>
         </div>
         <div className="flex items-center gap-4">
           <button
