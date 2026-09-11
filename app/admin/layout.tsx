@@ -15,6 +15,7 @@ export default async function AdminRootLayout({
   return (
     <AdminLayout
       userName={`${session.nombre} ${session.apellido}`}
+      userId={session.userId as number}
     >
       {children}
     </AdminLayout>

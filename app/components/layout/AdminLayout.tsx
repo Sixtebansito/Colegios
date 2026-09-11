@@ -3,14 +3,17 @@
 import { useState } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { Menu, X, Users, GraduationCap, LayoutDashboard, Database, Settings } from 'lucide-react';
+import ChatWidget from '@/app/components/chat/ChatWidget';
+import { Menu, X, Users, GraduationCap, LayoutDashboard, Database, Settings, Calendar } from 'lucide-react';
 
 export default function AdminLayout({
   children,
   userName,
+  userId,
 }: {
   children: React.ReactNode;
   userName: string;
+  userId: number;
 }) {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const pathname = usePathname();
@@ -19,6 +22,7 @@ export default function AdminLayout({
     { name: 'Dashboard', href: '/admin', icon: LayoutDashboard },
     { name: 'Estudiantes', href: '/admin/estudiantes', icon: GraduationCap },
     { name: 'Profesores', href: '/admin/profesores', icon: Users },
+    { name: 'Horarios', href: '/admin/horarios', icon: Calendar },
     { name: 'Matriculación', href: '/admin/matriculacion', icon: Database },
   ];
 
@@ -87,6 +91,9 @@ export default function AdminLayout({
       {isSidebarOpen && (
         <div className="fixed inset-0 z-30 bg-gray-900/50 md:hidden" onClick={() => setIsSidebarOpen(false)} />
       )}
+
+      {/* Floating Chat Widget */}
+      <ChatWidget currentUserId={userId} />
     </div>
   );
 }

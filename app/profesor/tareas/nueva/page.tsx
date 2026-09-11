@@ -2,9 +2,15 @@ import { getSession } from '@/lib/auth'
 import prisma from '@/lib/db'
 import { redirect } from 'next/navigation'
 
-export default async function NuevaTareaPage() {
+export default async function NuevaTareaPage({
+  searchParams
+}: {
+  searchParams: Promise<{ materiaId?: string }>
+}) {
   const session = await getSession()
   if (!session || session.roleId !== 2) redirect('/login')
+  
+  const params = await searchParams
 
   const profesor = await prisma.profesores.findUnique({
     where: { UsuarioID: session.userId as number },
@@ -33,7 +39,7 @@ export default async function NuevaTareaPage() {
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div>
               <label htmlFor="materiaId" className="block text-sm font-medium leading-6 text-gray-900">Materia</label>
-              <select id="materiaId" name="materiaId" required className="mt-2 block w-full rounded-md border-0 py-2 pl-3 pr-10 text-gray-900 ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-indigo-600 sm:text-sm sm:leading-6">
+              <select id="materiaId" name="materiaId" defaultValue={params.materiaId || ''} required className="mt-2 block w-full rounded-md border-0 py-2 pl-3 pr-10 text-gray-900 ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-indigo-600 sm:text-sm sm:leading-6">
                 {profesor.materias.map(m => (
                   <option key={m.MateriaID} value={m.MateriaID}>{m.Nombre}</option>
                 ))}
