@@ -22,7 +22,7 @@ export default function Header() {
         <div className="flex items-center gap-4">
           <Link
             href="/login"
-            className="hidden sm:flex items-center justify-center px-6 py-2.5 text-sm font-semibold text-indigo-600 bg-indigo-50 rounded-lg hover:bg-indigo-100 transition-colors"
+            className="flex items-center justify-center px-6 py-2.5 text-sm font-semibold text-indigo-600 bg-indigo-50 rounded-lg hover:bg-indigo-100 transition-colors"
           >
             Portal Web
           </Link>
