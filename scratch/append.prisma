@@ -1,0 +1,31 @@
+model PagosAlumnos {
+  PagoID           Int       @id @default(autoincrement())
+  EstudianteID     Int
+  Mes              String
+  Monto            Float
+  Estado           String    @default("Pendiente")
+  FechaVencimiento DateTime?
+  FechaPago        DateTime?
+  CreatedAt        DateTime  @default(now())
+
+  estudiante       Estudiantes @relation(fields: [EstudianteID], references: [EstudianteID], onDelete: Cascade)
+}
+
+model Gastos {
+  GastoID      Int       @id @default(autoincrement())
+  Descripcion  String
+  Monto        Float
+  Fecha        DateTime  @default(now())
+  Categoria    String
+}
+
+model SueldosProfesores {
+  SueldoID     Int       @id @default(autoincrement())
+  ProfesorID   Int
+  Mes          String
+  Monto        Float
+  Estado       String    @default("Pendiente")
+  FechaPago    DateTime?
+
+  profesor     Profesores @relation(fields: [ProfesorID], references: [ProfesorID], onDelete: Cascade)
+}

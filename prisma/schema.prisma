@@ -8,298 +8,332 @@ generator client {
 }
 
 model Roles {
-  RoleID    Int        @id @default(autoincrement())
-  Nombre    String     @unique 
-  Usuarios  Usuarios[]
+  RoleID   Int        @id @default(autoincrement())
+  Nombre   String     @unique
+  Usuarios Usuarios[]
 }
 
 model Catalogos {
   id               Int         @id
-  Nombre           String?     
-  Valor            String?     
+  Nombre           String?
+  Valor            String?
   idpadre          Int?
   idestado         Int?
   padre            Catalogos?  @relation("CatPadreHijo", fields: [idpadre], references: [id], onDelete: NoAction, onUpdate: NoAction)
   hijos            Catalogos[] @relation("CatPadreHijo")
   estadoRel        Catalogos?  @relation("CatEstado", fields: [idestado], references: [id], onDelete: NoAction, onUpdate: NoAction)
   catalogosEstados Catalogos[] @relation("CatEstado")
-  
-  usuarios         Usuarios[]
-  estudiantes      Estudiantes[]
-  periodos         Periodos[]
+
+  usuarios    Usuarios[]
+  estudiantes Estudiantes[]
+  periodos    Periodos[]
 }
 
 model Usuarios {
-  UsuarioID     Int         @id @default(autoincrement())
-  Cedula        String      @unique 
-  PasswordHash  String      
+  UsuarioID     Int       @id @default(autoincrement())
+  Cedula        String    @unique
+  PasswordHash  String
   RoleID        Int?
-  EstadoID      Int?        @default(2)
-  FechaCreacion DateTime?   @default(now()) 
-  
-  rol           Roles?      @relation(fields: [RoleID], references: [RoleID], onDelete: NoAction, onUpdate: NoAction)
-  estado        Catalogos?  @relation(fields: [EstadoID], references: [id], onDelete: NoAction, onUpdate: NoAction)
-  
-  profesor      Profesores?
-  estudiante    Estudiantes?
-  inspector     Inspectores?
-  rector        Rectores?
+  EstadoID      Int?      @default(2)
+  FechaCreacion DateTime? @default(now())
 
-  chatMembers   ChatRoomMember[]
-  chatMessages  ChatMessage[]
+  rol    Roles?     @relation(fields: [RoleID], references: [RoleID], onDelete: NoAction, onUpdate: NoAction)
+  estado Catalogos? @relation(fields: [EstadoID], references: [id], onDelete: NoAction, onUpdate: NoAction)
+
+  profesor   Profesores?
+  estudiante Estudiantes?
+  inspector  Inspectores?
+  rector     Rectores?
+
+  chatMembers  ChatRoomMember[]
+  chatMessages ChatMessage[]
 }
 
 model Profesores {
-  ProfesorID   Int         @id @default(autoincrement())
-  UsuarioID    Int?        @unique
-  Nombre       String      
-  Apellido     String      
-  Email        String?     
-  Telefono     String?     
-  Especialidad String?     
+  ProfesorID   Int     @id @default(autoincrement())
+  UsuarioID    Int?    @unique
+  Nombre       String
+  Apellido     String
+  Email        String?
+  Telefono     String?
+  Especialidad String?
 
-  usuario      Usuarios?   @relation(fields: [UsuarioID], references: [UsuarioID], onDelete: NoAction, onUpdate: NoAction)
-  materias     Materias[]
-  notas        Notas[]
+  usuario  Usuarios?           @relation(fields: [UsuarioID], references: [UsuarioID], onDelete: NoAction, onUpdate: NoAction)
+  materias Materias[]
+  notas    Notas[]
+  sueldos  SueldosProfesores[]
 }
 
 model Padres {
-  PadreID      Int         @id @default(autoincrement())
-  Nombre       String      
-  Apellido     String      
-  Email        String?     
-  Telefono     String?     
-  Direccion    String?     
+  PadreID   Int     @id @default(autoincrement())
+  Nombre    String
+  Apellido  String
+  Email     String?
+  Telefono  String?
+  Direccion String?
 
-  estudiantes  Estudiantes[]
-  recalifs     SolicitudesRecalificacion[]
+  estudiantes Estudiantes[]
+  recalifs    SolicitudesRecalificacion[]
 }
 
 model Grados {
-  GradoID      Int          @id @default(autoincrement())
-  Nombre       String       
-  Nivel        String?      
-  CupoMaximo   Int?         @default(30)
-  Paralelo     String?      @default("A") 
+  GradoID    Int     @id @default(autoincrement())
+  Nombre     String
+  Nivel      String?
+  CupoMaximo Int?    @default(30)
+  Paralelo   String? @default("A")
 
-  estudiantes  Estudiantes[]
-  materias     Materias[]
-  matriculas   Matriculas[]
-  horarios     Horarios[]
+  estudiantes Estudiantes[]
+  materias    Materias[]
+  matriculas  Matriculas[]
+  horarios    Horarios[]
 }
 
 model Estudiantes {
-  EstudianteID    Int          @id @default(autoincrement())
-  UsuarioID       Int?         @unique
+  EstudianteID    Int       @id @default(autoincrement())
+  UsuarioID       Int?      @unique
   PadreID         Int?
-  Nombre          String       
-  Apellido        String       
-  FechaNacimiento DateTime?    
+  Nombre          String
+  Apellido        String
+  FechaNacimiento DateTime?
   GradoID         Int?
-  EstadoID        Int?         @default(2)
+  EstadoID        Int?      @default(2)
 
-  usuario         Usuarios?    @relation(fields: [UsuarioID], references: [UsuarioID], onDelete: NoAction, onUpdate: NoAction)
-  padre           Padres?      @relation(fields: [PadreID], references: [PadreID], onDelete: NoAction, onUpdate: NoAction)
-  grado           Grados?      @relation(fields: [GradoID], references: [GradoID], onDelete: NoAction, onUpdate: NoAction)
-  estado          Catalogos?   @relation(fields: [EstadoID], references: [id], onDelete: NoAction, onUpdate: NoAction)
-  notas           Notas[]
-  matriculas      Matriculas[]
-  entregas        Entregas[]
-  reportes        ReportesDisciplinarios[]
+  usuario    Usuarios?                @relation(fields: [UsuarioID], references: [UsuarioID], onDelete: NoAction, onUpdate: NoAction)
+  padre      Padres?                  @relation(fields: [PadreID], references: [PadreID], onDelete: NoAction, onUpdate: NoAction)
+  grado      Grados?                  @relation(fields: [GradoID], references: [GradoID], onDelete: NoAction, onUpdate: NoAction)
+  estado     Catalogos?               @relation(fields: [EstadoID], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  notas      Notas[]
+  matriculas Matriculas[]
+  entregas   Entregas[]
+  reportes   ReportesDisciplinarios[]
+  pagos      PagosAlumnos[]
 }
 
 model Materias {
-  MateriaID    Int          @id @default(autoincrement())
-  Nombre       String       
-  ProfesorID   Int?
-  GradoID      Int?
-  Descripcion  String?      
+  MateriaID   Int     @id @default(autoincrement())
+  Nombre      String
+  ProfesorID  Int?
+  GradoID     Int?
+  Descripcion String?
 
-  profesor     Profesores?  @relation(fields: [ProfesorID], references: [ProfesorID], onDelete: NoAction, onUpdate: NoAction)
-  grado        Grados?      @relation(fields: [GradoID], references: [GradoID], onDelete: NoAction, onUpdate: NoAction)
-  notas        Notas[]
-  tareas       Tareas[]
-  horarios     Horarios[]
+  profesor Profesores? @relation(fields: [ProfesorID], references: [ProfesorID], onDelete: NoAction, onUpdate: NoAction)
+  grado    Grados?     @relation(fields: [GradoID], references: [GradoID], onDelete: NoAction, onUpdate: NoAction)
+  notas    Notas[]
+  tareas   Tareas[]
+  horarios Horarios[]
 }
 
 model Periodos {
-  PeriodoID    Int          @id @default(autoincrement())
-  Nombre       String       
-  AnioLectivo  String?      
-  FechaInicio  DateTime?    
-  FechaFin     DateTime?    
-  EstadoID     Int?         @default(2)
+  PeriodoID   Int       @id @default(autoincrement())
+  Nombre      String
+  AnioLectivo String?
+  FechaInicio DateTime?
+  FechaFin    DateTime?
+  EstadoID    Int?      @default(2)
 
-  estado       Catalogos?   @relation(fields: [EstadoID], references: [id], onDelete: NoAction, onUpdate: NoAction)
-  notas        Notas[]
-  tareas       Tareas[]
+  estado Catalogos? @relation(fields: [EstadoID], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  notas  Notas[]
+  tareas Tareas[]
 }
 
 model Notas {
-  NotaID         Int          @id @default(autoincrement())
-  EstudianteID   Int?
-  MateriaID      Int?
-  PeriodoID      Int?
-  ProfesorID     Int?
-  Nota           Float      
-  FechaRegistro  DateTime?    @default(now()) 
-  Observaciones  String?      
+  NotaID        Int       @id @default(autoincrement())
+  EstudianteID  Int?
+  MateriaID     Int?
+  PeriodoID     Int?
+  ProfesorID    Int?
+  Nota          Float
+  FechaRegistro DateTime? @default(now())
+  Observaciones String?
 
-  estudiante     Estudiantes? @relation(fields: [EstudianteID], references: [EstudianteID], onDelete: NoAction, onUpdate: NoAction)
-  materia        Materias?    @relation(fields: [MateriaID], references: [MateriaID], onDelete: NoAction, onUpdate: NoAction)
-  periodo        Periodos?    @relation(fields: [PeriodoID], references: [PeriodoID], onDelete: NoAction, onUpdate: NoAction)
-  profesor       Profesores?  @relation(fields: [ProfesorID], references: [ProfesorID], onDelete: NoAction, onUpdate: NoAction)
-  
-  recalifs       SolicitudesRecalificacion[]
+  estudiante Estudiantes? @relation(fields: [EstudianteID], references: [EstudianteID], onDelete: NoAction, onUpdate: NoAction)
+  materia    Materias?    @relation(fields: [MateriaID], references: [MateriaID], onDelete: NoAction, onUpdate: NoAction)
+  periodo    Periodos?    @relation(fields: [PeriodoID], references: [PeriodoID], onDelete: NoAction, onUpdate: NoAction)
+  profesor   Profesores?  @relation(fields: [ProfesorID], references: [ProfesorID], onDelete: NoAction, onUpdate: NoAction)
+
+  recalifs SolicitudesRecalificacion[]
 
   @@unique([EstudianteID, MateriaID, PeriodoID])
 }
 
 model Matriculas {
-  MatriculaID    Int          @id @default(autoincrement())
+  MatriculaID    Int       @id @default(autoincrement())
   EstudianteID   Int?
   GradoID        Int?
-  AnioLectivo    String?      @default("2025-2026") 
-  FechaMatricula DateTime?    @default(now()) 
-  Estado         String?      @default("Activa") 
+  AnioLectivo    String?   @default("2025-2026")
+  FechaMatricula DateTime? @default(now())
+  Estado         String?   @default("Activa")
 
-  estudiante     Estudiantes? @relation(fields: [EstudianteID], references: [EstudianteID], onDelete: NoAction, onUpdate: NoAction)
-  grado          Grados?      @relation(fields: [GradoID], references: [GradoID], onDelete: NoAction, onUpdate: NoAction)
+  estudiante Estudiantes? @relation(fields: [EstudianteID], references: [EstudianteID], onDelete: NoAction, onUpdate: NoAction)
+  grado      Grados?      @relation(fields: [GradoID], references: [GradoID], onDelete: NoAction, onUpdate: NoAction)
 }
 
 model SolicitudesRecalificacion {
-  SolicitudID        Int          @id @default(autoincrement())
+  SolicitudID        Int       @id @default(autoincrement())
   NotaID             Int?
   PadreID            Int?
-  Motivo             String       
-  Estado             String?      @default("Pendiente") 
-  NotaAnterior       Float?     
-  NotaNueva          Float?     
-  FechaSolicitud     DateTime?    @default(now()) 
-  FechaResolucion    DateTime?    
-  ComentarioProfesor String?      
+  Motivo             String
+  Estado             String?   @default("Pendiente")
+  NotaAnterior       Float?
+  NotaNueva          Float?
+  FechaSolicitud     DateTime? @default(now())
+  FechaResolucion    DateTime?
+  ComentarioProfesor String?
 
-  nota               Notas?       @relation(fields: [NotaID], references: [NotaID], onDelete: NoAction, onUpdate: NoAction)
-  padre              Padres?      @relation(fields: [PadreID], references: [PadreID], onDelete: NoAction, onUpdate: NoAction)
+  nota  Notas?  @relation(fields: [NotaID], references: [NotaID], onDelete: NoAction, onUpdate: NoAction)
+  padre Padres? @relation(fields: [PadreID], references: [PadreID], onDelete: NoAction, onUpdate: NoAction)
 }
 
 model Auditoria {
-  LogID          Int          @id @default(autoincrement())
-  TablaAfectada  String?      
-  Accion         String?      
-  RegistroID     Int?
-  ValorAntiguo   String?      
-  ValorNuevo     String?      
-  FechaAccion    DateTime?    @default(now()) 
-  Usuario        String?      
+  LogID         Int       @id @default(autoincrement())
+  TablaAfectada String?
+  Accion        String?
+  RegistroID    Int?
+  ValorAntiguo  String?
+  ValorNuevo    String?
+  FechaAccion   DateTime? @default(now())
+  Usuario       String?
 }
 
 model ChatRoom {
-  RoomID      Int               @id @default(autoincrement())
-  Name        String?           
-  Type        String            @default("GROUP") 
-  CreatedAt   DateTime          @default(now()) 
-  
-  Members     ChatRoomMember[]
-  Messages    ChatMessage[]
+  RoomID    Int      @id @default(autoincrement())
+  Name      String?
+  Type      String   @default("GROUP")
+  CreatedAt DateTime @default(now())
+
+  Members  ChatRoomMember[]
+  Messages ChatMessage[]
 }
 
 model ChatRoomMember {
-  MemberID    Int       @id @default(autoincrement())
-  RoomID      Int
-  UsuarioID   Int
-  JoinedAt    DateTime  @default(now()) 
-  LastReadAt  DateTime?
-  
-  Room        ChatRoom  @relation(fields: [RoomID], references: [RoomID], onDelete: Cascade)
-  Usuario     Usuarios  @relation(fields: [UsuarioID], references: [UsuarioID], onDelete: NoAction, onUpdate: NoAction)
+  MemberID   Int       @id @default(autoincrement())
+  RoomID     Int
+  UsuarioID  Int
+  JoinedAt   DateTime  @default(now())
+  LastReadAt DateTime?
+
+  Room    ChatRoom @relation(fields: [RoomID], references: [RoomID], onDelete: Cascade)
+  Usuario Usuarios @relation(fields: [UsuarioID], references: [UsuarioID], onDelete: NoAction, onUpdate: NoAction)
 
   @@unique([RoomID, UsuarioID])
 }
 
 model ChatMessage {
-  MessageID      Int       @id @default(autoincrement())
+  MessageID      Int      @id @default(autoincrement())
   RoomID         Int
   SenderID       Int
-  Content        String?   
-  AttachmentUrl  String?   
-  AttachmentType String?   
-  CreatedAt      DateTime  @default(now()) 
-  
-  Room           ChatRoom  @relation(fields: [RoomID], references: [RoomID], onDelete: Cascade)
-  Sender         Usuarios  @relation(fields: [SenderID], references: [UsuarioID], onDelete: NoAction, onUpdate: NoAction)
+  Content        String?
+  AttachmentUrl  String?
+  AttachmentType String?
+  CreatedAt      DateTime @default(now())
+
+  Room   ChatRoom @relation(fields: [RoomID], references: [RoomID], onDelete: Cascade)
+  Sender Usuarios @relation(fields: [SenderID], references: [UsuarioID], onDelete: NoAction, onUpdate: NoAction)
 }
 
 model Tareas {
-  TareaID          Int          @id @default(autoincrement())
+  TareaID          Int       @id @default(autoincrement())
   MateriaID        Int
   PeriodoID        Int
   Titulo           String
   Descripcion      String?
-  Tipo             String       @default("Tarea Normal")
+  Tipo             String    @default("Tarea Normal")
   Porcentaje       Float
   FechaVencimiento DateTime?
-  CreatedAt        DateTime     @default(now())
+  CreatedAt        DateTime  @default(now())
 
-  materia          Materias     @relation(fields: [MateriaID], references: [MateriaID], onDelete: Cascade)
-  periodo          Periodos     @relation(fields: [PeriodoID], references: [PeriodoID], onDelete: Cascade)
-  entregas         Entregas[]
+  materia  Materias   @relation(fields: [MateriaID], references: [MateriaID], onDelete: Cascade)
+  periodo  Periodos   @relation(fields: [PeriodoID], references: [PeriodoID], onDelete: Cascade)
+  entregas Entregas[]
 }
 
 model Entregas {
-  EntregaID        Int          @id @default(autoincrement())
-  TareaID          Int
-  EstudianteID     Int
-  ArchivoUrl       String?
-  TextoRespuesta   String?
-  Calificacion     Float?
+  EntregaID         Int      @id @default(autoincrement())
+  TareaID           Int
+  EstudianteID      Int
+  ArchivoUrl        String?
+  TextoRespuesta    String?
+  Calificacion      Float?
   Retroalimentacion String?
-  FechaEntrega     DateTime     @default(now())
-  
-  tarea            Tareas       @relation(fields: [TareaID], references: [TareaID], onDelete: Cascade)
-  estudiante       Estudiantes  @relation(fields: [EstudianteID], references: [EstudianteID], onDelete: Cascade)
+  FechaEntrega      DateTime @default(now())
+
+  tarea      Tareas      @relation(fields: [TareaID], references: [TareaID], onDelete: Cascade)
+  estudiante Estudiantes @relation(fields: [EstudianteID], references: [EstudianteID], onDelete: Cascade)
 
   @@unique([TareaID, EstudianteID])
 }
 
 model Horarios {
-  HorarioID    Int       @id @default(autoincrement())
-  GradoID      Int
-  MateriaID    Int?
-  DiaSemana    String
-  HoraInicio   String
-  HoraFin      String
+  HorarioID  Int    @id @default(autoincrement())
+  GradoID    Int
+  MateriaID  Int?
+  DiaSemana  String
+  HoraInicio String
+  HoraFin    String
 
-  grado        Grados    @relation(fields: [GradoID], references: [GradoID], onDelete: Cascade)
-  materia      Materias? @relation(fields: [MateriaID], references: [MateriaID], onDelete: SetNull)
+  grado   Grados    @relation(fields: [GradoID], references: [GradoID], onDelete: Cascade)
+  materia Materias? @relation(fields: [MateriaID], references: [MateriaID], onDelete: SetNull)
 }
 
 model Inspectores {
-  InspectorID  Int       @id @default(autoincrement())
-  UsuarioID    Int       @unique
-  Nivel        String
-  
-  usuario      Usuarios  @relation(fields: [UsuarioID], references: [UsuarioID], onDelete: Cascade)
-  reportes     ReportesDisciplinarios[]
+  InspectorID Int    @id @default(autoincrement())
+  UsuarioID   Int    @unique
+  Nivel       String
+
+  usuario  Usuarios                 @relation(fields: [UsuarioID], references: [UsuarioID], onDelete: Cascade)
+  reportes ReportesDisciplinarios[]
 }
 
 model Rectores {
-  RectorID     Int       @id @default(autoincrement())
-  UsuarioID    Int       @unique
-  
-  usuario      Usuarios  @relation(fields: [UsuarioID], references: [UsuarioID], onDelete: Cascade)
+  RectorID  Int @id @default(autoincrement())
+  UsuarioID Int @unique
+
+  usuario Usuarios @relation(fields: [UsuarioID], references: [UsuarioID], onDelete: Cascade)
 }
 
 model ReportesDisciplinarios {
-  ReporteID    Int          @id @default(autoincrement())
+  ReporteID    Int      @id @default(autoincrement())
   InspectorID  Int
   EstudianteID Int
-  Fecha        DateTime     @default(now())
+  Fecha        DateTime @default(now())
   Motivo       String
-  Gravedad     String       @default("Leve") 
-  Estado       String       @default("Pendiente") 
+  Gravedad     String   @default("Leve")
+  Estado       String   @default("Pendiente")
   Comentarios  String?
 
-  inspector    Inspectores  @relation(fields: [InspectorID], references: [InspectorID], onDelete: Cascade)
-  estudiante   Estudiantes  @relation(fields: [EstudianteID], references: [EstudianteID], onDelete: Cascade)
+  inspector  Inspectores @relation(fields: [InspectorID], references: [InspectorID], onDelete: Cascade)
+  estudiante Estudiantes @relation(fields: [EstudianteID], references: [EstudianteID], onDelete: Cascade)
+}
+
+model PagosAlumnos {
+  PagoID           Int       @id @default(autoincrement())
+  EstudianteID     Int
+  Mes              String
+  Monto            Float
+  Estado           String    @default("Pendiente")
+  FechaVencimiento DateTime?
+  FechaPago        DateTime?
+  CreatedAt        DateTime  @default(now())
+
+  estudiante Estudiantes @relation(fields: [EstudianteID], references: [EstudianteID], onDelete: Cascade)
+}
+
+model Gastos {
+  GastoID     Int      @id @default(autoincrement())
+  Descripcion String
+  Monto       Float
+  Fecha       DateTime @default(now())
+  Categoria   String
+}
+
+model SueldosProfesores {
+  SueldoID   Int       @id @default(autoincrement())
+  ProfesorID Int
+  Mes        String
+  Monto      Float
+  Estado     String    @default("Pendiente")
+  FechaPago  DateTime?
+
+  profesor Profesores @relation(fields: [ProfesorID], references: [ProfesorID], onDelete: Cascade)
 }

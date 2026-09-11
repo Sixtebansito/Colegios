@@ -101,6 +101,7 @@ export default function EvaLayout({
       { name: 'Mis Tareas', href: '/profesor/tareas' },
       { name: 'Calificaciones', href: '/profesor/calificaciones' },
       { name: 'Recalificaciones', href: '/profesor/recalificaciones' },
+      { name: 'Nómina / Sueldos', href: '/profesor/sueldos' },
     ],
     alumno: [
       { name: 'Inicio', href: '/alumno' },
@@ -108,6 +109,7 @@ export default function EvaLayout({
       { name: 'Mis Tareas', href: '/alumno/tareas' },
       { name: 'Mis Notas', href: '/alumno/notas' },
       { name: 'Recalificaciones', href: '/alumno/recalificaciones' },
+      { name: 'Pagos y Pensiones', href: '/alumno/pagos' },
     ],
     rector: [
       { name: 'Inicio', href: '/rector' },
