@@ -23,6 +23,7 @@ export default function LoginPage() {
       if (result.roleId === 1) router.push('/admin')
       else if (result.roleId === 2) router.push('/profesor')
       else if (result.roleId === 3) router.push('/alumno')
+      else if (result.roleId === 4) router.push('/contabilidad')
       else router.push('/')
     }
   }

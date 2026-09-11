@@ -14,6 +14,7 @@ export default async function Home() {
     if (session.roleId === 1) redirect('/admin')
     if (session.roleId === 2) redirect('/profesor')
     if (session.roleId === 3) redirect('/alumno')
+    if (session.roleId === 4) redirect('/contabilidad')
   }
 
   return (
