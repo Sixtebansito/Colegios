@@ -10,8 +10,9 @@ export default async function AdminHorariosPage({
   const session = await getSession()
   if (!session || (session.roleId !== 1)) redirect('/login')
 
-  const { grado: gradoIdStr } = await searchParams
+    const { grado: gradoIdStr } = await searchParams
   const grados = await prisma.grados.findMany({ orderBy: { Nombre: 'asc' } })
+  const profesores = await prisma.profesores.findMany({ orderBy: { Nombre: 'asc' } })
   
   const selectedGradoId = gradoIdStr ? parseInt(gradoIdStr) : grados[0]?.GradoID
 
@@ -78,6 +79,14 @@ export default async function AdminHorariosPage({
                   <label className="block text-sm font-medium text-gray-700">Materia</label>
                   <select name="materiaId" required className="mt-1 block w-full rounded-md border-gray-300 py-2 pl-3 pr-10 text-base focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 sm:text-sm ring-1 ring-inset ring-gray-300">
                     {materias.map(m => <option key={m.MateriaID} value={m.MateriaID}>{m.Nombre}</option>)}
+                  </select>
+                </div>
+
+                <div>
+                  <label className="block text-sm font-medium text-gray-700">Profesor Asignado</label>
+                  <select name="profesorId" required className="mt-1 block w-full rounded-md border-gray-300 py-2 pl-3 pr-10 text-base focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 sm:text-sm ring-1 ring-inset ring-gray-300">
+                    <option value="">Seleccione un profesor</option>
+                    {profesores.map(p => <option key={p.ProfesorID} value={p.ProfesorID}>{p.Nombre} {p.Apellido}</option>)}
                   </select>
                 </div>
 

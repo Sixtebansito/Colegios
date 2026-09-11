@@ -15,10 +15,17 @@ export async function POST(request: Request) {
     const dia = formData.get('dia') as string
     const horaInicio = formData.get('horaInicio') as string
     const horaFin = formData.get('horaFin') as string
+    const profesorId = parseInt(formData.get('profesorId') as string)
 
-    if (!gradoId || !materiaId || !dia || !horaInicio || !horaFin) {
+    if (!gradoId || !materiaId || !dia || !horaInicio || !horaFin || !profesorId) {
       return NextResponse.json({ error: 'Faltan campos obligatorios' }, { status: 400 })
     }
+
+    // Actualizar la materia para asignar el profesor
+    await prisma.materias.update({
+      where: { MateriaID: materiaId },
+      data: { ProfesorID: profesorId }
+    })
 
     await prisma.horarios.create({
       data: {
