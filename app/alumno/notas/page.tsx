@@ -14,7 +14,7 @@ export default async function AlumnoNotasPage({
   
   const estudiante = await prisma.estudiantes.findUnique({
     where: { UsuarioID: session?.userId as number },
-    include: { matriculas: true }
+    include: { matriculas: { where: { Estado: 'Activa' } } }
   })
 
   if (!estudiante || estudiante.matriculas.length === 0) redirect('/login')

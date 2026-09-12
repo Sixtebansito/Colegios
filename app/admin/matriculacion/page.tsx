@@ -8,6 +8,7 @@ export default async function AdminMatriculacionPage() {
   if (!session || session.roleId !== 1) redirect('/login')
 
   const grados = await prisma.grados.findMany({
+    where: { EstadoID: 2 },
     orderBy: { Nombre: 'asc' }
   })
 

@@ -9,7 +9,7 @@ export default async function AlumnoDashboard() {
   const estudiante = await prisma.estudiantes.findUnique({
     where: { UsuarioID: session?.userId as number },
     include: {
-      matriculas: true,
+      matriculas: { where: { Estado: 'Activa' } },
     }
   })
 

@@ -1,6 +1,7 @@
 import { NextResponse } from 'next/server'
 import prisma from '@/lib/db'
 import { getSession } from '@/lib/auth'
+import { matricularEstudiante } from '@/lib/matriculas'
 
 export async function POST(request: Request) {
   try {
@@ -11,9 +12,8 @@ export async function POST(request: Request) {
 
     const { estudianteId, gradoId } = await request.json()
 
-    await prisma.estudiantes.update({
-      where: { EstudianteID: estudianteId },
-      data: { GradoID: gradoId }
+    await prisma.$transaction(async (tx) => {
+      await matricularEstudiante(tx, { estudianteId, gradoId })
     })
 
     return NextResponse.json({ success: true })

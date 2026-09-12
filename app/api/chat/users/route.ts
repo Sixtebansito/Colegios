@@ -15,7 +15,7 @@ export async function GET(request: Request) {
         profesor: { include: { materias: { include: { grado: true } } } },
         inspector: true,
         rector: true,
-        estudiante: { include: { matriculas: { include: { grado: { include: { materias: true } } } } } }
+        estudiante: { include: { matriculas: { where: { Estado: 'Activa' }, include: { grado: { include: { materias: true } } } } } }
       }
     });
 
@@ -44,7 +44,7 @@ export async function GET(request: Request) {
         profesor: { include: { materias: { include: { grado: true } } } },
         inspector: true,
         rector: true,
-        estudiante: { include: { matriculas: true } }
+        estudiante: { include: { matriculas: { where: { Estado: 'Activa' } } } }
       }
     });
 

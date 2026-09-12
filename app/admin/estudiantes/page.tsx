@@ -10,6 +10,7 @@ export default async function AdminEstudiantesPage() {
     include: {
       padre: true,
       matriculas: {
+        where: { Estado: 'Activa' },
         include: { grado: true }
       }
     }

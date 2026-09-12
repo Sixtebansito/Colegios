@@ -22,6 +22,25 @@ export async function setup() {
     env: { ...process.env, DATABASE_URL: 'file:./test.db' },
     stdio: 'inherit',
   })
+
+  // Padres/Grados/Materias/Usuarios/Estudiantes/Periodos tienen EstadoID con
+  // default apuntando a Catalogos (id 2 = Activo). Sin estas filas, cualquier
+  // fixture que no pase EstadoID explícito rompe por foreign key. Se setea
+  // DATABASE_URL en este proceso (igual que hace execSync arriba) para que el
+  // PrismaClient generado resuelva el sqlite relativo igual que en lib/db.ts.
+  process.env.DATABASE_URL = 'file:./test.db'
+  const { PrismaClient } = require('@prisma/client')
+  const prisma = new PrismaClient()
+  try {
+    await prisma.catalogos.createMany({
+      data: [
+        { id: 1, Nombre: 'Estado', Valor: 'Inactivo' },
+        { id: 2, Nombre: 'Estado', Valor: 'Activo' },
+      ],
+    })
+  } finally {
+    await prisma.$disconnect()
+  }
 }
 
 export async function teardown() {

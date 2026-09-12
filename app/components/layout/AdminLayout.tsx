@@ -4,7 +4,7 @@ import { useState } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import ChatWidget from '@/app/components/chat/ChatWidget';
-import { Menu, X, Users, GraduationCap, LayoutDashboard, Database, Settings, Calendar } from 'lucide-react';
+import { Menu, X, Users, GraduationCap, LayoutDashboard, Database, Settings, Calendar, UserCog, Users2, Layers, BookOpen, CalendarRange, ClipboardList } from 'lucide-react';
 
 export default function AdminLayout({
   children,
@@ -20,10 +20,16 @@ export default function AdminLayout({
 
   const navLinks = [
     { name: 'Dashboard', href: '/admin', icon: LayoutDashboard },
-    { name: 'Estudiantes', href: '/admin/estudiantes', icon: GraduationCap },
+    { name: 'Usuarios', href: '/admin/usuarios', icon: UserCog },
     { name: 'Profesores', href: '/admin/profesores', icon: Users },
+    { name: 'Padres', href: '/admin/padres', icon: Users2 },
+    { name: 'Estudiantes', href: '/admin/estudiantes', icon: GraduationCap },
+    { name: 'Grados', href: '/admin/grados', icon: Layers },
+    { name: 'Materias', href: '/admin/materias', icon: BookOpen },
+    { name: 'Periodos', href: '/admin/periodos', icon: CalendarRange },
     { name: 'Horarios', href: '/admin/horarios', icon: Calendar },
     { name: 'Matriculación', href: '/admin/matriculacion', icon: Database },
+    { name: 'Matrículas', href: '/admin/matriculas', icon: ClipboardList },
   ];
 
   return (

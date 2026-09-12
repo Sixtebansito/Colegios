@@ -27,6 +27,9 @@ model Catalogos {
   usuarios    Usuarios[]
   estudiantes Estudiantes[]
   periodos    Periodos[]
+  padres      Padres[]
+  grados      Grados[]
+  materias    Materias[]
 }
 
 model Usuarios {
@@ -72,9 +75,11 @@ model Padres {
   Email     String?
   Telefono  String?
   Direccion String?
+  EstadoID  Int?    @default(2)
 
   estudiantes Estudiantes[]
   recalifs    SolicitudesRecalificacion[]
+  estado      Catalogos?                  @relation(fields: [EstadoID], references: [id], onDelete: NoAction, onUpdate: NoAction)
 }
 
 model Grados {
@@ -83,11 +88,13 @@ model Grados {
   Nivel      String?
   CupoMaximo Int?    @default(30)
   Paralelo   String? @default("A")
+  EstadoID   Int?    @default(2)
 
   estudiantes Estudiantes[]
   materias    Materias[]
   matriculas  Matriculas[]
   horarios    Horarios[]
+  estado      Catalogos?   @relation(fields: [EstadoID], references: [id], onDelete: NoAction, onUpdate: NoAction)
 }
 
 model Estudiantes {
@@ -117,18 +124,21 @@ model Materias {
   ProfesorID  Int?
   GradoID     Int?
   Descripcion String?
+  EstadoID    Int?    @default(2)
 
   profesor Profesores? @relation(fields: [ProfesorID], references: [ProfesorID], onDelete: NoAction, onUpdate: NoAction)
   grado    Grados?     @relation(fields: [GradoID], references: [GradoID], onDelete: NoAction, onUpdate: NoAction)
   notas    Notas[]
   tareas   Tareas[]
   horarios Horarios[]
+  estado   Catalogos?  @relation(fields: [EstadoID], references: [id], onDelete: NoAction, onUpdate: NoAction)
 }
 
 model Periodos {
   PeriodoID   Int       @id @default(autoincrement())
   Nombre      String
   AnioLectivo String?
+  Semestre    String?
   FechaInicio DateTime?
   FechaFin    DateTime?
   EstadoID    Int?      @default(2)

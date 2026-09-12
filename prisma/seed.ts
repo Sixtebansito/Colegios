@@ -13,6 +13,7 @@ async function main() {
 
   // 2. Catalogos (Estados)
   const estadoActivo = await prisma.catalogos.create({ data: { id: 2, Nombre: 'Estado', Valor: 'Activo' } })
+  await prisma.catalogos.create({ data: { id: 1, Nombre: 'Estado', Valor: 'Inactivo' } })
 
   const hash = await bcrypt.hash('123456', 10)
 
