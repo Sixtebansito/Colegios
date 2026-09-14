@@ -1,12 +1,10 @@
-import { getSession } from '@/lib/auth'
+import { requireRole } from '@/lib/auth'
 import prisma from '@/lib/db'
-import { redirect } from 'next/navigation'
 import Link from 'next/link'
 import { DollarSign, Wallet, Users, CheckCircle, Clock } from 'lucide-react'
 
 export default async function ContabilidadDashboard() {
-  const session = await getSession()
-  if (!session || session.roleId !== 4) redirect('/login')
+  const session = await requireRole([4])
 
   const pagos = await prisma.pagosAlumnos.findMany({
     include: { estudiante: true },

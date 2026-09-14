@@ -1,11 +1,11 @@
 import { NextResponse } from 'next/server';
 import prisma from '@/lib/db';
-import { getSession } from '@/lib/auth';
+import { requireApiRole } from '@/lib/auth';
 
 export async function POST(request: Request) {
   try {
-    const session = await getSession();
-    if (!session || session.roleId !== 2) {
+    const session = await requireApiRole([2])
+    if (!session) {
       return NextResponse.redirect(new URL('/login', request.url));
     }
 

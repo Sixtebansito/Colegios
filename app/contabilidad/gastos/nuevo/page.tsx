@@ -1,10 +1,9 @@
-import { getSession } from '@/lib/auth'
+import { requireRole } from '@/lib/auth'
 import prisma from '@/lib/db'
 import { redirect } from 'next/navigation'
 
 export default async function NuevoGastoPage() {
-  const session = await getSession()
-  if (!session || session.roleId !== 4) redirect('/login')
+  const session = await requireRole([4])
 
   async function registrarGasto(formData: FormData) {
     'use server'

@@ -1,5 +1,4 @@
-import { getSession } from '@/lib/auth'
-import { redirect } from 'next/navigation'
+import { requireRole } from '@/lib/auth'
 import AdminLayout from '@/app/components/layout/AdminLayout'
 
 export default async function AdminRootLayout({
@@ -7,10 +6,7 @@ export default async function AdminRootLayout({
 }: {
   children: React.ReactNode
 }) {
-  const session = await getSession()
-  if (!session || session.roleId !== 1) {
-    redirect('/login')
-  }
+  const session = await requireRole([1]) // Solo Admin
 
   return (
     <AdminLayout

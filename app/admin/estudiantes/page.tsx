@@ -1,10 +1,8 @@
-import { getSession } from '@/lib/auth'
+import { requireRole } from '@/lib/auth'
 import prisma from '@/lib/db'
-import { redirect } from 'next/navigation'
 
 export default async function AdminEstudiantesPage() {
-  const session = await getSession()
-  if (!session || session.roleId !== 1) redirect('/login')
+  const session = await requireRole([1])
 
   const estudiantes = await prisma.estudiantes.findMany({
     include: {

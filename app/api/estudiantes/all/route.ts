@@ -1,11 +1,11 @@
 import { NextResponse } from 'next/server';
 import prisma from '@/lib/db';
-import { getSession } from '@/lib/auth';
+import { requireApiRole } from '@/lib/auth';
 
 export async function GET(request: Request) {
   try {
-    const session = await getSession();
-    if (!session || !session.userId) {
+    const session = await requireApiRole([1, 2]); // Admin and Profesor can fetch all students
+    if (!session) {
       return NextResponse.json({ error: 'No autorizado' }, { status: 401 });
     }
 

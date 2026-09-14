@@ -1,4 +1,4 @@
-import { getSession } from '@/lib/auth'
+import { requireRole } from '@/lib/auth'
 import prisma from '@/lib/db'
 import { redirect } from 'next/navigation'
 import Link from 'next/link'
@@ -17,8 +17,7 @@ export default async function NuevaRecalificacionPage({
 }: {
   searchParams: Promise<{ notaId?: string; error?: string }>
 }) {
-  const session = await getSession()
-  if (!session || session.roleId !== 3) redirect('/login')
+  const session = await requireRole([3])
 
   const { notaId: notaIdStr, error } = await searchParams
   const notaId = notaIdStr ? parseInt(notaIdStr, 10) : NaN

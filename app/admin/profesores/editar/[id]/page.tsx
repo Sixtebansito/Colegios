@@ -1,11 +1,10 @@
-import { getSession } from '@/lib/auth'
+import { requireRole } from '@/lib/auth'
 import prisma from '@/lib/db'
 import { redirect } from 'next/navigation'
 import Link from 'next/link'
 
 export default async function EditarProfesorPage({ params }: { params: Promise<{ id: string }> }) {
-  const session = await getSession()
-  if (!session || session.roleId !== 1) redirect('/login')
+  const session = await requireRole([1])
 
   const { id } = await params;
   const profesorId = parseInt(id)

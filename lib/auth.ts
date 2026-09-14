@@ -50,3 +50,20 @@ export async function updateSession(request: NextRequest) {
   })
   return res
 }
+
+export async function requireRole(allowedRoles: number[]) {
+  const session = await getSession()
+  if (!session || !allowedRoles.includes(session.roleId)) {
+    const { redirect } = await import('next/navigation')
+    redirect('/login')
+  }
+  return session
+}
+
+export async function requireApiRole(allowedRoles: number[]) {
+  const session = await getSession()
+  if (!session || !allowedRoles.includes(session.roleId)) {
+    return null
+  }
+  return session
+}

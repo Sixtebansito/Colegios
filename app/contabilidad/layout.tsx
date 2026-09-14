@@ -1,5 +1,4 @@
-import { getSession } from '@/lib/auth'
-import { redirect } from 'next/navigation'
+import { requireRole } from '@/lib/auth'
 import ContabilidadLayout from '@/app/components/layout/ContabilidadLayout'
 
 export default async function Layout({
@@ -7,11 +6,7 @@ export default async function Layout({
 }: {
   children: React.ReactNode
 }) {
-  const session = await getSession()
-
-  if (!session || session.roleId !== 4) {
-    redirect('/login')
-  }
+  const session = await requireRole([4])
 
   return (
     <ContabilidadLayout

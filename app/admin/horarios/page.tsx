@@ -1,14 +1,12 @@
-import { getSession } from '@/lib/auth'
+import { requireRole } from '@/lib/auth'
 import prisma from '@/lib/db'
-import { redirect } from 'next/navigation'
 
 export default async function AdminHorariosPage({
   searchParams
 }: {
   searchParams: Promise<{ grado?: string }>
 }) {
-  const session = await getSession()
-  if (!session || (session.roleId !== 1)) redirect('/login')
+  const session = await requireRole([1])
 
     const { grado: gradoIdStr } = await searchParams
   const grados = await prisma.grados.findMany({ orderBy: { Nombre: 'asc' } })

@@ -1,4 +1,4 @@
-import { getSession } from '@/lib/auth'
+import { requireRole } from '@/lib/auth'
 import prisma from '@/lib/db'
 import { redirect } from 'next/navigation'
 import Link from 'next/link'
@@ -24,8 +24,7 @@ export default async function ProfesorRecalificacionesPage({
 }: {
   searchParams: Promise<{ resolve?: string; error?: string }>
 }) {
-  const session = await getSession()
-  if (!session || session.roleId !== 2) redirect('/login')
+  const session = await requireRole([2])
 
   const profesor = await prisma.profesores.findUnique({
     where: { UsuarioID: session.userId as number },

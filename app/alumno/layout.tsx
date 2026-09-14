@@ -1,5 +1,4 @@
-import { getSession } from '@/lib/auth'
-import { redirect } from 'next/navigation'
+import { requireRole } from '@/lib/auth'
 import EvaLayout from '@/app/components/layout/EvaLayout'
 
 export default async function AlumnoLayout({
@@ -7,10 +6,7 @@ export default async function AlumnoLayout({
 }: {
   children: React.ReactNode
 }) {
-  const session = await getSession()
-  if (!session || session.roleId !== 3) {
-    redirect('/login')
-  }
+  const session = await requireRole([3])
 
   return (
     <EvaLayout

@@ -23,7 +23,8 @@ export async function proxy(request: NextRequest) {
       const redirectMap: Record<number, string> = {
         1: '/admin',
         2: '/profesor',
-        3: '/padre'
+        3: '/alumno',
+        4: '/contabilidad'
       }
       return NextResponse.redirect(new URL(redirectMap[session.roleId as number] || '/', request.url))
     }
@@ -35,7 +36,10 @@ export async function proxy(request: NextRequest) {
     if (path.startsWith('/profesor') && session.roleId !== 2) {
       return NextResponse.redirect(new URL('/', request.url))
     }
-    if (path.startsWith('/padre') && session.roleId !== 3) {
+    if (path.startsWith('/alumno') && session.roleId !== 3) {
+      return NextResponse.redirect(new URL('/', request.url))
+    }
+    if (path.startsWith('/contabilidad') && session.roleId !== 4) {
       return NextResponse.redirect(new URL('/', request.url))
     }
   }

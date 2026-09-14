@@ -1,13 +1,13 @@
 import { NextResponse } from 'next/server';
 import prisma from '@/lib/db';
-import { getSession } from '@/lib/auth';
+import { requireApiRole } from '@/lib/auth';
 import { canResolve, parseDecision, validateNotaNueva } from '@/lib/recalificaciones';
 
 // El Profesor aprueba o rechaza una solicitud de recalificación sobre una nota que él registró.
 export async function POST(request: Request, { params }: { params: Promise<{ id: string }> }) {
   try {
-    const session = await getSession();
-    if (!session || session.roleId !== 2) {
+    const session = await requireApiRole([2])
+    if (!session) {
       return NextResponse.redirect(new URL('/login', request.url));
     }
 

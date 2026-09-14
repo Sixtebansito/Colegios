@@ -1,10 +1,9 @@
-import { getSession } from '@/lib/auth'
+import { requireRole } from '@/lib/auth'
 import prisma from '@/lib/db'
 import { redirect } from 'next/navigation'
 
 export default async function PerfilContabilidadPage() {
-  const session = await getSession()
-  if (!session || session.roleId !== 4) redirect('/login')
+  const session = await requireRole([4])
 
   const user = await prisma.usuarios.findUnique({
     where: { UsuarioID: session.userId as number },
