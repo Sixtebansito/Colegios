@@ -82,7 +82,7 @@ export default function SidebarRooms({ currentUserId, onSelectRoom, selectedRoom
         MemberIds: [currentUserId, targetUserId]
       })
     });
-    
+
     if (res.ok) {
       const newRoom = await res.json();
       setIsModalOpen(false);
@@ -97,38 +97,38 @@ export default function SidebarRooms({ currentUserId, onSelectRoom, selectedRoom
     <div className="w-full sm:w-96 bg-white flex flex-col h-full">
       <div className="p-4 border-b flex justify-between items-center bg-gray-50">
         <h2 className="font-semibold text-gray-800">Mensajes</h2>
-        <button 
+        <button
           onClick={openNewChatModal}
-          className="p-2 text-indigo-600 hover:bg-indigo-50 rounded-full transition-colors" 
+          className="p-2 text-brand-600 hover:bg-brand-50 rounded-full transition-colors"
           title="Nueva Conversación"
         >
           <Plus className="w-5 h-5" />
         </button>
       </div>
-      
+
       <div className="flex-1 overflow-y-auto">
         {rooms.map(room => (
           <button
             key={room.RoomID}
             onClick={() => onSelectRoom(room.RoomID)}
             className={`w-full flex items-center gap-4 p-4 border-b hover:bg-gray-50 transition text-left
-              ${selectedRoomId === room.RoomID ? 'bg-indigo-50/50 border-l-4 border-l-indigo-600' : 'border-l-4 border-l-transparent'}
-              ${room.hasUnread ? 'bg-blue-50/30' : ''}
+              ${selectedRoomId === room.RoomID ? 'bg-brand-50/50 border-l-4 border-l-indigo-600' : 'border-l-4 border-l-transparent'}
+              ${room.hasUnread ? 'bg-brand-50/30' : ''}
             `}
           >
-            <div className={`p-3 rounded-full flex-shrink-0 ${room.Type === 'DIRECT' ? 'bg-emerald-100 text-emerald-600' : 'bg-indigo-100 text-indigo-600'}`}>
+            <div className={`p-3 rounded-full flex-shrink-0 ${room.Type === 'DIRECT' ? 'bg-emerald-100 text-emerald-600' : 'bg-brand-100 text-brand-600'}`}>
               {room.Type === 'DIRECT' ? <User className="w-5 h-5" /> : <Users className="w-5 h-5" />}
             </div>
             <div className="flex-1 min-w-0">
               <p className={`text-sm truncate ${room.hasUnread ? 'font-extrabold text-gray-900' : 'font-semibold text-gray-800'}`}>
                 {getRoomDisplayName(room, currentUserId)}
               </p>
-              <p className={`text-xs truncate mt-0.5 ${room.hasUnread ? 'font-bold text-indigo-600' : 'text-gray-500'}`}>
+              <p className={`text-xs truncate mt-0.5 ${room.hasUnread ? 'font-bold text-brand-600' : 'text-gray-500'}`}>
                 {room.hasUnread ? '¡Nuevo mensaje!' : `${room._count?.Messages} mensajes en esta sala`}
               </p>
             </div>
             {room.hasUnread && (
-              <div className="w-2.5 h-2.5 rounded-full bg-indigo-600 flex-shrink-0"></div>
+              <div className="w-2.5 h-2.5 rounded-full bg-brand-600 flex-shrink-0"></div>
             )}
           </button>
         ))}
@@ -152,22 +152,22 @@ export default function SidebarRooms({ currentUserId, onSelectRoom, selectedRoom
             <h3 className="font-semibold text-gray-900">Nuevo Chat</h3>
           </div>
           <div className="p-4 border-b">
-            <input 
+            <input
               type="text"
               placeholder="Buscar contactos..."
               value={search}
               onChange={(e) => setSearch(e.target.value)}
-              className="w-full px-4 py-2 bg-gray-100 border-transparent focus:bg-white focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 rounded-xl transition-all"
+              className="w-full px-4 py-2 bg-gray-100 border-transparent focus:bg-white focus:border-brand-500 focus:ring-2 focus:ring-brand-200 rounded-xl transition-all"
             />
           </div>
           <div className="flex-1 overflow-y-auto p-2">
             {filteredUsers.map(user => (
-              <button 
+              <button
                 key={user.id}
                 onClick={() => createChat(user.id)}
                 className="w-full flex items-center gap-3 p-3 hover:bg-gray-50 rounded-xl transition-colors text-left"
               >
-                <div className="w-10 h-10 rounded-full bg-indigo-100 text-indigo-600 flex items-center justify-center font-bold">
+                <div className="w-10 h-10 rounded-full bg-brand-100 text-brand-600 flex items-center justify-center font-bold">
                   {user.name.charAt(0)}
                 </div>
                 <span className="font-medium text-sm text-gray-900">{user.name}</span>

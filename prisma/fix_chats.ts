@@ -46,12 +46,15 @@ async function main() {
 
     const usuariosIds = new Set<number>()
     // Alumnos
-    matriculas.forEach(m => usuariosIds.add(m.estudiante.UsuarioID))
+    matriculas.forEach(m => {
+      const usuarioId = m.estudiante?.UsuarioID
+      if (usuarioId != null) usuariosIds.add(usuarioId)
+    })
     // Profesores de este grado (via materias)
     for (const materia of grado.materias) {
       if (materia.ProfesorID) {
         const profInfo = await prisma.profesores.findUnique({ where: { ProfesorID: materia.ProfesorID }})
-        if (profInfo) usuariosIds.add(profInfo.UsuarioID)
+        if (profInfo?.UsuarioID != null) usuariosIds.add(profInfo.UsuarioID)
       }
     }
     // Admin (creador)

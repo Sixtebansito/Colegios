@@ -47,7 +47,7 @@ export default function NuevoReportePage() {
   return (
     <div className="max-w-3xl mx-auto py-10">
       <div className="flex items-center gap-4 mb-8">
-        <Link href="/inspector" className="text-indigo-600 font-medium hover:underline">&larr; Volver</Link>
+        <Link href="/inspector" className="text-brand-600 font-medium hover:underline">&larr; Volver</Link>
         <h1 className="text-3xl font-bold text-gray-900">Nuevo Reporte Disciplinario</h1>
       </div>
 
@@ -60,7 +60,7 @@ export default function NuevoReportePage() {
                 required
                 value={formData.EstudianteID}
                 onChange={e => setFormData({ ...formData, EstudianteID: e.target.value })}
-                className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:max-w-xs sm:text-sm sm:leading-6"
+                className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-brand-600 sm:max-w-xs sm:text-sm sm:leading-6"
               >
                 <option value="">Selecciona un estudiante</option>
                 {estudiantes.map(est => (
@@ -83,7 +83,7 @@ export default function NuevoReportePage() {
                     value={grav}
                     checked={formData.Gravedad === grav}
                     onChange={e => setFormData({ ...formData, Gravedad: e.target.value })}
-                    className="text-indigo-600 focus:ring-indigo-600 h-4 w-4"
+                    className="text-brand-600 focus:ring-brand-600 h-4 w-4"
                   />
                   {grav}
                 </label>
@@ -100,7 +100,7 @@ export default function NuevoReportePage() {
                 placeholder="Ej: Uso de celular en clase, Falta de respeto, etc."
                 value={formData.Motivo}
                 onChange={e => setFormData({ ...formData, Motivo: e.target.value })}
-                className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-brand-600 sm:text-sm sm:leading-6"
               />
             </div>
           </div>
@@ -112,7 +112,7 @@ export default function NuevoReportePage() {
                 rows={4}
                 value={formData.Comentarios}
                 onChange={e => setFormData({ ...formData, Comentarios: e.target.value })}
-                className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-brand-600 sm:text-sm sm:leading-6"
               />
             </div>
             <p className="mt-3 text-sm leading-6 text-gray-600">Escribe el contexto y las observaciones sobre la incidencia. Este reporte será enviado al Rectorado.</p>
@@ -126,7 +126,7 @@ export default function NuevoReportePage() {
           <button
             type="submit"
             disabled={isSubmitting}
-            className="rounded-md bg-indigo-600 px-6 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 disabled:opacity-50"
+            className="rounded-md bg-brand-600 px-6 py-2 text-sm font-semibold text-white shadow-sm hover:bg-brand-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-600 disabled:opacity-50"
           >
             {isSubmitting ? 'Enviando...' : 'Enviar Reporte'}
           </button>

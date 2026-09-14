@@ -16,14 +16,14 @@ export default async function PerfilAlumnoPage() {
     <div className="max-w-3xl mx-auto py-8">
       <h2 className="text-2xl font-bold text-gray-900 mb-6">Mi Perfil Estudiantil</h2>
       <div className="bg-white shadow-sm ring-1 ring-gray-900/5 sm:rounded-xl overflow-hidden">
-        <div className="bg-[#004a8f] px-6 py-8 sm:p-10">
+        <div className="bg-[#111827] px-6 py-8 sm:p-10">
           <div className="flex items-center gap-6">
-            <div className="h-24 w-24 rounded-full bg-white text-[#004a8f] flex items-center justify-center font-bold text-4xl shadow-lg">
+            <div className="h-24 w-24 rounded-full bg-white text-[#111827] flex items-center justify-center font-bold text-4xl shadow-lg">
               {estudiante.Nombre.charAt(0)}{estudiante.Apellido.charAt(0)}
             </div>
             <div>
               <h3 className="text-2xl font-bold text-white">{estudiante.Nombre} {estudiante.Apellido}</h3>
-              <p className="text-blue-200 mt-1">
+              <p className="text-brand-200 mt-1">
                 Estudiante - {estudiante.grado ? `${estudiante.grado.Nombre} "${estudiante.grado.Paralelo}"` : 'Sin grado asignado'}
               </p>
             </div>
@@ -33,7 +33,7 @@ export default async function PerfilAlumnoPage() {
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div>
               <h4 className="text-sm font-medium text-gray-500">Cédula de Identidad</h4>
-              <p className="mt-1 text-base text-gray-900">{estudiante.usuario.Cedula}</p>
+              <p className="mt-1 text-base text-gray-900">{estudiante.usuario?.Cedula ?? 'Sin usuario asociado'}</p>
             </div>
             <div>
               <h4 className="text-sm font-medium text-gray-500">Representante Legal</h4>

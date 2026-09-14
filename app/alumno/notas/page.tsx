@@ -11,7 +11,7 @@ export default async function AlumnoNotasPage({
 }) {
   const session = await getSession()
   const params = await searchParams
-  
+
   const estudiante = await prisma.estudiantes.findUnique({
     where: { UsuarioID: session?.userId as number },
     include: { matriculas: true }
@@ -40,7 +40,7 @@ export default async function AlumnoNotasPage({
           {materias.map(materia => (
             <div key={materia.MateriaID} className="bg-white rounded-2xl shadow-sm border border-gray-100 p-6 flex flex-col hover:shadow-md transition-shadow">
               <div className="flex items-center gap-3 mb-4">
-                <div className="p-3 bg-teal-50 text-teal-600 rounded-lg">
+                <div className="p-3 bg-brand-50 text-brand-600 rounded-lg">
                   <BookOpen className="w-6 h-6" />
                 </div>
                 <div>
@@ -48,9 +48,9 @@ export default async function AlumnoNotasPage({
                   <p className="text-sm text-gray-500 mt-1">Prof. {materia.profesor?.Apellido}</p>
                 </div>
               </div>
-              <Link 
-                href={`/alumno/notas?materia=${materia.MateriaID}&periodo=${selectedPeriodoId}`} 
-                className="mt-4 w-full block text-center bg-teal-50 text-teal-700 font-semibold py-2 rounded-lg hover:bg-teal-100 transition-colors"
+              <Link
+                href={`/alumno/notas?materia=${materia.MateriaID}&periodo=${selectedPeriodoId}`}
+                className="mt-4 w-full block text-center bg-brand-50 text-brand-700 font-semibold py-2 rounded-lg hover:bg-brand-100 transition-colors"
               >
                 Ver notas
               </Link>
@@ -95,7 +95,7 @@ export default async function AlumnoNotasPage({
   return (
     <div className="max-w-6xl mx-auto py-8">
       <div className="flex items-center gap-4 mb-6">
-        <Link href="/alumno/notas" className="text-teal-600 font-medium hover:underline text-sm">&larr; Volver a Cursos</Link>
+        <Link href="/alumno/notas" className="text-brand-600 font-medium hover:underline text-sm">&larr; Volver a Cursos</Link>
         <h2 className="text-2xl font-bold text-gray-900">Libreta de {materiaInfo?.Nombre}</h2>
       </div>
 
@@ -108,8 +108,8 @@ export default async function AlumnoNotasPage({
                 key={p.PeriodoID}
                 href={`/alumno/notas?materia=${selectedMateriaId}&periodo=${p.PeriodoID}`}
                 className={`px-4 py-1.5 text-sm rounded-md whitespace-nowrap transition-colors ${
-                  p.PeriodoID === selectedPeriodoId 
-                    ? 'bg-teal-600 text-white font-medium shadow-sm' 
+                  p.PeriodoID === selectedPeriodoId
+                    ? 'bg-brand-600 text-white font-medium shadow-sm'
                     : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
                 }`}
               >
@@ -123,22 +123,22 @@ export default async function AlumnoNotasPage({
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
         {/* Promedio General / Nota de Libreta */}
         <div className="lg:col-span-1">
-          <div className="bg-gradient-to-br from-teal-500 to-emerald-600 rounded-2xl shadow-sm p-6 text-white text-center">
-            <Award className="w-12 h-12 mx-auto text-teal-100 mb-4" />
-            <h3 className="text-lg font-medium text-teal-50 mb-1">Nota Promedio del Periodo</h3>
+          <div className="bg-gradient-to-br from-brand-500 to-emerald-600 rounded-2xl shadow-sm p-6 text-white text-center">
+            <Award className="w-12 h-12 mx-auto text-brand-100 mb-4" />
+            <h3 className="text-lg font-medium text-brand-50 mb-1">Nota Promedio del Periodo</h3>
             <div className="text-5xl font-extrabold tracking-tight mb-6">
               {notaGeneral?.Nota != null ? notaGeneral.Nota.toString() : '--'}
             </div>
 
             {notaGeneral && (
-              <div className="border-t border-teal-400/30 pt-4">
+              <div className="border-t border-brand-400/30 pt-4">
                 {notaGeneral.recalifs.some(r => r.Estado === 'Pendiente') ? (
                   <span className="inline-block bg-amber-500/20 text-amber-100 px-4 py-2 rounded-full text-sm font-medium">
                     Recalificación en Revisión
                   </span>
                 ) : (
-                  <Link 
-                    href={`/alumno/recalificaciones/nueva?notaId=${notaGeneral.NotaID}`} 
+                  <Link
+                    href={`/alumno/recalificaciones/nueva?notaId=${notaGeneral.NotaID}`}
                     className="inline-block bg-white/10 hover:bg-white/20 px-4 py-2 rounded-full text-sm font-medium transition-colors"
                   >
                     Solicitar Recalificación
@@ -147,7 +147,7 @@ export default async function AlumnoNotasPage({
               </div>
             )}
             {!notaGeneral && (
-              <p className="text-sm text-teal-100 bg-black/10 rounded-lg p-3">El profesor aún no ha registrado la nota final de este periodo.</p>
+              <p className="text-sm text-brand-100 bg-black/10 rounded-lg p-3">El profesor aún no ha registrado la nota final de este periodo.</p>
             )}
           </div>
         </div>
@@ -159,7 +159,7 @@ export default async function AlumnoNotasPage({
               <h3 className="font-bold text-gray-800">Desglose de Calificaciones</h3>
               <span className="text-xs text-gray-500">{entregas.length} actividades</span>
             </div>
-            
+
             <ul className="divide-y divide-gray-100">
               {entregas.map(entrega => (
                 <li key={entrega.EntregaID} className="px-6 py-4 flex items-center justify-between hover:bg-gray-50 transition-colors">
@@ -169,7 +169,7 @@ export default async function AlumnoNotasPage({
                   </div>
                   <div className="flex flex-col items-end">
                     {entrega.Calificacion != null ? (
-                      <span className="text-lg font-bold text-teal-700">{entrega.Calificacion.toString()} <span className="text-xs text-gray-400 font-normal">/10</span></span>
+                      <span className="text-lg font-bold text-brand-700">{entrega.Calificacion.toString()} <span className="text-xs text-gray-400 font-normal">/10</span></span>
                     ) : (
                       <span className="text-sm text-amber-600 bg-amber-50 px-2 py-1 rounded font-medium">Sin calificar</span>
                     )}

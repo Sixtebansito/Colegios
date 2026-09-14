@@ -31,7 +31,7 @@ export default async function ProfesorDashboard() {
         {profesor.materias.map(materia => (
           <Link href={`/profesor/tareas?materia=${materia.MateriaID}`} key={materia.MateriaID} className="group flex flex-col bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden hover:shadow-xl hover:-translate-y-1 transition-all duration-300">
             {/* Header / Pattern */}
-            <div className="h-32 bg-teal-600 relative overflow-hidden flex items-center justify-center p-6">
+            <div className="portal-course-banner h-32 relative overflow-hidden flex items-center justify-center p-6">
               <div className="absolute inset-0 opacity-20 bg-[url('https://www.transparenttextures.com/patterns/cubes.png')] mix-blend-overlay"></div>
               <h3 className="text-xl font-bold text-white text-center z-10 drop-shadow-md">{materia.Nombre}</h3>
             </div>
@@ -41,8 +41,8 @@ export default async function ProfesorDashboard() {
               <p className="text-sm text-gray-500 mb-4 font-medium">{materia.grado?.Nombre} {materia.grado?.Paralelo}</p>
               
               <div className="mt-auto pt-4 border-t border-gray-100 flex items-center justify-between">
-                <span className="text-sm font-medium text-teal-600">Administrar Curso &rarr;</span>
-                <span className="inline-flex items-center rounded-full bg-blue-50 px-2 py-1 text-xs font-medium text-blue-700 ring-1 ring-inset ring-blue-600/20">
+                <span className="text-sm font-medium text-brand-600">Administrar Curso &rarr;</span>
+                <span className="inline-flex items-center rounded-full bg-brand-50 px-2 py-1 text-xs font-medium text-brand-700 ring-1 ring-inset ring-brand-600/20">
                   Activo
                 </span>
               </div>

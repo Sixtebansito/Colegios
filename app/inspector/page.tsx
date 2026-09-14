@@ -52,7 +52,7 @@ export default async function InspectorDashboard() {
                     <p className="text-xs text-gray-500">Estudiante: {r.estudiante.Nombre} {r.estudiante.Apellido}</p>
                     <p className="text-xs text-gray-400 mt-2 border-t pt-2 flex justify-between">
                       <span>{new Date(r.Fecha).toLocaleDateString()}</span>
-                      <span className="font-medium text-indigo-600">{r.Estado}</span>
+                      <span className="font-medium text-brand-600">{r.Estado}</span>
                     </p>
                   </div>
                 ))}
@@ -64,20 +64,20 @@ export default async function InspectorDashboard() {
               </div>
             )}
           </div>
-          <Link href="/inspector/reportes" className="mt-6 text-center text-sm font-semibold text-indigo-600 hover:text-indigo-800 transition-colors block border-t pt-4">
+          <Link href="/inspector/reportes" className="mt-6 text-center text-sm font-semibold text-brand-600 hover:text-brand-800 transition-colors block border-t pt-4">
             Ver todos los reportes &rarr;
           </Link>
         </div>
 
-        <div className="bg-gradient-to-br from-indigo-500 to-purple-600 rounded-xl shadow-sm p-8 text-white flex flex-col justify-center items-start relative overflow-hidden">
+        <div className="bg-gradient-to-br from-gray-900 to-gray-800 border-t-4 border-gold rounded-xl shadow-sm p-8 text-white flex flex-col justify-center items-start relative overflow-hidden">
           <div className="absolute top-0 right-0 p-8 opacity-10">
             <svg className="w-32 h-32" fill="currentColor" viewBox="0 0 20 20"><path fillRule="evenodd" d="M18 10c0 3.866-3.582 7-8 7a8.841 8.841 0 01-4.083-.98L2 17l1.338-3.123C2.493 12.767 2 11.434 2 10c0-3.866 3.582-7 8-7s8 3.134 8 7zM7 9H5v2h2V9zm8 0h-2v2h2V9zM9 9h2v2H9V9z" clipRule="evenodd"></path></svg>
           </div>
           <h3 className="text-2xl font-bold mb-4 z-10">Comunicaciones Centrales</h3>
-          <p className="text-indigo-100 mb-8 z-10 max-w-sm text-sm">
+          <p className="text-brand-100 mb-8 z-10 max-w-sm text-sm">
             Manten contacto directo con el Rectorado y los profesores de los niveles que supervisas para dar seguimiento a los estudiantes.
           </p>
-          <p className="text-xs text-indigo-200 bg-black/20 px-4 py-2 rounded-lg z-10 backdrop-blur-sm">
+          <p className="text-xs text-brand-200 bg-black/20 px-4 py-2 rounded-lg z-10 backdrop-blur-sm">
             💡 Utiliza el botón de "Mensajes" en la barra superior.
           </p>
         </div>

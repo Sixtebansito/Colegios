@@ -36,16 +36,16 @@ export default async function RevisarEntregasPage({
   return (
     <div className="max-w-4xl mx-auto py-8">
       <div className="mb-6">
-        <Link href="/profesor/tareas" className="text-sm font-semibold text-indigo-600 hover:text-indigo-800 flex items-center gap-2">
+        <Link href="/profesor/tareas" className="text-sm font-semibold text-brand-600 hover:text-brand-800 flex items-center gap-2">
           <ArrowLeft className="w-4 h-4" /> Volver a Tareas
         </Link>
       </div>
 
       <div className="bg-white shadow-sm ring-1 ring-gray-900/5 sm:rounded-xl overflow-hidden mb-8">
-        <div className="bg-[#004a8f] px-6 py-5">
+        <div className="bg-[#111827] px-6 py-5">
           <div className="flex items-center justify-between">
-            <span className="text-xs font-semibold text-blue-200 uppercase tracking-wider">{tarea.materia.Nombre}</span>
-            <span className="text-sm font-bold text-white bg-blue-800 px-3 py-1 rounded-full">{tarea.Porcentaje}% del Parcial</span>
+            <span className="text-xs font-semibold text-brand-200 uppercase tracking-wider">{tarea.materia.Nombre}</span>
+            <span className="text-sm font-bold text-white bg-brand-800 px-3 py-1 rounded-full">{tarea.Porcentaje}% del Parcial</span>
           </div>
           <h2 className="text-2xl font-bold text-white mt-2">{tarea.Titulo}</h2>
         </div>
@@ -93,10 +93,10 @@ export default async function RevisarEntregasPage({
                         name="calificacion" 
                         defaultValue={entrega.Calificacion || ''}
                         required
-                        className="w-24 rounded-md border-0 py-1.5 pr-8 pl-3 text-gray-900 ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6 font-medium transition-all shadow-inner"
+                        className="w-24 rounded-md border-0 py-1.5 pr-8 pl-3 text-gray-900 ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-brand-600 sm:text-sm sm:leading-6 font-medium transition-all shadow-inner"
                       />
                     </div>
-                    <button type="submit" className="text-xs bg-indigo-600 text-white font-semibold px-3 py-1.5 rounded-md hover:bg-indigo-500 shadow-sm transition-colors">
+                    <button type="submit" className="text-xs bg-brand-600 text-white font-semibold px-3 py-1.5 rounded-md hover:bg-brand-500 shadow-sm transition-colors">
                       Guardar
                     </button>
                   </form>

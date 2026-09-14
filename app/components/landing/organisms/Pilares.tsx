@@ -1,58 +1,63 @@
-import { BookOpen, Users, ShieldCheck, Monitor } from 'lucide-react';
+import { SectionTitle } from '../atoms/Elements'
+import ContentCard, { ContentCardProps } from '../molecules/ContentCard'
 
 export default function Pilares() {
-  const pilares = [
+  const cards: ContentCardProps[] = [
     {
-      title: 'Excelencia Académica',
-      description: 'Metodologías actualizadas y un equipo docente altamente calificado para el éxito estudiantil.',
-      icon: BookOpen,
+      number: '01',
+      title: 'Disciplina Consciente',
+      description:
+        'Cultivamos el orden, la puntualidad y la constancia no por imposición, sino como la vía para alcanzar la maestría en cada desafío.',
+      icon: '🛡️',
+      badge: 'Carácter',
+      actionLabel: 'Conocer doctrina',
+      href: '#contacto',
     },
     {
-      title: 'Tecnología de Punta',
-      description: 'Entorno Virtual de Aprendizaje (EVA) y recursos digitales integrados en cada clase.',
-      icon: Monitor,
+      number: '02',
+      title: 'Honor y Lealtad',
+      description:
+        'Inculcamos el amor a la patria, la integridad moral intachable y el respeto profundo a los símbolos patrios y a la sociedad.',
+      icon: '⚔️',
+      badge: 'Ética',
+      actionLabel: 'Código de honor',
+      href: '#contacto',
     },
     {
-      title: 'Comunidad Integrada',
-      description: 'Comunicación fluida entre padres, profesores y alumnos a través de nuestro chat global.',
-      icon: Users,
+      number: '03',
+      title: 'Excelencia Científica',
+      description:
+        'Combinamos el método científico con una sólida preparación en matemáticas, ciencias experimentales, tecnología y pensamiento crítico.',
+      icon: '📐',
+      badge: 'Academia',
+      actionLabel: 'Ver investigación',
+      href: '#niveles',
     },
     {
-      title: 'Seguridad y Bienestar',
-      description: 'Instalaciones seguras y un equipo de apoyo psicopedagógico permanente.',
-      icon: ShieldCheck,
+      number: '04',
+      title: 'Liderazgo y Servicio',
+      description:
+        'Formamos cadetes capaces de asumir la iniciativa, trabajar en equipo bajo presión y actuar con vocación de servicio hacia la nación.',
+      icon: '⭐',
+      badge: 'Liderazgo',
+      actionLabel: 'Plan formativo',
+      href: '#admisiones',
     },
-  ];
+  ]
 
   return (
-    <section id="nosotros" className="py-20 md:py-28 bg-white">
-      <div className="mx-auto max-w-[1440px] px-5 sm:px-8 md:px-[32px] xl:px-[80px]">
-        <div className="text-center max-w-3xl mx-auto mb-16">
-          <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">¿Por qué elegirnos?</h2>
-          <p className="text-lg text-gray-600">Nuestra propuesta de valor se basa en cuatro pilares fundamentales que garantizan el desarrollo integral de nuestros estudiantes.</p>
-        </div>
-
-        {/* Grid Responsive: 1 col (mobile), 2 cols (tablet), 4 cols (desktop) */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 md:gap-[24px]">
-          {pilares.map((pilar, index) => {
-            const Icon = pilar.icon;
-            return (
-              <div key={index} className="flex flex-col p-8 bg-gray-50 rounded-2xl border border-gray-100 hover:shadow-lg transition-shadow">
-                <div className="w-14 h-14 bg-indigo-100 text-indigo-600 rounded-xl flex items-center justify-center mb-6">
-                  <Icon className="w-7 h-7" />
-                </div>
-                <h3 className="text-xl font-bold text-gray-900 mb-3">{pilar.title}</h3>
-                <p className="text-gray-600 flex-1 leading-relaxed">
-                  {pilar.description}
-                </p>
-                <a href="#contacto" className="mt-6 text-indigo-600 font-semibold flex items-center gap-2 hover:gap-3 transition-all">
-                  Saber más <span aria-hidden="true">&rarr;</span>
-                </a>
-              </div>
-            );
-          })}
+    <section id="nosotros" className="landing-section alt-bg">
+      <div className="landing-container">
+        <SectionTitle
+          title="Propuesta y Valores Institucionales"
+          description="Nuestra formación integra el rigor académico y los valores marciales para forjar ciudadanos de honor, temple y excelencia."
+        />
+        <div className="landing-grid">
+          {cards.map((card) => (
+            <ContentCard key={card.number} {...card} />
+          ))}
         </div>
       </div>
     </section>
-  );
+  )
 }

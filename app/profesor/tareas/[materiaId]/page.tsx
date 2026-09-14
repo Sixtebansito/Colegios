@@ -59,7 +59,7 @@ export default async function TareasPorMateriaPage({
               <Link
                 key={p.PeriodoID}
                 href={`/profesor/tareas/${materia.MateriaID}?periodo=${p.PeriodoID}`}
-                className={`px-4 py-1.5 text-sm rounded-lg whitespace-nowrap transition-colors ${p.PeriodoID === selectedPeriodoId ? 'bg-indigo-600 text-white font-medium shadow-sm' : 'bg-gray-100 text-gray-700 hover:bg-gray-200'}`}
+                className={`px-4 py-1.5 text-sm rounded-lg whitespace-nowrap transition-colors ${p.PeriodoID === selectedPeriodoId ? 'bg-brand-600 text-white font-medium shadow-sm' : 'bg-gray-100 text-gray-700 hover:bg-gray-200'}`}
               >
                 {p.Nombre}
               </Link>
@@ -68,7 +68,7 @@ export default async function TareasPorMateriaPage({
         </div>
         <Link
           href={`/profesor/tareas/nueva?materiaId=${materia.MateriaID}`}
-          className="inline-flex items-center gap-2 rounded-lg bg-indigo-600 px-4 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 transition-colors whitespace-nowrap ml-4"
+          className="inline-flex items-center gap-2 rounded-lg bg-brand-600 px-4 py-2 text-sm font-semibold text-white shadow-sm hover:bg-brand-500 transition-colors whitespace-nowrap ml-4"
         >
           <Plus className="h-4 w-4" />
           Nueva Tarea
@@ -80,7 +80,7 @@ export default async function TareasPorMateriaPage({
           <div key={tarea.TareaID} className="bg-white rounded-xl shadow-sm ring-1 ring-gray-900/5 overflow-hidden flex flex-col">
             <div className="p-6 flex-1">
               <div className="flex items-center justify-between mb-2">
-                <span className="inline-flex items-center rounded-md bg-blue-50 px-2 py-1 text-xs font-medium text-blue-700 ring-1 ring-inset ring-blue-700/10">
+                <span className="inline-flex items-center rounded-md bg-brand-50 px-2 py-1 text-xs font-medium text-brand-700 ring-1 ring-inset ring-brand-700/10">
                   {tarea.Tipo}
                 </span>
                 <span className="text-sm font-bold text-gray-900">{tarea.Porcentaje}%</span>
@@ -90,7 +90,7 @@ export default async function TareasPorMateriaPage({
             </div>
             <div className="border-t border-gray-100 bg-gray-50 px-6 py-4 flex justify-between items-center">
               <span className="text-sm font-medium text-gray-600">{tarea.entregas.length} entregas</span>
-              <Link href={`/profesor/tareas/detalle/${tarea.TareaID}`} className="text-sm font-bold text-indigo-600 hover:text-indigo-800 transition-colors">Ver Detalles &rarr;</Link>
+              <Link href={`/profesor/tareas/detalle/${tarea.TareaID}`} className="text-sm font-bold text-brand-600 hover:text-brand-800 transition-colors">Ver Detalles &rarr;</Link>
             </div>
           </div>
         ))}

@@ -35,7 +35,7 @@ export default async function TareasDashboardPage() {
           <div key={materia.MateriaID} className="bg-white rounded-2xl shadow-sm ring-1 ring-gray-900/5 hover:shadow-md transition-shadow flex flex-col overflow-hidden">
             <div className="p-6 flex-1">
               <div className="flex items-center gap-3 mb-4">
-                <div className="p-3 bg-indigo-50 text-indigo-600 rounded-xl">
+                <div className="p-3 bg-brand-50 text-brand-600 rounded-xl">
                   <BookOpen className="w-6 h-6" />
                 </div>
                 <div>
@@ -54,7 +54,7 @@ export default async function TareasDashboardPage() {
             <div className="px-6 py-4 bg-gray-50 border-t border-gray-100">
               <Link 
                 href={`/profesor/tareas/${materia.MateriaID}`}
-                className="flex w-full items-center justify-center gap-2 px-4 py-2 text-sm font-semibold text-indigo-600 bg-indigo-50 rounded-lg hover:bg-indigo-100 transition-colors"
+                className="flex w-full items-center justify-center gap-2 px-4 py-2 text-sm font-semibold text-brand-600 bg-brand-50 rounded-lg hover:bg-brand-100 transition-colors"
               >
                 Ver Tareas &rarr;
               </Link>

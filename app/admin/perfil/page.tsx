@@ -34,7 +34,7 @@ export default async function PerfilAdminPage() {
           </div>
           <div>
             <h4 className="text-sm font-medium text-gray-500">Rol</h4>
-            <p className="mt-1 text-base text-gray-900">{user.rol.Nombre}</p>
+            <p className="mt-1 text-base text-gray-900">{user.rol?.Nombre ?? 'Sin rol asignado'}</p>
           </div>
         </div>
       </div>

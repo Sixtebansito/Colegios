@@ -110,7 +110,7 @@ export default async function ProfesorRecalificacionesPage({
                         {isPendiente && !isResolving && (
                           <Link
                             href={`/profesor/recalificaciones?resolve=${s.SolicitudID}`}
-                            className="text-indigo-600 hover:text-indigo-900 font-medium"
+                            className="text-brand-600 hover:text-brand-900 font-medium"
                           >
                             Resolver
                           </Link>
@@ -129,7 +129,7 @@ export default async function ProfesorRecalificacionesPage({
                             <select
                               name="decision"
                               required
-                              className="rounded-md border-0 py-1.5 text-gray-900 ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-indigo-600 sm:text-sm"
+                              className="rounded-md border-0 py-1.5 text-gray-900 ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-brand-600 sm:text-sm"
                             >
                               <option value="Aprobada">Aprobar</option>
                               <option value="Rechazada">Rechazar</option>
@@ -142,17 +142,17 @@ export default async function ProfesorRecalificacionesPage({
                               name="notaNueva"
                               placeholder="Nueva nota"
                               defaultValue={s.nota?.Nota.toString()}
-                              className="w-28 rounded-md border-0 py-1.5 text-gray-900 ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-indigo-600 sm:text-sm"
+                              className="w-28 rounded-md border-0 py-1.5 text-gray-900 ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-brand-600 sm:text-sm"
                             />
                             <input
                               type="text"
                               name="comentario"
                               placeholder="Comentario (opcional)"
-                              className="flex-1 min-w-[200px] rounded-md border-0 py-1.5 text-gray-900 ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-indigo-600 sm:text-sm"
+                              className="flex-1 min-w-[200px] rounded-md border-0 py-1.5 text-gray-900 ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-brand-600 sm:text-sm"
                             />
                             <button
                               type="submit"
-                              className="text-xs bg-indigo-50 text-indigo-600 font-semibold px-3 py-1.5 rounded hover:bg-indigo-100"
+                              className="text-xs bg-brand-50 text-brand-600 font-semibold px-3 py-1.5 rounded hover:bg-brand-100"
                             >
                               Guardar
                             </button>

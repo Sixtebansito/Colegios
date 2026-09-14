@@ -5,6 +5,26 @@
   --color-foreground: #171717;
 }
 
+@theme inline {
+  --font-sans: var(--font-institutional-sans), Arial, sans-serif;
+}
+
+@theme {
+  --color-brand-50: #fffbeb;
+  --color-brand-100: #fef3c7;
+  --color-brand-200: #fde68a;
+  --color-brand-300: #fcd34d;
+  --color-brand-400: #fbbf24;
+  --color-brand-500: #d97706;
+  --color-brand-600: #92400e;
+  --color-brand-700: #78350f;
+  --color-brand-800: #451a03;
+  --color-brand-900: #111827;
+  --color-brand-950: #030712;
+  --color-institutional: #111827;
+  --color-gold: #f59e0b;
+}
+
 @layer base {
   :root {
     --background: #ffffff;

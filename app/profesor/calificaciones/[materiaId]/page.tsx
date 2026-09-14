@@ -76,7 +76,7 @@ export default async function CalificacionesPorMateriaPage({
               <Link
                 key={p.PeriodoID}
                 href={`/profesor/calificaciones/${materia.MateriaID}?periodo=${p.PeriodoID}`}
-                className={`px-4 py-1.5 text-sm rounded-lg whitespace-nowrap transition-colors ${p.PeriodoID === selectedPeriodoId ? 'bg-indigo-600 text-white font-medium shadow-sm' : 'bg-gray-100 text-gray-700 hover:bg-gray-200'}`}
+                className={`px-4 py-1.5 text-sm rounded-lg whitespace-nowrap transition-colors ${p.PeriodoID === selectedPeriodoId ? 'bg-brand-600 text-white font-medium shadow-sm' : 'bg-gray-100 text-gray-700 hover:bg-gray-200'}`}
               >
                 {p.Nombre}
               </Link>
@@ -116,10 +116,10 @@ export default async function CalificacionesPorMateriaPage({
                             type="number" step="0.01" min="0" max="10" name="nota" 
                             defaultValue={estudiante.notaObj?.Nota || ''} 
                             required
-                            className="w-24 rounded-md border-0 py-1.5 pr-8 pl-3 text-gray-900 ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-indigo-600 sm:text-sm shadow-inner transition-all font-medium"
+                            className="w-24 rounded-md border-0 py-1.5 pr-8 pl-3 text-gray-900 ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-brand-600 sm:text-sm shadow-inner transition-all font-medium"
                           />
                         </div>
-                        <button type="submit" className="text-xs bg-indigo-600 text-white font-semibold px-3 py-1.5 rounded-md hover:bg-indigo-500 shadow-sm transition-colors">Guardar</button>
+                        <button type="submit" className="text-xs bg-brand-600 text-white font-semibold px-3 py-1.5 rounded-md hover:bg-brand-500 shadow-sm transition-colors">Guardar</button>
                         <Link href={`/profesor/calificaciones/${materia.MateriaID}?periodo=${selectedPeriodoId}`} className="text-xs font-medium text-gray-500 hover:text-gray-900 ml-2">Cancelar</Link>
                       </form>
                     ) : (
@@ -138,7 +138,7 @@ export default async function CalificacionesPorMateriaPage({
                     {!isEditing && (
                       <Link
                         href={`/profesor/calificaciones/${materia.MateriaID}?periodo=${selectedPeriodoId}&edit=${estudiante.EstudianteID}`}
-                        className="text-indigo-600 hover:text-indigo-900 font-medium"
+                        className="text-brand-600 hover:text-brand-900 font-medium"
                       >
                         {estudiante.notaObj ? 'Editar' : 'Calificar'}
                       </Link>

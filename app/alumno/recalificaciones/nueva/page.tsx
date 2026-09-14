@@ -48,15 +48,15 @@ export default async function NuevaRecalificacionPage({
   return (
     <div className="max-w-2xl mx-auto py-8">
       <div className="mb-6">
-        <Link href="/alumno/notas" className="text-sm font-semibold text-indigo-600 hover:text-indigo-800 flex items-center gap-2">
+        <Link href="/alumno/notas" className="text-sm font-semibold text-brand-600 hover:text-brand-800 flex items-center gap-2">
           <ArrowLeft className="w-4 h-4" /> Volver a Mis Notas
         </Link>
       </div>
 
       <div className="bg-white shadow-sm ring-1 ring-gray-900/5 sm:rounded-xl overflow-hidden">
-        <div className="bg-[#004a8f] px-6 py-6">
+        <div className="bg-[#111827] px-6 py-6">
           <h2 className="text-xl font-bold text-white">Solicitar Recalificación</h2>
-          <p className="text-blue-200 text-sm mt-1">
+          <p className="text-brand-200 text-sm mt-1">
             {nota.materia?.Nombre} &middot; {nota.periodo?.Nombre}
           </p>
         </div>
@@ -74,7 +74,7 @@ export default async function NuevaRecalificacionPage({
               <p className="text-sm font-medium text-amber-800">
                 Ya tienes una solicitud pendiente para esta nota. Debes esperar la resolución del profesor antes de enviar otra.
               </p>
-              <Link href="/alumno/recalificaciones" className="mt-4 inline-block text-sm font-semibold text-indigo-600 hover:text-indigo-800">
+              <Link href="/alumno/recalificaciones" className="mt-4 inline-block text-sm font-semibold text-brand-600 hover:text-brand-800">
                 Ver mis solicitudes
               </Link>
             </div>
@@ -100,7 +100,7 @@ export default async function NuevaRecalificacionPage({
                   minLength={MOTIVO_MIN_LENGTH}
                   maxLength={MOTIVO_MAX_LENGTH}
                   placeholder="Explica por qué consideras que esta nota debería revisarse..."
-                  className="mt-2 block w-full rounded-md border-0 py-2 px-3 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                  className="mt-2 block w-full rounded-md border-0 py-2 px-3 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-brand-600 sm:text-sm sm:leading-6"
                 />
               </div>
 
@@ -110,7 +110,7 @@ export default async function NuevaRecalificacionPage({
                 </Link>
                 <button
                   type="submit"
-                  className="rounded-md bg-indigo-600 px-6 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+                  className="rounded-md bg-brand-600 px-6 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-brand-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-600"
                 >
                   Enviar Solicitud
                 </button>

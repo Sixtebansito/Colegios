@@ -61,7 +61,7 @@ export default async function AlumnoDashboard() {
         {/* Calendario: Tareas Próximas */}
         <div className="lg:col-span-1 bg-white rounded-2xl shadow-sm border border-gray-100 p-6 flex flex-col">
           <div className="flex items-center gap-2 mb-6 border-b pb-4">
-            <CalendarIcon className="text-indigo-600 w-6 h-6" />
+            <CalendarIcon className="text-brand-600 w-6 h-6" />
             <h2 className="text-xl font-bold text-gray-800">Calendario (Próximas Tareas)</h2>
           </div>
           
@@ -88,7 +88,7 @@ export default async function AlumnoDashboard() {
               </div>
             )}
           </div>
-          <Link href="/alumno/tareas" className="mt-4 text-center text-sm font-semibold text-indigo-600 hover:text-indigo-800 transition-colors">
+          <Link href="/alumno/tareas" className="mt-4 text-center text-sm font-semibold text-brand-600 hover:text-brand-800 transition-colors">
             Ver todas mis tareas &rarr;
           </Link>
         </div>
@@ -96,7 +96,7 @@ export default async function AlumnoDashboard() {
         {/* Horario Resumido */}
         <div className="lg:col-span-2 bg-white rounded-2xl shadow-sm border border-gray-100 p-6 flex flex-col">
           <div className="flex items-center gap-2 mb-6 border-b pb-4">
-            <Clock className="text-teal-600 w-6 h-6" />
+            <Clock className="text-brand-600 w-6 h-6" />
             <h2 className="text-xl font-bold text-gray-800">Horario de Clases</h2>
           </div>
 
@@ -111,8 +111,8 @@ export default async function AlumnoDashboard() {
                     </div>
                     {clasesHoy.length > 0 ? (
                       clasesHoy.map(c => (
-                        <div key={c.HorarioID} className="bg-teal-50 border border-teal-100 p-2 rounded-lg shadow-sm text-center">
-                          <div className="text-[11px] font-semibold text-teal-800 leading-tight">{c.materia?.Nombre}</div>
+                        <div key={c.HorarioID} className="bg-brand-50 border border-brand-100 p-2 rounded-lg shadow-sm text-center">
+                          <div className="text-[11px] font-semibold text-brand-800 leading-tight">{c.materia?.Nombre}</div>
                           <div className="text-[10px] text-gray-500 mt-1">{c.HoraInicio} - {c.HoraFin}</div>
                         </div>
                       ))
@@ -124,7 +124,7 @@ export default async function AlumnoDashboard() {
               })}
             </div>
           </div>
-          <Link href="/alumno/horario" className="mt-6 text-center text-sm font-semibold text-teal-600 hover:text-teal-800 transition-colors">
+          <Link href="/alumno/horario" className="mt-6 text-center text-sm font-semibold text-brand-600 hover:text-brand-800 transition-colors">
             Ver horario completo &rarr;
           </Link>
         </div>
@@ -139,7 +139,7 @@ export default async function AlumnoDashboard() {
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8">
         {materias.map(materia => (
           <Link href={`/alumno/tareas?materia=${materia.MateriaID}`} key={materia.MateriaID} className="group flex flex-col bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden hover:shadow-xl hover:-translate-y-1 transition-all duration-300">
-            <div className="h-32 bg-indigo-600 relative overflow-hidden flex items-center justify-center p-6">
+            <div className="portal-course-banner h-32 relative overflow-hidden flex items-center justify-center p-6">
               <div className="absolute inset-0 opacity-20 bg-[url('https://www.transparenttextures.com/patterns/cubes.png')] mix-blend-overlay"></div>
               <h3 className="text-xl font-bold text-white text-center z-10 drop-shadow-md">{materia.Nombre}</h3>
             </div>
@@ -148,7 +148,7 @@ export default async function AlumnoDashboard() {
               <p className="text-sm text-gray-500 mb-4">Prof. {materia.profesor?.Nombre} {materia.profesor?.Apellido}</p>
               
               <div className="mt-auto pt-4 border-t border-gray-100 flex items-center justify-between">
-                <span className="text-sm font-medium text-indigo-600">Ver Actividades &rarr;</span>
+                <span className="text-sm font-medium text-brand-600">Ver Actividades &rarr;</span>
                 <span className="inline-flex items-center rounded-full bg-green-50 px-2 py-1 text-xs font-medium text-green-700 ring-1 ring-inset ring-green-600/20">
                   En progreso
                 </span>

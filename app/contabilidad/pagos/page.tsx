@@ -17,7 +17,7 @@ export default async function TodosPagosPage() {
           <h2 className="text-2xl font-bold text-gray-900">Todos los Pagos de Alumnos</h2>
           <p className="mt-1 text-sm text-gray-500">Historial completo de mensualidades de estudiantes.</p>
         </div>
-        <Link href="/contabilidad" className="text-sm text-emerald-600 font-semibold">&larr; Volver al Dashboard</Link>
+        <Link href="/contabilidad" className="text-sm text-brand-600 font-semibold">&larr; Volver al Dashboard</Link>
       </div>
 
       <div className="bg-white shadow-sm ring-1 ring-gray-900/5 sm:rounded-xl overflow-hidden">

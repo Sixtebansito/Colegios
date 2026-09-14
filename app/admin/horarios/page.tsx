@@ -45,14 +45,14 @@ export default async function AdminHorariosPage({
             <select 
               name="grado" 
               defaultValue={selectedGradoId || ''} 
-              className="mt-1 block w-full rounded-md border-gray-300 py-2 pl-3 pr-10 text-base focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 sm:text-sm ring-1 ring-inset ring-gray-300"
+              className="mt-1 block w-full rounded-md border-gray-300 py-2 pl-3 pr-10 text-base focus:border-brand-500 focus:outline-none focus:ring-brand-500 sm:text-sm ring-1 ring-inset ring-gray-300"
             >
               {grados.map(g => (
                 <option key={g.GradoID} value={g.GradoID}>{g.Nombre} {g.Paralelo}</option>
               ))}
             </select>
           </div>
-          <button type="submit" className="mb-1 rounded-md bg-indigo-600 px-4 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">
+          <button type="submit" className="mb-1 rounded-md bg-brand-600 px-4 py-2 text-sm font-semibold text-white shadow-sm hover:bg-brand-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-600">
             Cargar
           </button>
         </form>
@@ -68,21 +68,21 @@ export default async function AdminHorariosPage({
                 
                 <div>
                   <label className="block text-sm font-medium text-gray-700">Día</label>
-                  <select name="dia" required className="mt-1 block w-full rounded-md border-gray-300 py-2 pl-3 pr-10 text-base focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 sm:text-sm ring-1 ring-inset ring-gray-300">
+                  <select name="dia" required className="mt-1 block w-full rounded-md border-gray-300 py-2 pl-3 pr-10 text-base focus:border-brand-500 focus:outline-none focus:ring-brand-500 sm:text-sm ring-1 ring-inset ring-gray-300">
                     {dias.map(d => <option key={d} value={d}>{d}</option>)}
                   </select>
                 </div>
 
                 <div>
                   <label className="block text-sm font-medium text-gray-700">Materia</label>
-                  <select name="materiaId" required className="mt-1 block w-full rounded-md border-gray-300 py-2 pl-3 pr-10 text-base focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 sm:text-sm ring-1 ring-inset ring-gray-300">
+                  <select name="materiaId" required className="mt-1 block w-full rounded-md border-gray-300 py-2 pl-3 pr-10 text-base focus:border-brand-500 focus:outline-none focus:ring-brand-500 sm:text-sm ring-1 ring-inset ring-gray-300">
                     {materias.map(m => <option key={m.MateriaID} value={m.MateriaID}>{m.Nombre}</option>)}
                   </select>
                 </div>
 
                 <div>
                   <label className="block text-sm font-medium text-gray-700">Profesor Asignado</label>
-                  <select name="profesorId" required className="mt-1 block w-full rounded-md border-gray-300 py-2 pl-3 pr-10 text-base focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 sm:text-sm ring-1 ring-inset ring-gray-300">
+                  <select name="profesorId" required className="mt-1 block w-full rounded-md border-gray-300 py-2 pl-3 pr-10 text-base focus:border-brand-500 focus:outline-none focus:ring-brand-500 sm:text-sm ring-1 ring-inset ring-gray-300">
                     <option value="">Seleccione un profesor</option>
                     {profesores.map(p => <option key={p.ProfesorID} value={p.ProfesorID}>{p.Nombre} {p.Apellido}</option>)}
                   </select>
@@ -91,15 +91,15 @@ export default async function AdminHorariosPage({
                 <div className="grid grid-cols-2 gap-4">
                   <div>
                     <label className="block text-sm font-medium text-gray-700">Hora Inicio</label>
-                    <input type="time" name="horaInicio" required className="mt-1 block w-full rounded-md border-gray-300 py-2 px-3 focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 sm:text-sm ring-1 ring-inset ring-gray-300" />
+                    <input type="time" name="horaInicio" required className="mt-1 block w-full rounded-md border-gray-300 py-2 px-3 focus:border-brand-500 focus:outline-none focus:ring-brand-500 sm:text-sm ring-1 ring-inset ring-gray-300" />
                   </div>
                   <div>
                     <label className="block text-sm font-medium text-gray-700">Hora Fin</label>
-                    <input type="time" name="horaFin" required className="mt-1 block w-full rounded-md border-gray-300 py-2 px-3 focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 sm:text-sm ring-1 ring-inset ring-gray-300" />
+                    <input type="time" name="horaFin" required className="mt-1 block w-full rounded-md border-gray-300 py-2 px-3 focus:border-brand-500 focus:outline-none focus:ring-brand-500 sm:text-sm ring-1 ring-inset ring-gray-300" />
                   </div>
                 </div>
 
-                <button type="submit" className="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+                <button type="submit" className="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-brand-600 hover:bg-brand-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-brand-500">
                   Añadir al Horario
                 </button>
               </form>
@@ -129,8 +129,8 @@ export default async function AdminHorariosPage({
                           return (
                             <td key={`${dia}-${hora}`} className="px-3 py-4 text-sm text-gray-500 relative min-w-[120px] align-top border-l border-gray-100">
                               {clasesEnEsteBloque.map(clase => (
-                                <div key={clase.HorarioID} className="bg-indigo-50 border border-indigo-100 rounded-md p-2 mb-2 text-left">
-                                  <div className="font-semibold text-indigo-700 text-xs">{clase.materia?.Nombre}</div>
+                                <div key={clase.HorarioID} className="bg-brand-50 border border-brand-100 rounded-md p-2 mb-2 text-left">
+                                  <div className="font-semibold text-brand-700 text-xs">{clase.materia?.Nombre}</div>
                                   <div className="text-[10px] text-gray-500">{clase.HoraInicio} - {clase.HoraFin}</div>
                                   <div className="text-[10px] font-medium text-gray-700 truncate">{clase.materia?.profesor?.Nombre} {clase.materia?.profesor?.Apellido}</div>
                                   <form action={`/api/horarios/${clase.HorarioID}/delete`} method="POST" className="mt-1">

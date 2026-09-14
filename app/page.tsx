@@ -1,10 +1,13 @@
 import { getSession } from '@/lib/auth'
 import { redirect } from 'next/navigation'
-import Header from './components/landing/organisms/Header'
-import Hero from './components/landing/organisms/Hero'
-import Pilares from './components/landing/organisms/Pilares'
-import FormularioContacto from './components/landing/organisms/FormularioContacto'
-import Footer from './components/landing/organisms/Footer'
+import type { Metadata } from 'next'
+import LandingTemplate from './components/landing/templates/LandingTemplate'
+
+export const metadata: Metadata = {
+  title: 'Colegio Militar Institucional | Honor, Disciplina y Excelencia',
+  description:
+    'Formación cívico-militar, excelencia académica, liderazgo y valores para cadetes de Educación Inicial, Básica y Bachillerato.',
+}
 
 export default async function Home() {
   const session = await getSession()
@@ -17,15 +20,5 @@ export default async function Home() {
     if (session.roleId === 4) redirect('/contabilidad')
   }
 
-  return (
-    <div className="flex flex-col min-h-screen font-sans bg-white selection:bg-indigo-100 selection:text-indigo-900">
-      <Header />
-      <main className="flex-1">
-        <Hero />
-        <Pilares />
-        <FormularioContacto />
-      </main>
-      <Footer />
-    </div>
-  )
+  return <LandingTemplate />
 }

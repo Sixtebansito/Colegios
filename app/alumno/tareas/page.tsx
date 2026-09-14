@@ -40,7 +40,7 @@ export default async function AlumnoTareasPage({
           {materias.map(materia => (
             <div key={materia.MateriaID} className="bg-white rounded-2xl shadow-sm border border-gray-100 p-6 flex flex-col hover:shadow-md transition-shadow">
               <div className="flex items-center gap-3 mb-4">
-                <div className="p-3 bg-indigo-50 text-indigo-600 rounded-lg">
+                <div className="p-3 bg-brand-50 text-brand-600 rounded-lg">
                   <BookOpen className="w-6 h-6" />
                 </div>
                 <div>
@@ -50,7 +50,7 @@ export default async function AlumnoTareasPage({
               </div>
               <Link 
                 href={`/alumno/tareas?materia=${materia.MateriaID}&periodo=${selectedPeriodoId}`} 
-                className="mt-4 w-full block text-center bg-indigo-50 text-indigo-700 font-semibold py-2 rounded-lg hover:bg-indigo-100 transition-colors"
+                className="mt-4 w-full block text-center bg-brand-50 text-brand-700 font-semibold py-2 rounded-lg hover:bg-brand-100 transition-colors"
               >
                 Ver tareas
               </Link>
@@ -84,7 +84,7 @@ export default async function AlumnoTareasPage({
   return (
     <div className="max-w-6xl mx-auto py-8">
       <div className="flex items-center gap-4 mb-6">
-        <Link href="/alumno/tareas" className="text-indigo-600 font-medium hover:underline text-sm">&larr; Volver a Cursos</Link>
+        <Link href="/alumno/tareas" className="text-brand-600 font-medium hover:underline text-sm">&larr; Volver a Cursos</Link>
         <h2 className="text-2xl font-bold text-gray-900">Tareas de {materiaInfo?.Nombre}</h2>
       </div>
 
@@ -96,7 +96,7 @@ export default async function AlumnoTareasPage({
               <Link
                 key={p.PeriodoID}
                 href={`/alumno/tareas?materia=${selectedMateriaId}&periodo=${p.PeriodoID}`}
-                className={`px-3 py-1 text-sm rounded-md whitespace-nowrap ${p.PeriodoID === selectedPeriodoId ? 'bg-indigo-100 text-indigo-700 font-bold' : 'bg-gray-100 text-gray-700 hover:bg-gray-200 transition-colors'}`}
+                className={`px-3 py-1 text-sm rounded-md whitespace-nowrap ${p.PeriodoID === selectedPeriodoId ? 'bg-brand-100 text-brand-700 font-bold' : 'bg-gray-100 text-gray-700 hover:bg-gray-200 transition-colors'}`}
               >
                 {p.Nombre}
               </Link>
@@ -112,7 +112,7 @@ export default async function AlumnoTareasPage({
             <div key={tarea.TareaID} className="bg-white rounded-xl shadow-sm ring-1 ring-gray-900/5 overflow-hidden flex flex-col">
               <div className="p-6 flex-1">
                 <div className="flex items-center justify-between mb-2">
-                  <span className="text-sm font-bold text-indigo-600">Valor: {tarea.Porcentaje}%</span>
+                  <span className="text-sm font-bold text-brand-600">Valor: {tarea.Porcentaje}%</span>
                 </div>
                 <h3 className="text-lg font-semibold text-gray-900">{tarea.Titulo}</h3>
                 <p className="mt-2 text-sm text-gray-500 line-clamp-3">{tarea.Descripcion}</p>
@@ -134,7 +134,7 @@ export default async function AlumnoTareasPage({
                     {entrega.Calificacion !== null && <span className="text-xs font-bold text-gray-900">Nota: {entrega.Calificacion}/10</span>}
                   </div>
                 ) : (
-                  <button className="text-sm font-semibold text-indigo-600 hover:text-indigo-900">Subir Entrega</button>
+                  <button className="text-sm font-semibold text-brand-600 hover:text-brand-900">Subir Entrega</button>
                 )}
               </div>
             </div>

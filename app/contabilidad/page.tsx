@@ -35,10 +35,10 @@ export default async function ContabilidadDashboard() {
         <div className="bg-white rounded-xl shadow-sm ring-1 ring-gray-900/5 p-6 lg:col-span-2">
           <div className="flex items-center justify-between border-b pb-4 mb-4">
             <h3 className="text-lg font-bold text-gray-900 flex items-center gap-2">
-              <DollarSign className="w-5 h-5 text-emerald-600" />
+              <DollarSign className="w-5 h-5 text-brand-600" />
               Últimos Pagos de Alumnos
             </h3>
-            <Link href="/contabilidad/pagos" className="text-sm font-semibold text-emerald-600 hover:text-emerald-800">Ver todos &rarr;</Link>
+            <Link href="/contabilidad/pagos" className="text-sm font-semibold text-brand-600 hover:text-brand-800">Ver todos &rarr;</Link>
           </div>
           <div className="overflow-x-auto">
             <table className="min-w-full divide-y divide-gray-200">
@@ -81,7 +81,7 @@ export default async function ContabilidadDashboard() {
         <div className="bg-white rounded-xl shadow-sm ring-1 ring-gray-900/5 p-6">
           <div className="flex items-center justify-between border-b pb-4 mb-4">
             <h3 className="text-lg font-bold text-gray-900 flex items-center gap-2">
-              <Users className="w-5 h-5 text-emerald-600" />
+              <Users className="w-5 h-5 text-brand-600" />
               Nómina Reciente
             </h3>
           </div>
@@ -109,10 +109,10 @@ export default async function ContabilidadDashboard() {
         <div className="bg-white rounded-xl shadow-sm ring-1 ring-gray-900/5 p-6 lg:col-span-3">
           <div className="flex items-center justify-between border-b pb-4 mb-4">
             <h3 className="text-lg font-bold text-gray-900 flex items-center gap-2">
-              <Wallet className="w-5 h-5 text-emerald-600" />
+              <Wallet className="w-5 h-5 text-brand-600" />
               Gastos Operativos
             </h3>
-            <Link href="/contabilidad/gastos/nuevo" className="text-sm font-semibold bg-emerald-50 text-emerald-700 px-3 py-1 rounded-md hover:bg-emerald-100 transition-colors">
+            <Link href="/contabilidad/gastos/nuevo" className="text-sm font-semibold bg-brand-50 text-brand-700 px-3 py-1 rounded-md hover:bg-brand-100 transition-colors">
               + Registrar Gasto
             </Link>
           </div>

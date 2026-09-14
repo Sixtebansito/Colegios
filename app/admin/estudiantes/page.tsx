@@ -21,7 +21,7 @@ export default async function AdminEstudiantesPage() {
           <p className="mt-2 text-sm text-gray-700">Listado de todos los estudiantes registrados en el colegio.</p>
         </div>
         <div className="mt-4 sm:ml-16 sm:mt-0 sm:flex-none">
-          <button type="button" className="block rounded-md bg-indigo-600 px-3 py-2 text-center text-sm font-semibold text-white shadow-sm hover:bg-indigo-500">
+          <button type="button" className="block rounded-md bg-brand-600 px-3 py-2 text-center text-sm font-semibold text-white shadow-sm hover:bg-brand-500">
             Agregar Estudiante
           </button>
         </div>
@@ -49,7 +49,7 @@ export default async function AdminEstudiantesPage() {
                   {estudiante.matriculas.length > 0 ? estudiante.matriculas[0].grado?.Nombre : 'No matriculado'}
                 </td>
                 <td className="relative whitespace-nowrap py-4 pl-3 pr-4 text-right text-sm font-medium sm:pr-6">
-                  <a href="#" className="text-indigo-600 hover:text-indigo-900">Editar</a>
+                  <a href="#" className="text-brand-600 hover:text-brand-900">Editar</a>
                 </td>
               </tr>
             ))}

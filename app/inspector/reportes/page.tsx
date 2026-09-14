@@ -26,7 +26,7 @@ export default async function InspectorReportesPage() {
     <div className="max-w-7xl mx-auto py-8">
       <div className="flex items-center justify-between mb-8">
         <div className="flex items-center gap-4">
-          <Link href="/inspector" className="text-indigo-600 font-medium hover:underline">&larr; Volver</Link>
+          <Link href="/inspector" className="text-brand-600 font-medium hover:underline">&larr; Volver</Link>
           <h1 className="text-3xl font-bold text-gray-900">Mis Reportes Disciplinarios</h1>
         </div>
         <Link href="/inspector/reportes/nuevo" className="bg-amber-500 text-white px-4 py-2 rounded-lg hover:bg-amber-600 transition-colors shadow-sm flex items-center gap-2 font-medium">

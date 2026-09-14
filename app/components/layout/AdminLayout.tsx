@@ -4,7 +4,7 @@ import { useState } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import ChatWidget from '@/app/components/chat/ChatWidget';
-import { Menu, X, Users, GraduationCap, LayoutDashboard, Database, Settings, Calendar } from 'lucide-react';
+import { Menu, Users, GraduationCap, LayoutDashboard, Database, Settings, Calendar } from 'lucide-react';
 
 export default function AdminLayout({
   children,
@@ -27,11 +27,11 @@ export default function AdminLayout({
   ];
 
   return (
-    <div className="flex h-screen bg-gray-100">
+    <div className="portal-shell flex h-screen bg-gray-100">
       {/* Sidebar Admin (Oscuro, diferente al EVA) */}
-      <aside className={`fixed inset-y-0 left-0 z-40 w-64 bg-gray-900 text-gray-300 transition-transform duration-300 md:relative md:translate-x-0 ${isSidebarOpen ? 'translate-x-0' : '-translate-x-full'}`}>
+      <aside className={`portal-sidebar fixed inset-y-0 left-0 z-40 w-64 bg-gray-900 text-gray-300 transition-transform duration-300 md:relative md:translate-x-0 ${isSidebarOpen ? 'translate-x-0' : '-translate-x-full'}`}>
         <div className="flex h-16 items-center px-6 bg-gray-950">
-          <span className="text-xl font-bold text-white">ERP Colegios</span>
+          <Link href="/admin" className="portal-brand text-white">Colegio Militar <span> / EVA</span></Link>
         </div>
         
         <div className="px-6 py-4 border-b border-gray-800">
@@ -41,14 +41,16 @@ export default function AdminLayout({
 
         <nav className="p-4 space-y-2">
           {navLinks.map((link) => {
-            const isActive = pathname === link.href || pathname.startsWith(link.href + '/');
+            const isActive = pathname === link.href || (link.href !== '/admin' && pathname.startsWith(link.href + '/'));
             const Icon = link.icon;
             return (
               <Link
                 key={link.name}
                 href={link.href}
+                aria-current={isActive ? 'page' : undefined}
+                onClick={() => setIsSidebarOpen(false)}
                 className={`flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-colors ${
-                  isActive ? 'bg-indigo-600 text-white' : 'hover:bg-gray-800 hover:text-white'
+                  isActive ? 'bg-brand-600 text-white' : 'hover:bg-gray-800 hover:text-white'
                 }`}
               >
                 <Icon className="w-5 h-5" />
@@ -69,9 +71,9 @@ export default function AdminLayout({
       </aside>
 
       {/* Main Content */}
-      <div className="flex flex-1 flex-col overflow-hidden">
-        <header className="flex h-16 items-center justify-between bg-white px-6 border-b border-gray-200">
-          <button className="md:hidden text-gray-600" onClick={() => setIsSidebarOpen(!isSidebarOpen)}>
+      <div className="flex min-w-0 flex-1 flex-col overflow-hidden">
+        <header className="portal-topbar flex h-16 items-center justify-between bg-white px-6 border-b border-gray-200">
+          <button aria-label="Abrir menú de administración" aria-expanded={isSidebarOpen} className="md:hidden text-white" onClick={() => setIsSidebarOpen(!isSidebarOpen)}>
             <Menu className="w-6 h-6" />
           </button>
           <div className="flex-1" />
@@ -80,7 +82,7 @@ export default function AdminLayout({
           </div>
         </header>
 
-        <main className="flex-1 overflow-y-auto p-6 lg:p-10">
+        <main className="portal-content flex-1 overflow-y-auto p-6 lg:p-10">
           <div className="max-w-[1440px] mx-auto">
             {children}
           </div>

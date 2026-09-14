@@ -3,6 +3,9 @@ import type { NextRequest } from 'next/server'
 import { getSession, updateSession } from './lib/auth'
 
 export async function proxy(request: NextRequest) {
+  // The logout handler clears the cookie; do not renew it on the same response.
+  if (request.nextUrl.pathname === '/api/logout') return NextResponse.next()
+
   // Update session expiration if present
   const res = await updateSession(request)
   

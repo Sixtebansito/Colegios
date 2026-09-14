@@ -24,13 +24,13 @@ export default async function RectorDashboard() {
 
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
         <Link href="/admin/horarios" className="bg-white p-6 rounded-2xl shadow-sm border border-gray-100 hover:shadow-md transition-shadow flex flex-col items-center justify-center text-center">
-          <Calendar className="h-12 w-12 text-indigo-600 mb-4" />
+          <Calendar className="h-12 w-12 text-brand-600 mb-4" />
           <h3 className="text-lg font-bold text-gray-900">Gestión de Horarios</h3>
           <p className="text-sm text-gray-500 mt-2">Crear y asignar horarios por cursos</p>
         </Link>
         
         <Link href="/admin/cursos" className="bg-white p-6 rounded-2xl shadow-sm border border-gray-100 hover:shadow-md transition-shadow flex flex-col items-center justify-center text-center">
-          <Users className="h-12 w-12 text-teal-600 mb-4" />
+          <Users className="h-12 w-12 text-brand-600 mb-4" />
           <h3 className="text-lg font-bold text-gray-900">Asignación de Cursos</h3>
           <p className="text-sm text-gray-500 mt-2">Administrar profesores y alumnos por curso</p>
         </Link>

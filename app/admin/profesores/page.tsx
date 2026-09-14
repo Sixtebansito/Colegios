@@ -19,7 +19,7 @@ export default async function AdminProfesoresPage() {
           <p className="mt-2 text-sm text-gray-700">Listado de docentes del colegio.</p>
         </div>
         <div className="mt-4 sm:ml-16 sm:mt-0 sm:flex-none">
-          <Link href="/admin/profesores/nuevo" className="block rounded-md bg-indigo-600 px-3 py-2 text-center text-sm font-semibold text-white shadow-sm hover:bg-indigo-500">
+          <Link href="/admin/profesores/nuevo" className="block rounded-md bg-brand-600 px-3 py-2 text-center text-sm font-semibold text-white shadow-sm hover:bg-brand-500">
             Agregar Profesor
           </Link>
         </div>
@@ -47,7 +47,7 @@ export default async function AdminProfesoresPage() {
                   {prof.materias.map(m => m.Nombre).join(', ') || 'Ninguna'}
                 </td>
                 <td className="relative whitespace-nowrap py-4 pl-3 pr-4 text-right text-sm font-medium sm:pr-6">
-                  <Link href={`/admin/profesores/editar/${prof.ProfesorID}`} className="text-indigo-600 hover:text-indigo-900">Editar</Link>
+                  <Link href={`/admin/profesores/editar/${prof.ProfesorID}`} className="text-brand-600 hover:text-brand-900">Editar</Link>
                 </td>
               </tr>
             ))}

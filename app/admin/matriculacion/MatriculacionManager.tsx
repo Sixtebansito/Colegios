@@ -54,7 +54,7 @@ export default function MatriculacionManager({
         <select
           value={selectedGradoId}
           onChange={(e) => setSelectedGradoId(e.target.value === '' ? '' : parseInt(e.target.value))}
-          className="block w-full max-w-sm rounded-md border-gray-300 py-2 pl-3 pr-10 text-base focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 sm:text-sm ring-1 ring-inset ring-gray-300"
+          className="block w-full max-w-sm rounded-md border-gray-300 py-2 pl-3 pr-10 text-base focus:border-brand-500 focus:outline-none focus:ring-brand-500 sm:text-sm ring-1 ring-inset ring-gray-300"
         >
           <option value="">-- Seleccione --</option>
           {grados.map(g => (
@@ -111,7 +111,7 @@ export default function MatriculacionManager({
                     <button
                       onClick={() => handleUpdate(est.EstudianteID, selectedGradoId as number)}
                       disabled={loading}
-                      className="text-xs px-3 py-1 bg-indigo-50 text-indigo-700 rounded-md hover:bg-indigo-100 font-medium transition-colors"
+                      className="text-xs px-3 py-1 bg-brand-50 text-brand-700 rounded-md hover:bg-brand-100 font-medium transition-colors"
                     >
                       Añadir
                     </button>

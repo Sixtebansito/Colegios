@@ -25,7 +25,7 @@ export default async function RectorReportesPage() {
   return (
     <div className="max-w-7xl mx-auto py-8">
       <div className="flex items-center gap-4 mb-8">
-        <Link href="/rector" className="text-indigo-600 font-medium hover:underline">&larr; Volver</Link>
+        <Link href="/rector" className="text-brand-600 font-medium hover:underline">&larr; Volver</Link>
         <h1 className="text-3xl font-bold text-gray-900">Reportes Disciplinarios</h1>
       </div>
 
@@ -71,7 +71,7 @@ export default async function RectorReportesPage() {
                       const { revalidatePath } = require('next/cache')
                       revalidatePath('/rector/reportes')
                     }}>
-                      <button type="submit" className="text-sm font-medium text-indigo-600 hover:text-indigo-900 bg-indigo-50 px-3 py-1 rounded border border-indigo-200">
+                      <button type="submit" className="text-sm font-medium text-brand-600 hover:text-brand-900 bg-brand-50 px-3 py-1 rounded border border-brand-200">
                         Marcar Revisado
                       </button>
                     </form>

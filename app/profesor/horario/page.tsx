@@ -52,10 +52,10 @@ export default async function ProfesorHorarioPage() {
                     return (
                       <td key={`${dia}-${hora}`} className="px-3 py-4 text-sm text-gray-500 relative min-w-[120px] align-top border-l border-gray-100">
                         {clasesEnEsteBloque.map(clase => (
-                          <div key={clase.HorarioID} className="bg-teal-50 border border-teal-100 rounded-md p-3 mb-2 text-left shadow-sm">
-                            <div className="font-bold text-teal-800 text-sm">{clase.materia?.Nombre}</div>
+                          <div key={clase.HorarioID} className="bg-brand-50 border border-brand-100 rounded-md p-3 mb-2 text-left shadow-sm">
+                            <div className="font-bold text-brand-800 text-sm">{clase.materia?.Nombre}</div>
                             <div className="text-xs text-gray-600 mt-1">{clase.HoraInicio} - {clase.HoraFin}</div>
-                            <div className="text-xs font-medium text-gray-800 mt-2 bg-teal-100 inline-block px-2 py-0.5 rounded">{clase.grado?.Nombre} {clase.grado?.Paralelo}</div>
+                            <div className="text-xs font-medium text-gray-800 mt-2 bg-brand-100 inline-block px-2 py-0.5 rounded">{clase.grado?.Nombre} {clase.grado?.Paralelo}</div>
                           </div>
                         ))}
                       </td>
