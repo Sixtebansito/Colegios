@@ -38,9 +38,9 @@ export default function Footer() {
 
           <div className="flex flex-col gap-4">
             <h4 className="text-lg font-bold text-white mb-2">Legal</h4>
-            <Link href="#" className="text-sm hover:text-indigo-400 transition-colors">Términos y Condiciones</Link>
-            <Link href="#" className="text-sm hover:text-indigo-400 transition-colors">Políticas de Privacidad</Link>
-            <Link href="#" className="text-sm hover:text-indigo-400 transition-colors">Uso de Cookies</Link>
+            <Link href="/protecciondedatos" className="text-sm hover:text-indigo-400 transition-colors">Términos y Condiciones</Link>
+            <Link href="/protecciondedatos" className="text-sm hover:text-indigo-400 transition-colors">Políticas de Privacidad</Link>
+            <Link href="/protecciondedatos" className="text-sm hover:text-indigo-400 transition-colors">Uso de Cookies</Link>
           </div>
 
         </div>

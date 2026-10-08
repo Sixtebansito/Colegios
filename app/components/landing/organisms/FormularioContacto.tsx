@@ -67,6 +67,16 @@ export default function FormularioContacto() {
                 <textarea id="mensaje" rows={4} placeholder="¿Tienes alguna duda en específico?" className="px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-indigo-600 focus:border-transparent transition-all resize-none"></textarea>
               </div>
 
+              <div className="flex items-start gap-2 mt-2">
+                <input type="checkbox" id="terminos" required className="mt-1" />
+                <label htmlFor="terminos" className="text-sm text-gray-600">
+                  He leído y acepto la{' '}
+                  <a href="/protecciondedatos" className="text-indigo-600 hover:underline" target="_blank" rel="noopener noreferrer">
+                    Política de Protección de Datos
+                  </a>.
+                </label>
+              </div>
+
               <button type="submit" className="mt-2 w-full flex items-center justify-center px-8 py-4 text-base font-bold text-white bg-indigo-600 rounded-xl shadow-md hover:bg-indigo-500 transition-all">
                 Enviar Mensaje
               </button>

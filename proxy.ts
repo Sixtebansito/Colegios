@@ -9,7 +9,7 @@ export async function proxy(request: NextRequest) {
   const path = request.nextUrl.pathname
   
   // Public paths that don't require authentication
-  const isPublicPath = path === '/' || path === '/login' || path.startsWith('/api/auth')
+  const isPublicPath = path === '/' || path === '/login' || path.startsWith('/api/auth') || path === '/protecciondedatos'
   
   const session = await getSession()
   
